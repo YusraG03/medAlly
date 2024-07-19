@@ -9,18 +9,28 @@ const db = new firebase();
 app.use(bodyParser.json());
 
 
-(async () => {
-    try {
-      await db.testConnection();
-    } catch (error) {
-      console.error("Error connecting to Firebase:", error);
-    }
-  })();
+// (async () => {
+//     try {
+//       await db.testConnection();
+//     } catch (error) {
+//       console.error("Error connecting to Firebase:", error);
+//     }
+//   })();
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => 
+{
     db.testConnection();
     res.send('Oweiss Gunga');
 });
+app.post('/login', async (req, res) => 
+{
+    await db.signUp(req.body);
+});
+app.post('/register', async (req, res) => 
+{
+    await db.signIn(req.body);
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
