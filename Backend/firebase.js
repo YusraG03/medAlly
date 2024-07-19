@@ -28,6 +28,18 @@ class firebase
             console.error('Write failed:', error);
           }
     }
+    async signUp(accountDetails)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(accountDetails.email);
+            await ref.set(accountDetails);
+        }
+        catch(error)
+        {
+            console.error('Error creating account:', error);
+        }
+    }
 }
 
 export default firebase;
