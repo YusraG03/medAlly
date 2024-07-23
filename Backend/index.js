@@ -25,12 +25,13 @@ app.get('/', (req, res) =>
 
 app.post('/login', async (req, res) => 
 {
-    await db.signUp(req.body.userDetails);
+    await db.signIn(req.body.userDetails);
 });
 
 app.post('/register', async (req, res) => 
 {
-    await db.signIn(req.body.userDetails);
+    console.log(req.body.userDetails);
+    await db.signUp(req.body.userDetails);
 });
 
 
