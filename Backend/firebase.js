@@ -1,7 +1,10 @@
 import admin from 'firebase-admin'
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 
 dotenv.config();
+
+const SALT_ROUNDS = 1;
 
 class firebase
 {
@@ -33,11 +36,17 @@ class firebase
         try
         {
             const ref = this.db.collection('users').doc(accountDetails.email);
-            const isEmailTaken = await this.checkIfEmailTaken(ref);
+            const isEmailTaken = await this.checkIfEmailExists(ref);
+
             if(isEmailTaken)
             {
                 return("Email already taken!");
             }
+
+            //hash user password
+            const hashedPassword = await bcrypt.hash(accountDetails.password, SALT_ROUNDS);
+            accountDetails.password = hashedPassword;
+        
             await ref.set(accountDetails);
             return("Account created successfully!");
         }
@@ -58,7 +67,7 @@ class firebase
             
         }
     }
-    async checkIfEmailTaken(ref)
+    async checkIfEmailExists(ref)
     {   
         const document = await ref.get();
         if (document.exists) 
