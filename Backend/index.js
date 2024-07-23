@@ -26,13 +26,28 @@ app.get('/', (req, res) =>
 app.post('/login', async (req, res) => 
 {
     const message = await db.signIn(req.body.userCreds);
-    res.json({"message": message});
+    res.json({"message": message});s
 });
 
 app.post('/register', async (req, res) => 
 {
     const message = await db.signUp(req.body.userCreds);
     res.json({"message": message});
+});
+
+app.post('/addMedication', async (req, res) =>
+{
+
+});
+
+app.get('/getMedication', async (req, res) =>
+{
+
+});
+
+app.post('/addMedicalInfo', async (req, res) =>
+{
+
 });
 
 
