@@ -31,11 +31,11 @@ class firebase
             console.error('Write failed:', error);
           }
     }
-    async signUp(accountDetails)
+    async signUp(userCreds)
     {
         try
         {
-            const ref = this.db.collection('users').doc(accountDetails.email);
+            const ref = this.db.collection('users').doc(userCreds.email);
             const document = await ref.get();
             const isEmailTaken = await this.checkIfEmailExists(document);
 
@@ -45,10 +45,10 @@ class firebase
             }
 
             //hash user password
-            const hashedPassword = await bcrypt.hash(accountDetails.password, SALT_ROUNDS);
-            accountDetails.password = hashedPassword;
+            const hashedPassword = await bcrypt.hash(userCreds.password, SALT_ROUNDS);
+            userCreds.password = hashedPassword;
         
-            await ref.set(accountDetails);
+            await ref.set(userCreds);
             return("Account created successfully!");
         }
         catch(error)
@@ -56,11 +56,11 @@ class firebase
             console.error('Error creating account:', error);
         }
     }
-    async signIn(accountDetails)
+    async signIn(userCreds)
     {
         try 
         {
-            const ref = this.db.collection('users').doc(accountDetails.email);
+            const ref = this.db.collection('users').doc(userCreds.email);
             const document = await ref.get();
             const doesEmailExist = await this.checkIfEmailExists(document);
 
@@ -69,7 +69,7 @@ class firebase
                 return("Email does not exist!");
             }
             
-            if(await bcrypt.compare(accountDetails.password, document.data().password))
+            if(await bcrypt.compare(userCreds.password, document.data().password))
             {
                 return("Login successful!");
             }
@@ -77,8 +77,6 @@ class firebase
             {
                 return("Incorrect password!");
             }
-            
-            
             
         } 
         catch (error) 
@@ -93,6 +91,19 @@ class firebase
             return true;
         }
         return false;
+    }
+    async addMedication(medicationDetails, userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medications').doc(medicationDetails.medicationName);
+            await ref.set(medicationDetails);
+            return("Medication added successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error adding medication:', error);
+        }
     }
 
 }

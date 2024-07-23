@@ -37,12 +37,14 @@ app.post('/register', async (req, res) =>
 
 app.post('/addMedication', async (req, res) =>
 {
-
+    const message = await db.addMedication(req.body.medication, req.body.userCreds);
+    res.json({"message": message});
 });
 
 app.get('/getMedication', async (req, res) =>
 {
-
+    const message = await db.addMedication(req.body.medication, req.body.userCreds);
+    res.json({"message": message});
 });
 
 app.post('/addMedicalInfo', async (req, res) =>
