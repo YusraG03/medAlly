@@ -41,13 +41,13 @@ app.post('/addMedication', async (req, res) =>
     res.json({"message": message});
 });
 
-app.get('/getMedication', async (req, res) =>
+app.post('/getAllMedication', async (req, res) =>
 {
-    const message = await db.addMedication(req.body.medication, req.body.userCreds);
-    res.json({"message": message});
+    const message = await db.getAllMedication(req.body.userCreds);
+    res.json(message);
 });
 
-app.post('/addMedicalInfo', async (req, res) =>
+app.post('/', async (req, res) =>
 {
 
 });

@@ -105,6 +105,32 @@ class firebase
             console.error('Error adding medication:', error);
         }
     }
+    async getAllMedication(userCreds)
+    {
+        try 
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medications');
+            const snapshot = await ref.get();
+        
+            if (snapshot.empty) 
+            {
+                return('No medications found.');
+            }
+        
+            const medications = [];
+
+            snapshot.forEach(doc => {
+                medications.push(doc.data());
+            });
+        
+            return medications;
+        } 
+        catch (error) 
+        {
+            console.error('Error retrieving medications:', error);
+            return [];
+        }
+    }
 
 }
 
