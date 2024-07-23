@@ -36,7 +36,8 @@ class firebase
         try
         {
             const ref = this.db.collection('users').doc(accountDetails.email);
-            const isEmailTaken = await this.checkIfEmailExists(ref);
+            const document = await ref.get();
+            const isEmailTaken = await this.checkIfEmailExists(document);
 
             if(isEmailTaken)
             {
@@ -59,23 +60,41 @@ class firebase
     {
         try 
         {
-             
+            const ref = this.db.collection('users').doc(accountDetails.email);
+            const document = await ref.get();
+            const doesEmailExist = await this.checkIfEmailExists(document);
+
+            if(!doesEmailExist)
+            {
+                return("Email does not exist!");
+            }
+            
+            if(await bcrypt.compare(accountDetails.password, document.data().password))
+            {
+                return("Login successful!");
+            }
+            else
+            {
+                return("Incorrect password!");
+            }
+            
+            
             
         } 
         catch (error) 
         {
-            
+            console.log('Error signing in user:', error);
         }
     }
-    async checkIfEmailExists(ref)
+    async checkIfEmailExists(document)
     {   
-        const document = await ref.get();
         if (document.exists) 
         {   
             return true;
         }
         return false;
     }
+
 }
 
 export default firebase;

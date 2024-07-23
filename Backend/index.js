@@ -25,7 +25,8 @@ app.get('/', (req, res) =>
 
 app.post('/login', async (req, res) => 
 {
-    await db.signIn(req.body.userCreds);
+    const message = await db.signIn(req.body.userCreds);
+    res.json({"message": message});
 });
 
 app.post('/register', async (req, res) => 
