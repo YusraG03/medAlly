@@ -33,14 +33,12 @@ class firebase
         try
         {
             const ref = this.db.collection('users').doc(accountDetails.email);
-            await ref.set(accountDetails);
-            const isEmailTaken = this.checkIfEmailTaken(ref);
-
+            const isEmailTaken = await this.checkIfEmailTaken(ref);
             if(isEmailTaken)
             {
                 return("Email already taken!");
             }
-
+            await ref.set(accountDetails);
             return("Account created successfully!");
         }
         catch(error)
@@ -61,9 +59,10 @@ class firebase
         }
     }
     async checkIfEmailTaken(ref)
-    {
-        if (ref.exists) 
-        {
+    {   
+        const document = await ref.get();
+        if (document.exists) 
+        {   
             return true;
         }
         return false;
