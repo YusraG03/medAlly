@@ -34,11 +34,39 @@ class firebase
         {
             const ref = this.db.collection('users').doc(accountDetails.email);
             await ref.set(accountDetails);
+            const isEmailTaken = this.checkIfEmailTaken(ref);
+
+            if(isEmailTaken)
+            {
+                return("Email already taken!");
+            }
+
+            return("Account created successfully!");
         }
         catch(error)
         {
             console.error('Error creating account:', error);
         }
+    }
+    async signIn(accountDetails)
+    {
+        try 
+        {
+             
+            
+        } 
+        catch (error) 
+        {
+            
+        }
+    }
+    async checkIfEmailTaken(ref)
+    {
+        if (ref.exists) 
+        {
+            return true;
+        }
+        return false;
     }
 }
 
