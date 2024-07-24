@@ -131,7 +131,25 @@ class firebase
             return [];
         }
     }
-
+    async modifyMedication(medicationDetails, userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medications').doc(medicationDetails.medicationName);
+            // delete medication by setting freq to "delete"
+            if(medicationDetails.freq === "delete")
+            {
+                await ref.delete();
+                return("Medication deleted successfully!");
+            }
+            await ref.update(medicationDetails);
+            return("Medication modified successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error modifying medication:', error);
+        }
+    }
 }
 
 export default firebase;
