@@ -1,5 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'expo-router';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+
 
 export default function App() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -43,6 +46,12 @@ export default function App() {
       </select>
 
       <input type="submit" />
+      <Link href="./medical-history-one" asChild>
+                <TouchableOpacity>
+                    <Text>Next</Text>
+                </TouchableOpacity>
+     </Link>
     </form>
+    
   );
 }
