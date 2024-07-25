@@ -1,5 +1,10 @@
-import { Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { Link } from 'expo-router';
+
 
 export default function Page() {
-  return <Text>Testing Level!</Text>;
+  return <view>
+    <Text>you have reached the testing level!</Text>;
+    
+    </view>
 }
