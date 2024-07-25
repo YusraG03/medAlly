@@ -3,7 +3,6 @@
     "name": "medally-app",
     "slug": "medally-app",
     "version": "1.0.0",
-    "scheme": "yourapp",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
