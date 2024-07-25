@@ -1,6 +1,26 @@
-export const form = {
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
 
-};
 
 
-export default form;
+export default function form() {
+  return (
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!helloooo</Text>
+      <Text>Welcome to MedAlly!</Text>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }, 
+  text:{
+    fontSize : 20,
+  }
+});
