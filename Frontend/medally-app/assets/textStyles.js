@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { colors } from './colors';
+
 
 const textStyles = StyleSheet.create({
   onboardingTitle: {
@@ -8,6 +10,7 @@ const textStyles = StyleSheet.create({
     fontWeight: '800',
     fontFamily: 'Inter-ExtraBold',
     textAlign: 'left',
+    color: colors.defaultblack,
   },
   screenTitle: {
     fontSize: 24,
@@ -16,6 +19,7 @@ const textStyles = StyleSheet.create({
     fontWeight: '800',
     fontFamily: 'Inter-ExtraBold',
     textAlign: 'left',
+    color: colors.defaultblack,
   },
   containerActionText: {
     fontSize: 18,

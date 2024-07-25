@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
 import textStyles from '../assets/textStyles';
+import colors from '../assets/colors';
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -32,11 +33,13 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Image 
+      source={require('../assets/medAlly-logo/large.png')} style={styles.logo}/>
       <View style={styles.header}>
         <Text style={textStyles.screenTitle}>Medally Testing HQ</Text>
         <Text style={textStyles.contentText}>Select your path!</Text>
       </View>
-      <Link style={styles.button} href="./initialtesting"><Text>Enter the Playground</Text></Link>
+      <Link style={styles.button} href="./initialtesting">Enter the Playground</Link>
       <StatusBar style="auto" />
     </View>
   );
@@ -50,8 +53,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    color: '#F7F7F7',
-    backgroundColor: '#121419',
+    color: colors.defaultwhite,
+    backgroundColor: colors.defaultblack,
+    font: textStyles.containerActionText,
+    borderColor: '#282f41',
+    borderRadius: 6,
+    borderWidth: 2,
     paddingHorizontal: 20,
     paddingVertical: 10,
     fontSize: 18,
@@ -61,5 +68,10 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
     gap: 6,    
-  }
+  },
+  logo: {
+    width: 100, // Adjust as needed
+    height: 100, // Adjust as needed
+    resizeMode: 'contain', // This will maintain the aspect ratio
+  },
 });
