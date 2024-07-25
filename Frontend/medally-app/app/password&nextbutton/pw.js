@@ -78,21 +78,14 @@ const SignUp = () => {
         <Text style={styles.errorText}>Passwords do not match.</Text>
       )}
       {/* Next Page Button */}
-      <TouchableOpacity
-        disabled={!isFormValid()}
-        onPress={() => navigation.navigate('NextPage')}
-        style={[
-          styles.formButton,
-          isFormValid() ? (isHovered ? styles.nextButtonHovered : styles.nextButtonActive) : styles.nextButtonDisabled
-        ]}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <Text style={styles.logIn}>Next Page</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+         <Link href="/general-information" style={[styles.link, !isFormValid() && styles.linkDisabled]}>
+         <Text style={styles.buttonText}>Next Page</Text>
+       </Link>
+     </View>
+   );
+ };
+      
+  
 
 const styles = StyleSheet.create({
   container: {
