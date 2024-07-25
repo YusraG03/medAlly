@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Importing the icon library from Expo
 import { useNavigation } from '@react-navigation/native'; // Importing the navigation hook
-
+import { Link } from 'expo-router';
 const SignUp = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
