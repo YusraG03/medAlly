@@ -29,12 +29,14 @@ const PasswordInput = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    padding: 100,
+    padding: 10,
   },
   input: {
     flex: 1,
