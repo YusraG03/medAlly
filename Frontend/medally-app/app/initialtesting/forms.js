@@ -15,7 +15,7 @@ export default function App() {
         <input style={styles.formWrapper} type="text" placeholder="Last name" {...register("Last name", {required: true, maxLength: 100})} />
         <input style={styles.formWrapper} type="text" placeholder="Email" {...register("Email", {required: true, pattern: /^\S+@\S+$/i})} />
         <input style={styles.formWrapper} type="password" placeholder="Password" {...register("Password", {required: true})} />
-        <input type="submit" />
+        <input type="submit"/>
       </form>
     );
   }
