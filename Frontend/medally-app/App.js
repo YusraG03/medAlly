@@ -1,24 +1,51 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-export default function App() {
+const PasswordInput = () => {
+  const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!helloooo</Text>
-      <Text>Welcome to MedAlly!</Text>
-      <StatusBar style="auto" />
+      <TextInput
+        style={styles.input}
+        secureTextEntry={!isPasswordVisible}
+        onChangeText={setPassword}
+        value={password}
+        placeholder="Enter your password"
+      />
+      <TouchableOpacity onPress={togglePasswordVisibility} style={styles.toggleButton}>
+        <Text style={styles.toggleButtonText}>
+          {isPasswordVisible ? 'Hide' : 'Show'}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
-  }, 
-  text:{
-    fontSize : 20,
-  }
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 100,
+  },
+  input: {
+    flex: 1,
+  },
+  toggleButton: {
+    marginLeft: 10,
+  },
+  toggleButtonText: {
+    color: 'blue',
+    fontWeight: 'bold',
+  },
 });
+
+export default PasswordInput;
