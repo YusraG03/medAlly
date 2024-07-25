@@ -1,69 +1,50 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { Link } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import textStyles from '../../assets/textStyles';
-import form from '../../assets/form';
+import colors from '../../assets/colors';
 
-export default function Page() {
+export default function App() {
+
   return (
-    <View style={styles.renderer}>
-      <View style={styles.global.full}>
-    <Text style={styles.title}>First Name</Text>
-    <TextInput
-        style={styles.formWrapper}
-        placeholder="e.g Jean"
-        keyboardType="alphabetic"
-      />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={textStyles.screenTitle}>Playground</Text>
+      </View>
+      <Link style={styles.button} href="./forms">Forms</Link>
+      <Link style={styles.button} href="./testdatepicker">DatePicker</Link>
+      <StatusBar style="auto" />
     </View>
-    <View style={styles.global.full}>
-    <Text style={styles.title}>First Name</Text>
-    <TextInput
-        style={styles.formWrapper}
-        placeholder="e.g Jean"
-        keyboardType="alphabetic"
-      />
-    </View>
-    </View>)
-    ;
+  );
 }
 
 const styles = StyleSheet.create({
-  renderer:{
-    marginTop : '10%',
-    flexDirection : 'column',
-    gap: '25%',
-    justifyContent: 'center'
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    gap: '10%'
   },
-
-  title: {
-  fontSize: 14,
-  letterSpacing: -0.1,
-  lineHeight: 15,
-  fontWeight: "600",
-  fontFamily: "Inter-SemiBold",
-  color: "#121419",
-  textAlign: "left",
-  alignSelf: "stretch"
+  button: {
+    color: colors.defaultwhite,
+    backgroundColor: colors.defaultblack,
+    font: textStyles.containerActionText,
+    borderColor: '#282f41',
+    borderRadius: 6,
+    borderWidth: 2,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    fontSize: 18,
+    marginHorizontal: '5%'
   },
-
-  formWrapper: {
-  font : textStyles.contentText,
-  paddingLeft: 15,
-  borderRadius: 4,
-  borderStyle: "solid",
-  borderColor: "#dbdbdb",
-  borderWidth: 1,
-  height: 40, 
-  marginTop: 6,
-  alignSelf: "stretch"
-
+  header: {
+    flexDirection: 'column',
+    padding: 30,
+    alignItems: 'center',
+    gap: 6,    
   },
-  global: {
-    full:{
-      marginHorizontal: '5%'
-    },
-    half:{
-      width: '45%'
-    },
-  }
-  });
-  
+  logo: {
+    width: 100, // Adjust as needed
+    height: 100, // Adjust as needed
+    resizeMode: 'contain', // This will maintain the aspect ratio
+  },
+});
