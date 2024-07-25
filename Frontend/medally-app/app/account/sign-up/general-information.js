@@ -1,26 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-
+import React from 'react';
+import { useForm } from 'react-hook-form';
 
 export default function App() {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const onSubmit = data => console.log(data);
+  console.log(errors);
+  
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!helloooo</Text>
-      <Text>Welcome to MedAlly!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <select {...register("Gender", { required: true })}>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+      <input type="datetime" placeholder="Date of Birth" {...register("Date of Birth", {required: true})} />
+      <input type="number" placeholder="Weight" {...register("Weight", {required: true})} />
+      <input type="number" placeholder="Height" {...register("Height", {required: true})} />
+
+      <input type="submit" />
+    </form>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }, 
-  text:{
-    fontSize : 20,
-  }
-});

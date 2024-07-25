@@ -13,7 +13,8 @@ export default function App() {
       </View>
       <Link style={styles.button} href="./forms">Forms</Link>
       <Link style={styles.button} href="./testdatepicker">DatePicker</Link>
-      <Link style={styles.button} href="../account/sign-up/credentials">Sign Up Phase</Link>
+      <Link style={styles.button} href="../password&nextbutton/pw">Password Validator</Link>
+      <Link style={styles.button} href="../account/sign-up/credentials">Sign Up</Link>
       <StatusBar style="auto" />
     </View>
   );
