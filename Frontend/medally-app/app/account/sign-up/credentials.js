@@ -109,6 +109,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 20,
     },
+    contentText:{
+        color: colors.secondarytext
+    },
     form: {
         width: '100%',
         marginTop: 20,
