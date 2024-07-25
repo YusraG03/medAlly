@@ -1,3 +1,4 @@
 node_modules
 .env
 .DS_Store
+Frontend/medally-app/package-lock.json
