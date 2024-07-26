@@ -150,6 +150,163 @@ class firebase
             console.error('Error modifying medication:', error);
         }
     }
+    async addUserBasicInfo(userBasicInfo, userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('basicInfo');
+            await ref.set(userBasicInfo);
+            return("Basic info added successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error adding user basic info:', error);
+        }
+    }
+    async getUserBasicInfo(userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('basicInfo');
+            const document = await ref.get();
+            return document.data();
+        }
+        catch(error)
+        {
+            console.error('Error retrieving user basic info:', error);
+        }
+    }
+    async modifyUserBasicInfo(userBasicInfo, userCreds)
+    {   
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('basicInfo');
+            await ref.update(userBasicInfo);
+            return("Basic info modified successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error modifying user basic info:', error);
+        }
+    }
+    async addUserMedicalHistory(userMedicalHistory, userCreds)
+    {   
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('medicalHistory');
+            await ref.set(userMedicalHistory);
+            return ("Medical history added successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error adding user medical history:', error);
+        }
+    }
+    async getUserMedicalHistory(userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('medicalHistory');
+            const document = await ref.get();
+            return document.data();
+        }
+        catch(error)
+        {
+            console.error('Error retrieving user medical history:', error);
+        }
+
+    }
+    async modifyUserMedicalHistory(userMedicalHistory, userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('medicalHistory');
+            await ref.update(userMedicalHistory);
+            return("Medical history modified successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error modifying user medical history:', error);
+        }
+    }
+    async addUserNutrition(userNutrition, userCreds)
+    {
+        try 
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('nutrition');
+            await ref.set(userNutrition);
+            return("Nutrition added successfully!");
+        } 
+        catch (error) 
+        {
+            console.error('Error adding user nutrition:', error);
+        }
+    }
+    async getUserNutrition(userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('nutrition');
+            const document = await ref.get();
+            return document.data();
+        }
+        catch(error)
+        {
+            console.error('Error retrieving user nutrition:', error);
+        }
+    }
+    async modifyUserNutrition(userNutrition, userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('nutrition');
+            await ref.update(userNutrition);
+            return("Nutrition modified successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error modifying user nutrition:', error);
+        }
+    }
+    async addUserPhysicalHabbits(userPhysicalHabbits, userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('physicalHabbits');
+            await ref.set(userPhysicalHabbits);
+            return("Physical habbits added successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error adding user physical habbits:', error);
+        }
+    }
+    async getUserPhysicalHabbits(userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('physicalHabbits');
+            const document = await ref.get();
+            return document.data();
+        }
+        catch(error)
+        {
+            console.error('Error retrieving user physical habbits:', error);
+        }
+    }
+    async modifyUserPhysicalHabbits(userPhysicalHabbits, userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('physicalHabbits');
+            await ref.update(userPhysicalHabbits);
+            return("Physical habbits modified successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error modifying user physical habbits:', error);
+        }
+    }
 }
 
 export default firebase;
