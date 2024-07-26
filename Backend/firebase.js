@@ -21,16 +21,6 @@ class firebase
         
         this.db = admin.firestore();
     }
-    async testConnection()
-    {
-        try {
-            const ref = this.db.collection('test').doc('data');
-            await ref.set({ message: 'Hello from Firebase!' });
-            console.log('Write successful!');
-          } catch (error) {
-            console.error('Write failed:', error);
-          }
-    }
     async signUp(userCreds)
     {
         try
@@ -302,7 +292,7 @@ class firebase
             await ref.update(userPhysicalHabbits);
             return("Physical habbits modified successfully!");
         }
-        catch(error)
+        catch(error)    
         {
             console.error('Error modifying user physical habbits:', error);
         }

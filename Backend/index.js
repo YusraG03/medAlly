@@ -8,15 +8,6 @@ const db = new firebase();
 
 app.use(bodyParser.json());
 
-
-// (async () => {
-//     try {
-//       await db.testConnection();
-//     } catch (error) {
-//       console.error("Error connecting to Firebase:", error);
-//     }
-//   })();
-
 app.get('/', (req, res) => 
 {
     db.testConnection();
