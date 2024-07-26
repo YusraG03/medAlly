@@ -85,15 +85,9 @@ export default function App() {
                 />
             </View>
             <Link href="./general-information" asChild>
-                <TouchableOpacity
-                    style={[
-                        styles.formButton,
-                        isFormValid() ? styles.nextButtonActive : styles.nextButtonDisabled
-                    ]}
-                    disabled={!isFormValid()}
-                >
-                    <Text style={styles.logIn}>Next</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Next</Text>
+                    </TouchableOpacity>
             </Link>
 
             <StatusBar style="auto" />
