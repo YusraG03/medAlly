@@ -40,6 +40,7 @@ export default function App() {
         <Text style={textStyles.contentText}>Select your path!</Text>
       </View>
       <Link style={styles.button} href="./initialtesting">Enter the Playground</Link>
+      <Link style={styles.button} href="../account/sign-up/credentials">Sign Up</Link>
       <StatusBar style="auto" />
     </View>
   );
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     fontSize: 18,
+    marginTop: '5%',
   },
   header: {
     flexDirection: 'column',
