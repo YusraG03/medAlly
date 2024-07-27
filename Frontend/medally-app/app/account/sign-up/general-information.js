@@ -5,10 +5,9 @@ import { Picker } from '@react-native-picker/picker';
 import { Link } from 'expo-router';
 import colors from '../../../assets/colors';
 
-
 export default function App() {
   const { control, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {console.log(data)};
   
   return (
     <View style={styles.container}>
@@ -100,14 +99,8 @@ export default function App() {
         {errors.Height && <Text style={styles.errorText}>This field is required.</Text>}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+      <Link href="./physical-habits" asChild style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-
-      <Link href="./physical-habits" asChild>
-        <TouchableOpacity style={styles.nextButton}>
-          <Text style={styles.nextButtonText}>Next</Text>
-        </TouchableOpacity>
       </Link>
       </View>
     </View>
