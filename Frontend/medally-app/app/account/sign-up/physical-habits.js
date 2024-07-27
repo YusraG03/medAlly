@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View,Image, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Link } from 'expo-router';
 import colors from '../../../assets/colors';
@@ -11,8 +11,20 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.formGroup}>
-        <Text>How many times do you exercise per week?</Text>
+      <ScrollView>
+      <View style ={styles.header}>
+            <Image 
+                source={require('../../../assets/medAlly-logo/large.png')} 
+                style={styles.logo}
+            />
+            <View style={styles.headertext}>
+                <Text style={styles.screenTitle}>Physical Habits</Text>
+                <Text style={styles.contentText}>Enter basic details about yourself to get started.</Text>
+            </View>
+     </View>
+     <View style = {styles.form}>
+     <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>How many times do you exercise per week?</Text>
         <Controller
           name="exerciseFrequency"
           control={control}
@@ -31,8 +43,8 @@ export default function App() {
         />
       </View>
 
-      <View style={styles.formGroup}>
-        <Text>How often do you consume alcohol?</Text>
+      <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>How often do you consume alcohol?</Text>
         <Controller
           name="alcoholFrequency"
           control={control}
@@ -51,8 +63,8 @@ export default function App() {
         />
       </View>
 
-      <View style={styles.formGroup}>
-        <Text>How often do you smoke?</Text>
+      <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>How often do you smoke?</Text>
         <Controller
           name="smokeFrequency"
           control={control}
@@ -71,8 +83,8 @@ export default function App() {
         />
       </View>
 
-      <View style={styles.formGroup}>
-        <Text>How often do you drink coffee?</Text>
+      <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>How often do you drink coffee?</Text>
         <Controller
           name="coffeeFrequency"
           control={control}
@@ -93,15 +105,15 @@ export default function App() {
         {errors.coffeeFrequency && <Text style={styles.errorText}>This field is required.</Text>}
       </View>
 
-      <View style={styles.formGroup}>
-        <Text>Do you do any other substances?</Text>
+      <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>Do you do any other substances?</Text>
         <Controller
           name="otherSubstances"
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder="Do you do any other substances?"
+              placeholder="Type.."
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -110,8 +122,8 @@ export default function App() {
         />
       </View>
 
-      <View style={styles.formGroup}>
-        <Text>Do you have problem sleeping?</Text>
+      <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>Do you have problem sleeping?</Text>
         <Controller
           name="sleepProblems"
           control={control}
@@ -130,8 +142,8 @@ export default function App() {
         {errors.sleepProblems && <Text style={styles.errorText}>This field is required.</Text>}
       </View>
 
-      <View style={styles.formGroup}>
-        <Text>Are you currently/post partum pregnant?</Text>
+      <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>Are you currently/post partum pregnant?</Text>
         <Controller
           name="pregnancyStatus"
           control={control}
@@ -150,8 +162,8 @@ export default function App() {
         {errors.pregnancyStatus && <Text style={styles.errorText}>This field is required.</Text>}
       </View>
 
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.submitButtonText}>Submit</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
       <Link href="./medical-history-one" asChild>
@@ -160,49 +172,126 @@ export default function App() {
         </TouchableOpacity>
       </Link>
     </View>
+      </ScrollView>
+     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
+      flex: 1,
+      backgroundColor: colors.defaultwhite,
+      justifyContent: 'center',
+      alignContent:'center'
   },
-  formGroup: {
-    marginBottom: 2,
+  screenTitle: {
+      alignSelf: "stretch",
+      fontSize: 24,
+      letterSpacing: -0.7,
+      lineHeight: 24,
+      fontWeight: "800",
+      fontFamily: "Inter-ExtraBold",
+      color: "#121419",
+      textAlign: "center"
+  },
+  contentText: {
+      alignSelf: "stretch",
+      fontSize: 14,
+      letterSpacing: -0.6,
+      lineHeight: 16,
+      fontFamily: "Inter-Regular",
+      color: "#4f4f4f",
+      textAlign: "center"
+  },
+  formHeader: {
+      alignSelf: "stretch",
+      fontSize: 14,
+      letterSpacing: -0.1,
+      lineHeight: 20,
+      fontWeight: "600",
+      fontFamily: "Inter-SemiBold",
+      color: "#121419",
+      textAlign: "left"
+      },
+  form: {
+      flexDirection: 'column',
+      marginTop: '10%',
+      marginHorizontal : '5%',
+      gap: '1%'
+  },
+  formItem:{
+      full:{
+          width: '100%'
+      },
+      half:{
+          width: '49%'
+      }
+  },
+  GenderAndDOB:{
+      flexDirection : 'row',
+      gap : '2%',
+      width: '100%'
+  },
+  errorText:{
+    fontSize: 12,
+    letterSpacing: 0,
+    lineHeight: 12,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: colors.errorred,
   },
   input: {
+
+      height: 40,
+      borderColor: '#dbdbdb',
+      fontSize: 16,
+      letterSpacing: -0.2,
+      lineHeight: 17,
+      fontFamily: "Inter-Regular",
+      color: "#7d7d7d",
+      textAlign: "left",
+      borderWidth: 1,
+      borderRadius: 4,
+      paddingLeft: 15,
+      marginBottom: 10
+  },
+
+  button: {
+    borderRadius: 6,
+    backgroundColor: "#121419",
+    borderStyle: "solid",
+    borderColor: "#282f41",
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 5,
+    flex: 1,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 20
+    },
+  buttonText: {
+    fontSize: 18,
+    letterSpacing: 0,
+    lineHeight: 18,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: "#f7f7f7",
+},
+  header: {
+      alignItems: 'center',
+      gap:0
   },
-  errorText: {
-    color: 'red',
-    marginTop: 5,
+  headertext:{
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 6
   },
-  submitButton: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  submitButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  nextButton: {
-    color: colors.defaultblack,
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  nextButtonText: {
-    color: colors.highlighttext,
-    fontSize: 16,
+  
+  logo: {
+      width: 72,
+      height: 50,
+      resizeMode: 'contain',
+      marginBottom: 20,
   },
 });

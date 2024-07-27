@@ -22,7 +22,7 @@ export default function App() {
                 <Text style={styles.contentText}>Enter basic details about yourself to get started.</Text>
             </View>
      </View>
-      <ScrollView style={styles.form}>
+      <View style={styles.form}>
       
       <View style ={styles.GenderAndDOB}>
       <View style={styles.formItem.half}>
@@ -109,7 +109,7 @@ export default function App() {
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </Link>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: colors.defaultwhite,
       justifyContent: 'center',
+      alignContent:'center'
   },
   screenTitle: {
       alignSelf: "stretch",
@@ -168,7 +169,14 @@ const styles = StyleSheet.create({
       gap : '2%',
       width: '100%'
   },
-  
+  errorText:{
+    fontSize: 12,
+    letterSpacing: 0,
+    lineHeight: 12,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: colors.errorred,
+  },
   input: {
 
       height: 40,
@@ -186,13 +194,19 @@ const styles = StyleSheet.create({
   },
 
   button: {
-      backgroundColor: colors.defaultblack,
-      padding: 10,
-      borderRadius: 6,
-      marginTop: 20,
-      width: '100%',
-      alignItems: 'center',
-  },
+    borderRadius: 6,
+    backgroundColor: "#121419",
+    borderStyle: "solid",
+    borderColor: "#282f41",
+    borderWidth: 1,
+    flex: 1,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 20
+    },
   buttonText: {
     fontSize: 18,
     letterSpacing: 0,
