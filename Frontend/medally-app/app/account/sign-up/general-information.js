@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Link } from 'expo-router';
 import colors from '../../../assets/colors';
@@ -12,8 +12,21 @@ export default function App() {
   
   return (
     <View style={styles.container}>
-      <View style={styles.formGroup}>
-        <Text>Gender:</Text>
+      <View style ={styles.header}>
+            <Image 
+                source={require('../../../assets/medAlly-logo/large.png')} 
+                style={styles.logo}
+            />
+            <View style={styles.headertext}>
+                <Text style={styles.screenTitle}>General Information</Text>
+                <Text style={styles.contentText}>Enter basic details about yourself to get started.</Text>
+            </View>
+     </View>
+      <ScrollView style={styles.form}>
+      
+      <View style ={styles.GenderAndDOB}>
+      <View style={styles.formItem.half}>
+        <Text style ={styles.formHeader}>Gender:</Text>
         <Controller
           name="Gender"
           control={control}
@@ -28,8 +41,8 @@ export default function App() {
         {errors.Gender && <Text style={styles.errorText}>This field is required.</Text>}
       </View>
 
-      <View style={styles.formGroup}>
-        <Text>Date of Birth:</Text>
+      <View style={styles.formItem.half}>
+        <Text style ={styles.formHeader}>Date of Birth:</Text>
         <Controller
           name="DateOfBirth"
           control={control}
@@ -37,7 +50,7 @@ export default function App() {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder="Date of Birth"
+              placeholder="DD/MM/YYYY"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -46,9 +59,9 @@ export default function App() {
         />
         {errors.DateOfBirth && <Text style={styles.errorText}>This field is required.</Text>}
       </View>
-
-      <View style={styles.formGroup}>
-        <Text>Weight:</Text>
+      </View>
+      <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>Weight(kg):</Text>
         <Controller
           name="Weight"
           control={control}
@@ -56,7 +69,7 @@ export default function App() {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder="Weight"
+              placeholder="000"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -67,8 +80,8 @@ export default function App() {
         {errors.Weight && <Text style={styles.errorText}>This field is required.</Text>}
       </View>
 
-      <View style={styles.formGroup}>
-        <Text>Height:</Text>
+      <View style={styles.formItem.full}>
+        <Text style ={styles.formHeader}>Height(cm):</Text>
         <Controller
           name="Height"
           control={control}
@@ -76,7 +89,7 @@ export default function App() {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder="Height"
+              placeholder="000"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -87,8 +100,8 @@ export default function App() {
         {errors.Height && <Text style={styles.errorText}>This field is required.</Text>}
       </View>
 
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.submitButtonText}>Submit</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
       <Link href="./physical-habits" asChild>
@@ -96,51 +109,112 @@ export default function App() {
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </Link>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
+      flex: 1,
+      backgroundColor: colors.defaultwhite,
+      justifyContent: 'center',
   },
-  formGroup: {
-    marginBottom: 20,
+  screenTitle: {
+      alignSelf: "stretch",
+      fontSize: 24,
+      letterSpacing: -0.7,
+      lineHeight: 24,
+      fontWeight: "800",
+      fontFamily: "Inter-ExtraBold",
+      color: "#121419",
+      textAlign: "center"
   },
+  contentText: {
+      alignSelf: "stretch",
+      fontSize: 14,
+      letterSpacing: -0.6,
+      lineHeight: 16,
+      fontFamily: "Inter-Regular",
+      color: "#4f4f4f",
+      textAlign: "center"
+  },
+  formHeader: {
+      alignSelf: "stretch",
+      fontSize: 14,
+      letterSpacing: -0.1,
+      lineHeight: 20,
+      fontWeight: "600",
+      fontFamily: "Inter-SemiBold",
+      color: "#121419",
+      textAlign: "left"
+      },
+  form: {
+      flexDirection: 'column',
+      marginTop: '10%',
+      marginHorizontal : '5%',
+      gap: '5%'
+  },
+  formItem:{
+      full:{
+          width: '100%'
+      },
+      half:{
+          width: '49%'
+      }
+  },
+  GenderAndDOB:{
+      flexDirection : 'row',
+      gap : '2%',
+      width: '100%'
+  },
+  
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
+
+      height: 40,
+      borderColor: '#dbdbdb',
+      fontSize: 16,
+      letterSpacing: -0.2,
+      lineHeight: 17,
+      fontFamily: "Inter-Regular",
+      color: "#7d7d7d",
+      textAlign: "left",
+      borderWidth: 1,
+      borderRadius: 4,
+      paddingLeft: 15,
+      marginBottom: 10
   },
-  errorText: {
-    color: 'red',
-    marginTop: 5,
+
+  button: {
+      backgroundColor: colors.defaultblack,
+      padding: 10,
+      borderRadius: 6,
+      marginTop: 20,
+      width: '100%',
+      alignItems: 'center',
   },
-  submitButton: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 20,
+  buttonText: {
+    fontSize: 18,
+    letterSpacing: 0,
+    lineHeight: 18,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: "#f7f7f7",
+},
+  header: {
+      alignItems: 'center',
+      gap:0
   },
-  submitButtonText: {
-    color: '#fff',
-    fontSize: 16,
+  headertext:{
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 6
   },
-  nextButton: {
-    backgroundColor: colors.defaultblack,
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  nextButtonText: {
-    color: '#007BFF',
-    fontSize: 16,
+  
+  logo: {
+      width: 72,
+      height: 50,
+      resizeMode: 'contain',
+      marginBottom: 20,
   },
 });
-

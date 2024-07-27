@@ -12,20 +12,24 @@ export default function App() {
 
     return (
         <View style={styles.container}>
+             {/* Screen Header*/} 
             <View style ={styles.header}>
             <Image 
                 source={require('../../../assets/medAlly-logo/large.png')} 
                 style={styles.logo}
             />
             <View style={styles.headertext}>
-                <Text style={textStyles.screenTitle}>Welcome to MedAlly</Text>
-                <Text style={textStyles.contentText}>Create your account within minutes to get started.</Text>
+                <Text style={styles.screenTitle}>Welcome to MedAlly</Text>
+                <Text style={styles.contentText}>Create your account within minutes to get started.</Text>
             </View>
             </View>
             
 
             <View style={styles.form}>
-                <Controller
+                <View style ={styles.name}>
+                <View style = {styles.formItem.half}>
+                    <Text style={styles.formHeader}>First Name</Text>
+                    <Controller
                     control={control}
                     rules={{ required: true, maxLength: 80 }}
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -34,63 +38,79 @@ export default function App() {
                             onBlur={onBlur}
                             onChangeText={onChange}
                             value={value}
-                            placeholder="First name"
+                            placeholder="e.g Jean"
                         />
                     )}
                     name="firstName"
-                />
-                <Controller
-                    control={control}
-                    rules={{ required: true, maxLength: 100 }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            style={styles.input}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder="Last name"
-                        />
-                    )}
+                    />
+                </View>
+                
+                <View style = {styles.formItem.half}>
+                    <Text style={styles.formHeader}>Last Name</Text>
+                    <Controller
+                        control={control}
+                        rules={{ required: true, maxLength: 100 }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                         <TextInput
+                             style={styles.input}
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder="e.g Dookhit"
+                            />
+                        )}
                     name="lastName"
-                />
-                <Controller
-                    control={control}
-                    rules={{ required: true, pattern: /^\S+@\S+$/i }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            style={styles.input}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder="Email"
-                            keyboardType="email-address"
-                        />
-                    )}
+                    />                   
+                </View>
+                </View>
+
+                
+                <View style = {styles.formItem.full}>
+                    <Text style={styles.formHeader}>Email</Text>
+                    <Controller
+                        control={control}
+                        rules={{ required: true, pattern: /^\S+@\S+$/i }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <TextInput
+                                style={styles.input}
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder="user@email.com"
+                                keyboardType="email-address"
+                            />
+                        )}
                     name="email"
-                />
-                <Controller
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            style={styles.input}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder="Password"
-                            secureTextEntry
-                        />
-                    )}
+                    />
+                </View>           
+
+                <View style = {styles.formItem.full}>
+                    <Text style={styles.formHeader}>Password</Text>
+                        <Controller
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <TextInput
+                                    style={styles.input}
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                    placeholder="Password"
+                                    secureTextEntry
+                            />
+                     )}
                     name="password"
-                />
-            </View>
-            <Link href="./general-information" asChild>
+                    />
+                </View>
+                
+                <Link href="./general-information" asChild>
             <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Next</Text>
                     </TouchableOpacity>
             </Link>
 
             <StatusBar style="auto" />
+            </View>
         </View>
     );
 }
@@ -99,26 +119,73 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.defaultwhite,
-        alignItems: 'center',
         justifyContent: 'center',
-        padding: 20,
     },
-    contentText:{
-        color: colors.secondarytext
+    screenTitle: {
+        alignSelf: "stretch",
+        fontSize: 24,
+        letterSpacing: -0.7,
+        lineHeight: 24,
+        fontWeight: "800",
+        fontFamily: "Inter-ExtraBold",
+        color: "#121419",
+        textAlign: "center"
     },
+    contentText: {
+        alignSelf: "stretch",
+        fontSize: 14,
+        letterSpacing: -0.6,
+        lineHeight: 16,
+        fontFamily: "Inter-Regular",
+        color: "#4f4f4f",
+        textAlign: "center"
+    },
+    formHeader: {
+        alignSelf: "stretch",
+        fontSize: 14,
+        letterSpacing: -0.1,
+        lineHeight: 20,
+        fontWeight: "600",
+        fontFamily: "Inter-SemiBold",
+        color: "#121419",
+        textAlign: "left"
+        },
     form: {
-        width: '100%',
-        marginTop: 20,
+        flexDirection: 'column',
+        marginTop: '10%',
+        marginHorizontal : '5%',
+        gap: '5%'
     },
+    formItem:{
+        full:{
+            width: '100%'
+        },
+        half:{
+            width: '49%'
+        }
+    },
+    name:{
+        flexDirection : 'row',
+        gap : '2%',
+        width: '100%'
+    },
+    
     input: {
+
         height: 40,
         borderColor: '#dbdbdb',
+        fontSize: 16,
+        letterSpacing: -0.2,
+        lineHeight: 17,
+        fontFamily: "Inter-Regular",
+        color: "#7d7d7d",
+        textAlign: "left",
         borderWidth: 1,
         borderRadius: 4,
         paddingLeft: 15,
-        marginBottom: 10,
-        width: '100%',
+        marginBottom: 10
     },
+
     button: {
         backgroundColor: colors.defaultblack,
         padding: 10,
@@ -128,8 +195,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        color: colors.defaultwhite,
         fontSize: 18,
+        letterSpacing: 0,
+        lineHeight: 18,
+        fontWeight: "600",
+        fontFamily: "Inter-SemiBold",
+        color: "#f7f7f7",
     },
     header: {
         alignItems: 'center',
@@ -137,6 +208,7 @@ const styles = StyleSheet.create({
     },
     headertext:{
         alignItems: 'center',
+        justifyContent: 'center',
         gap: 6
     },
     

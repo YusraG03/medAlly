@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Link } from 'expo-router';
 
@@ -10,6 +10,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <ScrollView>
       <View style={styles.formGroup}>
         <Text>Do you have any blood pressure problems?</Text>
         <Controller
@@ -127,6 +128,7 @@ export default function App() {
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </Link>
+      </ScrollView>
     </View>
   );
 }
