@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import colors from '../../../assets/colors';
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -150,50 +151,115 @@ export default function SignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.defaultwhite,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
-  form: {
-    marginTop: 20,
+  screenTitle: {
+    alignSelf: "stretch",
+    fontSize: 24,
+    letterSpacing: -0.7,
+    lineHeight: 24,
+    fontWeight: "800",
+    fontFamily: "Inter-ExtraBold",
+    color: "#121419",
+    textAlign: "center",
   },
-  formItem: {
-    marginBottom: 20,
+  contentText: {
+    alignSelf: "stretch",
+    fontSize: 14,
+    letterSpacing: -0.6,
+    lineHeight: 16,
+    fontFamily: "Inter-Regular",
+    color: "#4f4f4f",
+    textAlign: "center",
   },
   formHeader: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    alignSelf: "stretch",
+    fontSize: 14,
+    letterSpacing: -0.1,
+    lineHeight: 20,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: "#121419",
+    textAlign: "left",
   },
-  inputContainer: {
+  form: {
+    flexDirection: 'column',
+    marginTop: '10%',
+    marginHorizontal: '5%',
+    gap: '5%',
+  },
+  formItem: {
+    full: {
+      width: '100%',
+    },
+    half: {
+      width: '49%',
+    },
+  },
+  GenderAndDOB: {
     flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  input: {
-    flex: 1,
-    padding: 10,
-    color: "#7d7d7d",
-    fontSize: 16,
-  },
-  iconContainer: {
-    padding: 10,
+    gap: '2%',
+    width: '100%',
   },
   errorText: {
-    color: 'red',
-    marginTop: 5,
+    fontSize: 12,
+    letterSpacing: 0,
+    lineHeight: 12,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: colors.errorred,
+  },
+  input: {
+    height: 40,
+    borderColor: '#dbdbdb',
+    fontSize: 16,
+    letterSpacing: -0.2,
+    lineHeight: 17,
+    fontFamily: "Inter-Regular",
+    color: "#7d7d7d",
+    textAlign: "left",
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingLeft: 15,
+    marginBottom: 10,
   },
   button: {
-    backgroundColor: 'black',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonDisabled: {
-    backgroundColor: 'lightgrey',
+    borderRadius: 6,
+    backgroundColor: "#121419",
+    borderStyle: "solid",
+    borderColor: "#282f41",
+    borderWidth: 1,
+    flex: 1,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
+    fontSize: 18,
+    letterSpacing: 0,
+    lineHeight: 18,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: "#f7f7f7",
+  },
+  header: {
+    alignItems: 'center',
+    gap: 0,
+  },
+  headertext: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+  },
+  logo: {
+    width: 72,
+    height: 50,
+    resizeMode: 'contain',
+    marginBottom: 20,
   },
 });
