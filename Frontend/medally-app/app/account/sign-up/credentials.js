@@ -1,71 +1,87 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useForm, Controller } from 'react-hook-form';
+import { Ionicons } from '@expo/vector-icons';
 import textStyles from '../../../assets/textStyles';
 import colors from '../../../assets/colors';
 
 export default function App() {
-    const { control, handleSubmit, formState: { errors } } = useForm();
+    const { control, handleSubmit, watch, formState: { errors } } = useForm();
+    const password = watch("password");
+    const [isSecure, setIsSecure] = useState(true);
+    const [isConfirmSecure, setIsConfirmSecure] = useState(true);
+
+    const toggleSecureText = () => {
+        setIsSecure(!isSecure);
+    };
+
+    const toggleConfirmSecureText = () => {
+        setIsConfirmSecure(!isConfirmSecure);
+    };
+
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        return regex.test(password);
+    };
+
     const onSubmit = data => console.log(data);
 
     return (
         <View style={styles.container}>
-             {/* Screen Header*/} 
-            <View style ={styles.header}>
-            <Image 
-                source={require('../../../assets/medAlly-logo/large.png')} 
-                style={styles.logo}
-            />
-            <View style={styles.headertext}>
-                <Text style={styles.screenTitle}>Welcome to MedAlly</Text>
-                <Text style={styles.contentText}>Create your account within minutes to get started.</Text>
+            {/* Screen Header */}
+            <View style={styles.header}>
+                <Image 
+                    source={require('../../../assets/medAlly-logo/large.png')} 
+                    style={styles.logo}
+                />
+                <View style={styles.headertext}>
+                    <Text style={styles.screenTitle}>Welcome to MedAlly</Text>
+                    <Text style={styles.contentText}>Create your account within minutes to get started.</Text>
+                </View>
             </View>
-            </View>
-            
 
             <View style={styles.form}>
-                <View style ={styles.name}>
-                <View style = {styles.formItem.half}>
-                    <Text style={styles.formHeader}>First Name</Text>
-                    <Controller
-                    control={control}
-                    rules={{ required: true, maxLength: 80 }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            style={styles.input}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder="e.g Jean"
+                <View style={styles.name}>
+                    <View style={styles.formItem.half}>
+                        <Text style={styles.formHeader}>First Name</Text>
+                        <Controller
+                            control={control}
+                            rules={{ required: true, maxLength: 80 }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <TextInput
+                                    style={styles.input}
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                    placeholder="e.g Jean"
+                                />
+                            )}
+                            name="firstName"
                         />
-                    )}
-                    name="firstName"
-                    />
-                </View>
-                
-                <View style = {styles.formItem.half}>
-                    <Text style={styles.formHeader}>Last Name</Text>
-                    <Controller
-                        control={control}
-                        rules={{ required: true, maxLength: 100 }}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                         <TextInput
-                             style={styles.input}
-                                onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
-                                placeholder="e.g Dookhit"
-                            />
-                        )}
-                    name="lastName"
-                    />                   
-                </View>
+                    </View>
+                    
+                    <View style={styles.formItem.half}>
+                        <Text style={styles.formHeader}>Last Name</Text>
+                        <Controller
+                            control={control}
+                            rules={{ required: true, maxLength: 100 }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <TextInput
+                                    style={styles.input}
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                    placeholder="e.g Dookhit"
+                                />
+                            )}
+                            name="lastName"
+                        />
+                    </View>
                 </View>
 
-                
-                <View style = {styles.formItem.full}>
+                <View style={styles.formItem.full}>
                     <Text style={styles.formHeader}>Email</Text>
                     <Controller
                         control={control}
@@ -80,35 +96,76 @@ export default function App() {
                                 keyboardType="email-address"
                             />
                         )}
-                    name="email"
-                    />
-                </View>           
-
-                <View style = {styles.formItem.full}>
-                    <Text style={styles.formHeader}>Password</Text>
-                        <Controller
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <TextInput
-                                    style={styles.input}
-                                    onBlur={onBlur}
-                                    onChangeText={onChange}
-                                    value={value}
-                                    placeholder="Password"
-                                    secureTextEntry
-                            />
-                     )}
-                    name="password"
+                        name="email"
                     />
                 </View>
+
+                <View style={styles.formItem.full}>
+                    <Text style={styles.formHeader}>Password</Text>
+                    <View style={styles.inputContainer}>
+                        <Controller
+                            control={control}
+                            rules={{ 
+                                required: 'Password is required', 
+                                validate: value => validatePassword(value) || 'Password should be at least 8 characters long, and should contain at least one capital letter and a numerical character.',
+                            }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <>
+                                    <TextInput
+                                        style={styles.input}
+                                        onBlur={onBlur}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        placeholder="Password"
+                                        secureTextEntry={isSecure}
+                                    />
+                                    <TouchableOpacity onPress={toggleSecureText} style={styles.iconContainer}>
+                                        <Ionicons name={isSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
+                                    </TouchableOpacity>
+                                </>
+                            )}
+                            name="password"
+                        />
+                    </View>
+                    {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+                </View>
+
+                <View style={styles.formItem.full}>
+                    <Text style={styles.formHeader}>Confirm Password</Text>
+                    <View style={styles.inputContainer}>
+                        <Controller
+                            control={control}
+                            rules={{ 
+                                required: 'Confirm Password is required',
+                                validate: value => value === password || 'Passwords do not match',
+                            }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <>
+                                    <TextInput
+                                        style={styles.input}
+                                        onBlur={onBlur}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        placeholder="Confirm Password"
+                                        secureTextEntry={isConfirmSecure}
+                                    />
+                                    <TouchableOpacity onPress={toggleConfirmSecureText} style={styles.iconContainer}>
+                                        <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
+                                    </TouchableOpacity>
+                                </>
+                            )}
+                            name="confirmPassword"
+                        />
+                    </View>
+                    {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
+                </View>
                 
-            <Link href="./general-information" asChild>
-            <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Next</Text>
+                <Link href="./general-information" asChild>
+                    <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+                        <Text style={styles.buttonText}>Next</Text>
                     </TouchableOpacity>
-            </Link>
-            <StatusBar style="auto" />
+                </Link>
+                <StatusBar style="auto" />
             </View>
         </View>
     );
@@ -168,23 +225,31 @@ const styles = StyleSheet.create({
         gap : '2%',
         width: '100%'
     },
-    
-    input: {
-
-        height: 40,
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
         borderColor: '#dbdbdb',
+        borderRadius: 4,
+    },
+    input: {
+        flex: 1,
+        height: 40,
         fontSize: 16,
         letterSpacing: -0.2,
         lineHeight: 17,
         fontFamily: "Inter-Regular",
         color: "#7d7d7d",
-        textAlign: "left",
-        borderWidth: 1,
-        borderRadius: 4,
         paddingLeft: 15,
-        marginBottom: 10
+        marginBottom: 10,
     },
-
+    iconContainer: {
+        padding: 10,
+    },
+    errorText: {
+        color: 'red',
+        marginTop: 5,
+    },
     button: {
         backgroundColor: colors.defaultblack,
         padding: 10,
@@ -210,7 +275,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         gap: 6
     },
-    
     logo: {
         width: 72,
         height: 50,

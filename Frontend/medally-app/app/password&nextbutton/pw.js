@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-
+import { Ionicons } from '@expo/vector-icons'; // Importing the icon library from Expo
+import { useNavigation } from '@react-navigation/native'; // Importing the navigation hook
+import { Link } from 'expo-router';
 const SignUp = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -11,16 +11,24 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSecure, setIsSecure] = useState(true);
   const [isConfirmSecure, setIsConfirmSecure] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Using the navigation hook
 
   const validatePassword = (password) => {
+    // Regular expression to validate:
+    // - At least one uppercase letter
+    // - At least one numeric character
+    // - Minimum 8 characters in length
     const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
     return regex.test(password);
   };
 
   const isFormValid = () => {
     return (
+      firstName &&
+      lastName &&
+      email &&
       validatePassword(password) &&
       password === confirmPassword
     );
@@ -34,14 +42,9 @@ const SignUp = () => {
     setIsConfirmSecure(!isConfirmSecure);
   };
 
-  const handleNextPage = () => {
-    if (isFormValid()) {
-      navigation.goBack(); // Ensure this route exists in your navigation setup
-    }
-  };
-
   return (
     <View style={styles.container}>
+      {/* Password Input Fields */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -74,28 +77,19 @@ const SignUp = () => {
       {password !== confirmPassword && confirmPassword.length > 0 && (
         <Text style={styles.errorText}>Passwords do not match.</Text>
       )}
-      <TouchableOpacity
-        style={[styles.button, !isFormValid() && styles.buttonDisabled]}
-        onPress={handleNextPage}
-        disabled={!isFormValid()}
-      >
-        <Text style={styles.buttonText}>Next Page</Text>
-      </TouchableOpacity>
-      <Text>Pressing next page will only take you back :D</Text>
-    </View>
-  );
-};
+      {/* Next Page Button */}
+         <Link href="/general-information" style={[styles.link, !isFormValid() && styles.linkDisabled]}>
+         <Text style={styles.buttonText}>Next Page</Text>
+       </Link>
+     </View>
+   );
+ };
+      
+  
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -104,6 +98,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
     marginBottom: 10,
   },
+  input: {
+    flex: 1,
+    padding: 10,
+  },
   iconContainer: {
     padding: 10,
   },
@@ -111,21 +109,31 @@ const styles = StyleSheet.create({
     color: 'red',
     marginTop: 5,
   },
-  button: {
+  formButton: {
     borderRadius: 6,
-    backgroundColor: '#000',
+    backgroundColor: '#cecece',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
     paddingVertical: 10,
-    marginTop: 20,
   },
-  buttonDisabled: {
+  nextButtonDisabled: {
     backgroundColor: 'lightgrey',
   },
-  buttonText: {
-    fontSize: 16,
-    color: '#fff',
+  nextButtonActive: {
+    backgroundColor: 'black',
+  },
+  nextButtonHovered: {
+    backgroundColor: 'grey',
+  },
+  logIn: {
+    fontSize: 18,
+    letterSpacing: 0,
+    lineHeight: 18,
+    fontWeight: '600',
+    fontFamily: 'Inter-SemiBold',
+    color: '#7d7d7d',
+    textAlign: 'left',
   },
 });
-
-export default SignUp;
