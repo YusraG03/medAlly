@@ -51,7 +51,7 @@ export default function SignUp() {
     } else {
       setConfirmPasswordError('');
     }
-    setIsValid(valid);
+    setIsValid(valid && password && confirmPassword);
   };
 
   return (
@@ -102,7 +102,7 @@ export default function SignUp() {
               <Ionicons name={isSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
             </TouchableOpacity>
           </View>
-          {passwordError && password ? (
+          {passwordError ? (
             <Text style={styles.errorText}>{passwordError}</Text>
           ) : null}
         </View>
@@ -121,27 +121,19 @@ export default function SignUp() {
               <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
             </TouchableOpacity>
           </View>
-          {confirmPasswordError && confirmPassword ? (
+          {confirmPasswordError ? (
             <Text style={styles.errorText}>{confirmPasswordError}</Text>
           ) : null}
         </View>
 
-        {isValid ? (
-          <Link href="/account/sign-up/general-information">
-            <TouchableOpacity
-              style={[styles.button]}
-            >
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-          </Link>
-        ) : (
+        <Link href="/account/sign-up/general-information">
           <TouchableOpacity
-            style={[styles.button, styles.buttonDisabled]}
-            disabled={true}
+            style={[styles.button, !isValid && styles.buttonDisabled]}
+            disabled={!isValid}
           >
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>
-        )}
+        </Link>
       </View>
     </View>
   );
