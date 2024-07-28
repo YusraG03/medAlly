@@ -1,284 +1,198 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import textStyles from '../../../assets/textStyles';
-import colors from '../../../assets/colors';
+import { Link } from 'expo-router';
 
-export default function App() {
-    const { control, handleSubmit, watch, formState: { errors } } = useForm();
-    const password = watch("password");
-    const [isSecure, setIsSecure] = useState(true);
-    const [isConfirmSecure, setIsConfirmSecure] = useState(true);
+export default function SignUp() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSecure, setIsSecure] = useState(true);
+  const [isConfirmSecure, setIsConfirmSecure] = useState(true);
+  const [isValid, setIsValid] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-    const toggleSecureText = () => {
-        setIsSecure(!isSecure);
-    };
+  useEffect(() => {
+    validateForm();
+  }, [firstName, lastName, email, password, confirmPassword]);
 
-    const toggleConfirmSecureText = () => {
-        setIsConfirmSecure(!isConfirmSecure);
-    };
+  const toggleSecureText = () => {
+    setIsSecure(!isSecure);
+  };
 
-    const validatePassword = (password) => {
-        const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-        return regex.test(password);
-    };
+  const toggleConfirmSecureText = () => {
+    setIsConfirmSecure(!isConfirmSecure);
+  };
 
-    const onSubmit = data => console.log(data);
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return regex.test(password);
+  };
 
-    return (
-        <View style={styles.container}>
-            {/* Screen Header */}
-            <View style={styles.header}>
-                <Image 
-                    source={require('../../../assets/medAlly-logo/large.png')} 
-                    style={styles.logo}
-                />
-                <View style={styles.headertext}>
-                    <Text style={styles.screenTitle}>Welcome to MedAlly</Text>
-                    <Text style={styles.contentText}>Create your account within minutes to get started.</Text>
-                </View>
-            </View>
+  const validateForm = () => {
+    let valid = true;
+    if (!firstName || !lastName || !email) {
+      valid = false;
+    }
+    if (password && !validatePassword(password)) {
+      setPasswordError(
+        'Password should be at least 8 characters long, and should contain at least one capital letter and a numerical character.'
+      );
+      valid = false;
+    } else {
+      setPasswordError('');
+    }
+    if (confirmPassword && password !== confirmPassword) {
+      setConfirmPasswordError('Passwords do not match.');
+      valid = false;
+    } else {
+      setConfirmPasswordError('');
+    }
+    setIsValid(valid);
+  };
 
-            <View style={styles.form}>
-                <View style={styles.name}>
-                    <View style={styles.formItem.half}>
-                        <Text style={styles.formHeader}>First Name</Text>
-                        <Controller
-                            control={control}
-                            rules={{ required: true, maxLength: 80 }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <TextInput
-                                    style={styles.input}
-                                    onBlur={onBlur}
-                                    onChangeText={onChange}
-                                    value={value}
-                                    placeholder="e.g Jean"
-                                />
-                            )}
-                            name="firstName"
-                        />
-                    </View>
-                    
-                    <View style={styles.formItem.half}>
-                        <Text style={styles.formHeader}>Last Name</Text>
-                        <Controller
-                            control={control}
-                            rules={{ required: true, maxLength: 100 }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <TextInput
-                                    style={styles.input}
-                                    onBlur={onBlur}
-                                    onChangeText={onChange}
-                                    value={value}
-                                    placeholder="e.g Dookhit"
-                                />
-                            )}
-                            name="lastName"
-                        />
-                    </View>
-                </View>
-
-                <View style={styles.formItem.full}>
-                    <Text style={styles.formHeader}>Email</Text>
-                    <Controller
-                        control={control}
-                        rules={{ required: true, pattern: /^\S+@\S+$/i }}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                            <TextInput
-                                style={styles.input}
-                                onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
-                                placeholder="user@email.com"
-                                keyboardType="email-address"
-                            />
-                        )}
-                        name="email"
-                    />
-                </View>
-
-                <View style={styles.formItem.full}>
-                    <Text style={styles.formHeader}>Password</Text>
-                    <View style={styles.inputContainer}>
-                        <Controller
-                            control={control}
-                            rules={{ 
-                                required: 'Password is required', 
-                                validate: value => validatePassword(value) || 'Password should be at least 8 characters long, and should contain at least one capital letter and a numerical character.',
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <>
-                                    <TextInput
-                                        style={styles.input}
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value}
-                                        placeholder="Password"
-                                        secureTextEntry={isSecure}
-                                    />
-                                    <TouchableOpacity onPress={toggleSecureText} style={styles.iconContainer}>
-                                        <Ionicons name={isSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
-                                    </TouchableOpacity>
-                                </>
-                            )}
-                            name="password"
-                        />
-                    </View>
-                    {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
-                </View>
-
-                <View style={styles.formItem.full}>
-                    <Text style={styles.formHeader}>Confirm Password</Text>
-                    <View style={styles.inputContainer}>
-                        <Controller
-                            control={control}
-                            rules={{ 
-                                required: 'Confirm Password is required',
-                                validate: value => value === password || 'Passwords do not match',
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <>
-                                    <TextInput
-                                        style={styles.input}
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value}
-                                        placeholder="Confirm Password"
-                                        secureTextEntry={isConfirmSecure}
-                                    />
-                                    <TouchableOpacity onPress={toggleConfirmSecureText} style={styles.iconContainer}>
-                                        <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
-                                    </TouchableOpacity>
-                                </>
-                            )}
-                            name="confirmPassword"
-                        />
-                    </View>
-                    {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
-                </View>
-                
-                <Link href="./general-information" asChild>
-                    <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-                        <Text style={styles.buttonText}>Next</Text>
-                    </TouchableOpacity>
-                </Link>
-                <StatusBar style="auto" />
-            </View>
+  return (
+    <View style={styles.container}>
+      <View style={styles.form}>
+        <View style={styles.formItem}>
+          <Text style={styles.formHeader}>First Name</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFirstName(text.trim())}
+            value={firstName}
+            placeholder="First Name"
+          />
         </View>
-    );
+
+        <View style={styles.formItem}>
+          <Text style={styles.formHeader}>Last Name</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => setLastName(text.trim())}
+            value={lastName}
+            placeholder="Last Name"
+          />
+        </View>
+
+        <View style={styles.formItem}>
+          <Text style={styles.formHeader}>Email</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => setEmail(text.trim())}
+            value={email}
+            placeholder="Email"
+            keyboardType="email-address"
+          />
+        </View>
+
+        <View style={styles.formItem}>
+          <Text style={styles.formHeader}>Password</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setPassword(text.trim())}
+              value={password}
+              placeholder="Password"
+              secureTextEntry={isSecure}
+            />
+            <TouchableOpacity onPress={toggleSecureText} style={styles.iconContainer}>
+              <Ionicons name={isSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
+            </TouchableOpacity>
+          </View>
+          {passwordError && password ? (
+            <Text style={styles.errorText}>{passwordError}</Text>
+          ) : null}
+        </View>
+
+        <View style={styles.formItem}>
+          <Text style={styles.formHeader}>Confirm Password</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setConfirmPassword(text.trim())}
+              value={confirmPassword}
+              placeholder="Confirm Password"
+              secureTextEntry={isConfirmSecure}
+            />
+            <TouchableOpacity onPress={toggleConfirmSecureText} style={styles.iconContainer}>
+              <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
+            </TouchableOpacity>
+          </View>
+          {confirmPasswordError && confirmPassword ? (
+            <Text style={styles.errorText}>{confirmPasswordError}</Text>
+          ) : null}
+        </View>
+
+        {isValid ? (
+          <Link href="/account/sign-up/general-information">
+            <TouchableOpacity
+              style={[styles.button]}
+            >
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
+          </Link>
+        ) : (
+          <TouchableOpacity
+            style={[styles.button, styles.buttonDisabled]}
+            disabled={true}
+          >
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.defaultwhite,
-        justifyContent: 'center',
-    },
-    screenTitle: {
-        alignSelf: "stretch",
-        fontSize: 24,
-        letterSpacing: -0.7,
-        lineHeight: 24,
-        fontWeight: "800",
-        fontFamily: "Inter-ExtraBold",
-        color: "#121419",
-        textAlign: "center"
-    },
-    contentText: {
-        alignSelf: "stretch",
-        fontSize: 14,
-        letterSpacing: -0.6,
-        lineHeight: 16,
-        fontFamily: "Inter-Regular",
-        color: "#4f4f4f",
-        textAlign: "center"
-    },
-    formHeader: {
-        alignSelf: "stretch",
-        fontSize: 14,
-        letterSpacing: -0.1,
-        lineHeight: 20,
-        fontWeight: "600",
-        fontFamily: "Inter-SemiBold",
-        color: "#121419",
-        textAlign: "left"
-        },
-    form: {
-        flexDirection: 'column',
-        marginTop: '10%',
-        marginHorizontal : '5%',
-        gap: '5%'
-    },
-    formItem:{
-        full:{
-            width: '100%'
-        },
-        half:{
-            width: '49%'
-        }
-    },
-    name:{
-        flexDirection : 'row',
-        gap : '2%',
-        width: '100%'
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#dbdbdb',
-        borderRadius: 4,
-    },
-    input: {
-        flex: 1,
-        height: 40,
-        fontSize: 16,
-        letterSpacing: -0.2,
-        lineHeight: 17,
-        fontFamily: "Inter-Regular",
-        color: "#7d7d7d",
-        paddingLeft: 15,
-        marginBottom: 10,
-    },
-    iconContainer: {
-        padding: 10,
-    },
-    errorText: {
-        color: 'red',
-        marginTop: 5,
-    },
-    button: {
-        backgroundColor: colors.defaultblack,
-        padding: 10,
-        borderRadius: 6,
-        marginTop: 20,
-        width: '100%',
-        alignItems: 'center',
-    },
-    buttonText: {
-        fontSize: 18,
-        letterSpacing: 0,
-        lineHeight: 18,
-        fontWeight: "600",
-        fontFamily: "Inter-SemiBold",
-        color: "#f7f7f7",
-    },
-    header: {
-        alignItems: 'center',
-        gap:0
-    },
-    headertext:{
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 6
-    },
-    logo: {
-        width: 72,
-        height: 50,
-        resizeMode: 'contain',
-        marginBottom: 20,
-    },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  form: {
+    marginTop: 20,
+  },
+  formItem: {
+    marginBottom: 20,
+  },
+  formHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  input: {
+    flex: 1,
+    padding: 10,
+    fontSize: 16,
+  },
+  iconContainer: {
+    padding: 10,
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
+  },
+  button: {
+    backgroundColor: 'black',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonDisabled: {
+    backgroundColor: 'lightgrey',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
 });
