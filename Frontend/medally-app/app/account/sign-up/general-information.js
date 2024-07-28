@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import colors from '../../../assets/colors';
 
 export default function App() {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const router = useRouter();
+
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    // Manually update the form value with the selected date
+    control.setValue('DateOfBirth', currentDate.toLocaleDateString('en-GB'));
+  };
+
+  const showDatepicker = () => {
+    setShow(true);
+  };
 
   const onSubmit = data => {
     console.log(data);
@@ -49,14 +65,26 @@ export default function App() {
               name="DateOfBirth"
               control={control}
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={styles.input}
-                  placeholder="DD/MM/YYYY"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
+              render={({ field: { value } }) => (
+                <View>
+                  <TouchableOpacity onPress={showDatepicker}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="DD/MM/YYYY"
+                      value={value}
+                      editable={false} // Disable direct input
+                    />
+                  </TouchableOpacity>
+                  {show && (
+                    <DateTimePicker
+                      value={date}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={onChange}
+                    />
+                  )}
+                </View>
               )}
             />
             {errors.DateOfBirth && <Text style={styles.errorText}>This field is required.</Text>}
