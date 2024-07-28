@@ -51,7 +51,7 @@ export default function SignUp() {
     } else {
       setConfirmPasswordError('');
     }
-    setIsValid(valid && password && confirmPassword);
+    setIsValid(valid);
   };
 
   return (
@@ -102,7 +102,7 @@ export default function SignUp() {
               <Ionicons name={isSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
             </TouchableOpacity>
           </View>
-          {passwordError ? (
+          {passwordError && password ? (
             <Text style={styles.errorText}>{passwordError}</Text>
           ) : null}
         </View>
@@ -121,19 +121,27 @@ export default function SignUp() {
               <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
             </TouchableOpacity>
           </View>
-          {confirmPasswordError ? (
+          {confirmPasswordError && confirmPassword ? (
             <Text style={styles.errorText}>{confirmPasswordError}</Text>
           ) : null}
         </View>
 
-        <Link href="/account/sign-up/general-information">
+        {isValid ? (
+          <Link href="/account/sign-up/general-information">
+            <TouchableOpacity
+              style={[styles.button]}
+            >
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
+          </Link>
+        ) : (
           <TouchableOpacity
-            style={[styles.button, !isValid && styles.buttonDisabled]}
-            disabled={!isValid}
+            style={[styles.button, styles.buttonDisabled]}
+            disabled={true}
           >
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>
-        </Link>
+        )}
       </View>
     </View>
   );
@@ -165,6 +173,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     padding: 10,
+    color: "#7d7d7d",
     fontSize: 16,
   },
   iconContainer: {
