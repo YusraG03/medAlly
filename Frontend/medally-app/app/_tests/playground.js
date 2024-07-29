@@ -15,7 +15,7 @@ export default function App() {
       <Link style={styles.button} href="./testdatepicker">DatePicker</Link>
       <Link style={styles.button} href="./password&nextbutton/pw">Password Validator</Link>
       <Link style={styles.button} href="../account/sign-up/credentials">Sign Up</Link>
-      <Link style={styles.button} href="../symptomChecker/wsympchecker">Symptom Checker</Link>
+      <Link style={styles.button} href="../symptomChecker/sympchecker">Symptom Checker</Link>
       <StatusBar style="auto" />
     </View>
   );

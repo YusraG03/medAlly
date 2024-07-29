@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat, Bubble, Avatar } from 'react-native-gifted-chat';
-import { Button, View, Text, StyleSheet } from 'react-native';
+import { Button, View, Text, StyleSheet,PixelRatio } from 'react-native';
 import uuid from 'react-native-uuid';
 import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
-import { FontSize, FontFamily, Color } from '../_assets/textStyles';
+import textStyles from '../_assets/textStyles';
+import colors from '../_assets/colors';
 
-import aiAvatar from '../app/_assets/Avatar.png'; // Path to AI avatar
-import userAvatar from '../app/_assets/user-profile-03.png'; // Path to User avatar
+import aiAvatar from '../_assets/Avatar.png'; // Path to AI avatar
+import userAvatar from '../_assets/user-profile-03.png'; // Path to User avatar
 
 const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true });
@@ -69,23 +70,11 @@ export function ChatScreen({ navigation }) {
 
   const CustomMessageText = (props) => {
     const { currentMessage } = props;
-    const textColor = currentMessage.user._id === 1 ? Color.secondaryText : Color.highlightText;
-    const fontFamily = FontFamily.contentText;
-    const fontSize = FontSize.contentText_size;
+    const textColor = currentMessage.user._id === 1 ? colors.secondaryText : colors.highlightText;
 
     return (
       <Markdown
-        style={{
-          body: {
-            marginHorizontal: 10,
-            fontSize,
-            color: textColor,
-            fontFamily,
-            letterSpacing: -0.6,
-            lineHeight: 18,
-          },
-        }}
-      >
+        style={textStyles.contentText.tertiary}>
         {currentMessage.text}
       </Markdown>
     );
@@ -104,12 +93,14 @@ export function ChatScreen({ navigation }) {
   };
 
   const renderAvatar = (props) => {
-    return <Avatar {...props} />;
+    return <Avatar 
+             {...props} 
+             />;
   };
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={styles.title}>Symptom Checker</Text>
+      <Text style={textStyles.screenTitle}>Symptom Checker</Text>
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
@@ -122,25 +113,21 @@ export function ChatScreen({ navigation }) {
         renderAvatar={renderAvatar}
         isTyping={isTyping}
       />
+
       <Button
         title="View History"
-        onPress={() => navigation.navigate('HistoryScreen')}
+        onPress={() => navigation.navigate('historyscreen')}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: FontSize.screenTitle_size,
-    letterSpacing: -0.7,
-    lineHeight: 24,
-    fontWeight: '800',
-    fontFamily: FontFamily.screenTitle,
-    color: Color.defaultBlack,
-    textAlign: 'left',
-    margin: 10,
+  avatar: {
+
   },
 });
+
+
 
 export default ChatScreen;
