@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import colors from '../../../assets/colors';
@@ -34,9 +34,11 @@ export default function SignUp() {
   };
 
   const validateForm = () => {
-    let valid = true;
     if (!firstName || !lastName || !email) {
       valid = false;
+    }
+    else {
+        valid = true
     }
     if (password && !validatePassword(password)) {
       setPasswordError(
@@ -45,18 +47,20 @@ export default function SignUp() {
       valid = false;
     } else {
       setPasswordError('');
+      valid = true;
     }
-    if (confirmPassword && password !== confirmPassword) {
+    if (confirmPassword && (password !== confirmPassword)) {
       setConfirmPasswordError('Passwords do not match.');
       valid = false;
     } else {
       setConfirmPasswordError('');
+      valid = true;
     }
-    setIsValid(valid);
+   setIsValid(isValid)
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.form}>
         <View style={styles.formItem}>
           <Text style={styles.formHeader}>First Name</Text>
@@ -103,7 +107,7 @@ export default function SignUp() {
               <Ionicons name={isSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
             </TouchableOpacity>
           </View>
-          {passwordError && password ? (
+          {passwordError ? (
             <Text style={styles.errorText}>{passwordError}</Text>
           ) : null}
         </View>
@@ -122,144 +126,78 @@ export default function SignUp() {
               <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
             </TouchableOpacity>
           </View>
-          {confirmPasswordError && confirmPassword ? (
+          {confirmPasswordError ? (
             <Text style={styles.errorText}>{confirmPasswordError}</Text>
           ) : null}
         </View>
 
         {isValid ? (
-          <Link href="/account/sign-up/general-information">
-            <TouchableOpacity
-              style={[styles.button]}
-            >
+          <Link href="/account/sign-up/general-information" asChild>
+            <TouchableOpacity style={[styles.button]}>
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
           </Link>
         ) : (
-          <TouchableOpacity
-            style={[styles.button, styles.buttonDisabled]}
-            disabled={true}
-          >
+          <TouchableOpacity style={[styles.button, styles.buttonDisabled]} disabled={true}>
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: colors.defaultwhite,
     justifyContent: 'center',
-    alignContent: 'center',
-  },
-  screenTitle: {
-    alignSelf: "stretch",
-    fontSize: 24,
-    letterSpacing: -0.7,
-    lineHeight: 24,
-    fontWeight: "800",
-    fontFamily: "Inter-ExtraBold",
-    color: "#121419",
-    textAlign: "center",
-  },
-  contentText: {
-    alignSelf: "stretch",
-    fontSize: 14,
-    letterSpacing: -0.6,
-    lineHeight: 16,
-    fontFamily: "Inter-Regular",
-    color: "#4f4f4f",
-    textAlign: "center",
-  },
-  formHeader: {
-    alignSelf: "stretch",
-    fontSize: 14,
-    letterSpacing: -0.1,
-    lineHeight: 20,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: "#121419",
-    textAlign: "left",
+    alignItems: 'center',
+    paddingVertical: 20,
   },
   form: {
-    flexDirection: 'column',
-    marginTop: '10%',
-    marginHorizontal: '5%',
-    gap: '5%',
+    width: '90%',
   },
   formItem: {
-    full: {
-      width: '100%',
-    },
-    half: {
-      width: '49%',
-    },
+    marginBottom: 15,
   },
-  GenderAndDOB: {
+  formHeader: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 5,
+  },
+  inputContainer: {
     flexDirection: 'row',
-    gap: '2%',
-    width: '100%',
-  },
-  errorText: {
-    fontSize: 12,
-    letterSpacing: 0,
-    lineHeight: 12,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: colors.errorred,
+    alignItems: 'center',
   },
   input: {
+    flex: 1,
     height: 40,
     borderColor: '#dbdbdb',
-    fontSize: 16,
-    letterSpacing: -0.2,
-    lineHeight: 17,
-    fontFamily: "Inter-Regular",
-    color: "#7d7d7d",
-    textAlign: "left",
     borderWidth: 1,
     borderRadius: 4,
     paddingLeft: 15,
-    marginBottom: 10,
+  },
+  iconContainer: {
+    marginLeft: 10,
+  },
+  errorText: {
+    fontSize: 12,
+    color: 'red',
+    marginTop: 5,
   },
   button: {
+    backgroundColor: '#00000',
+    paddingVertical: 15,
     borderRadius: 6,
-    backgroundColor: "#121419",
-    borderStyle: "solid",
-    borderColor: "#282f41",
-    borderWidth: 1,
-    flex: 1,
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    alignItems: 'center',
   },
   buttonText: {
+    color: '#f7f7f7',
     fontSize: 18,
-    letterSpacing: 0,
-    lineHeight: 18,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: "#f7f7f7",
+    fontWeight: '600',
   },
-  header: {
-    alignItems: 'center',
-    gap: 0,
-  },
-  headertext: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  logo: {
-    width: 72,
-    height: 50,
-    resizeMode: 'contain',
-    marginBottom: 20,
+  buttonDisabled: {
+    backgroundColor: '#b0b0b0',
   },
 });

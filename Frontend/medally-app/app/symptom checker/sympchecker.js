@@ -5,7 +5,7 @@ import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
 
 // Directly set your API key here
-const OPENAI_API_KEY = 'org-awp2FP9NKCOWoX0cW6iyk875';
+const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with the correct API key
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 export function ChatScreen() {
@@ -20,7 +20,7 @@ export function ChatScreen() {
           { role: 'system', content: 'You are a helpful assistant.' },
           { role: 'user', content: userMessage },
         ],
-        model: 'gpt-4', // Use the correct model name, e.g., 'gpt-4'
+        model: 'gpt-4', // Use the correct model name
       });
 
       const aiMessage = response.choices[0].message.content;
