@@ -1,14 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, View } from 'react-native';
+import Chatbot from './sympcheck2yus'
 
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!helloooo</Text>
-      <Text>Welcome to MedAlly!</Text>
-      <StatusBar style="auto" />
+      <Chatbot />
     </View>
   );
 }

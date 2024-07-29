@@ -6,7 +6,21 @@ import { useForm, Controller } from 'react-hook-form';
 export default function App() {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = data => console.log(data);
-  return (
+  const Rectangle = () => {
+    return (
+      <View style={styles.rectangleView} />);
+      };
+      const styles = StyleSheet.create({
+      rectangleView: {
+      borderRadius: 8,
+      backgroundColor: "#d9d9d9",
+      flex: 1,
+      width: "100%",
+      height: 45
+      }
+      });
+      
+    return (
     <View>
         <View style = {styles.header}>
         <Text style={styles.screenTitle}>Symptom Checker</Text>
