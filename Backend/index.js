@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import firebase from './firebase.js';
+import openaichat from './openai.js';
 
 const app = express();
 const PORT = 3000;
@@ -14,7 +15,7 @@ app.get('/', (req, res) =>
     res.send('Oweiss Gunga');
 });
 
-app.post('/login', async (req, res) => 
+app.post('/login', async (req, res) =>
 {
     const message = await db.signIn(req.body.userCreds);
     res.json({"message": message});s
@@ -115,6 +116,13 @@ app.post('/modifyUserPhysicalHabits', async (req, res) =>
     const message = await db.modifyUserPhysicalHabits(req.body.physicalHabits, req.body.userCreds);
     res.json({"message": message});
 });
+
+app.post('/chat', async(req, res) => 
+    {
+        const { chat } = req.body
+        const message = await openaichat.getChatCompletion(chat);
+        res.json({ "message": message });
+    });
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
