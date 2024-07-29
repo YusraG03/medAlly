@@ -17,7 +17,7 @@ export function ChatScreen() {
       setIsTyping(true);
       const response = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are a helpful assistant.' },
+          { role: 'system', content: 'You are a chatbot within a Medical Mobile Application whose task is to help the user diagnose their disease upon any symptom they provide. You are allowed to ask the user short but related questions as to properly come to a conclusion as to what sickness the user has.' },
           { role: 'user', content: userMessage },
         ],
         model: 'gpt-4', // Use the correct model name
