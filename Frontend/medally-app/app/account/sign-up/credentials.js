@@ -1,203 +1,180 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
-import colors from '../../_assets/colors';
+import React, { useState, useCallback, useEffect } from 'react';
+import { GiftedChat, Bubble, Avatar } from 'react-native-gifted-chat';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import uuid from 'react-native-uuid';
+import OpenAI from 'openai';
+import Markdown from 'react-native-markdown-display';
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
+import textStyles from '../_assets/textStyles';
+import colors from '../_assets/colors';
 
-export default function SignUp() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isSecure, setIsSecure] = useState(true);
-  const [isConfirmSecure, setIsConfirmSecure] = useState(true);
-  const [isValid, setIsValid] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+// Import local images
+import aiAvatar from '../_assets/Avatar.png'; // Path to AI avatar
+import userAvatar from '../_assets/user-profile-03.png'; // Path to User avatar
+
+const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with your API key
+const openai = new OpenAI({ apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true });
+
+export function ChatScreen({ navigation }) {
+  const [messages, setMessages] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
-    validateForm();
-  }, [firstName, lastName, email, password, confirmPassword]);
+    const initialMessage = {
+      _id: uuid.v4(),
+      text: "Hello! Type in what symptoms you are currently experiencing below so we can start with your diagnosis.",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: 'AI Assistant',
+        avatar: aiAvatar,
+      },
+    };
+    setMessages([initialMessage]);
+  }, []);
 
-  const toggleSecureText = () => {
-    setIsSecure(!isSecure);
+  const fetchAIResponse = async (userMessage) => {
+    try {
+      setIsTyping(true);
+      const response = await openai.chat.completions.create({
+        messages: [
+          { role: 'system', content: 'You are a chatbot within a Medical Mobile Application whose task is to help the user diagnose their disease upon any symptom they provide. You are allowed to ask the user short but related questions as to properly come to a conclusion as to what sickness the user has.' },
+          { role: 'user', content: userMessage },
+        ],
+        model: 'gpt-4',
+      });
+
+      const aiMessage = response.choices[0].message.content;
+      const newMessage = {
+        _id: uuid.v4(),
+        text: aiMessage,
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'AI Assistant',
+          avatar: aiAvatar,
+        },
+      };
+
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMessage]));
+    } catch (error) {
+      console.error('Error fetching AI response:', error);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
-  const toggleConfirmSecureText = () => {
-    setIsConfirmSecure(!isConfirmSecure);
+  const onSend = useCallback((messages = []) => {
+    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+    const userMessage = messages[0].text;
+    fetchAIResponse(userMessage);
+  }, []);
+
+  const CustomMessageText = (props) => {
+    const { currentMessage } = props;
+    const textColor = currentMessage.user._id === 1 ? colors.secondaryText : colors.highlightText;
+
+    return (
+      <Markdown
+        style={{
+          body: {
+            marginHorizontal: 10,
+            fontSize: textStyles.contentText.fontSize,
+            color: textColor,
+            fontFamily: textStyles.contentText.fontFamily,
+            letterSpacing: -0.6,
+            lineHeight: 18,
+          },
+        }}
+      >
+        {currentMessage.text}
+      </Markdown>
+    );
   };
 
-  const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return regex.test(password);
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: { backgroundColor: '#dcf8c6' },
+          left: { backgroundColor: '#ffffff' },
+        }}
+        containerStyle={{
+          right: {
+            marginVertical: 5,
+            paddingHorizontal: 10,
+            paddingVertical: 10,
+          },
+          left: {
+            marginVertical: 5,
+            paddingHorizontal: 10,
+            paddingVertical: 10,
+          },
+        }}
+      />
+    );
   };
 
-  const validateForm = () => {
-    if (!firstName || !lastName || !email) {
-      valid = false;
-    }
-    else {
-        valid = true
-    }
-    if (password && !validatePassword(password)) {
-      setPasswordError(
-        'Password should be at least 8 characters long, and should contain at least one capital letter and a numerical character.'
-      );
-      valid = false;
-    } else {
-      setPasswordError('');
-      valid = true;
-    }
-    if (confirmPassword && (password !== confirmPassword)) {
-      setConfirmPasswordError('Passwords do not match.');
-      valid = false;
-    } else {
-      setConfirmPasswordError('');
-      valid = true;
-    }
-   setIsValid(isValid)
+  const renderAvatar = (props) => {
+    const { position } = props;
+    return (
+      <Avatar
+        {...props}
+        containerStyle={{
+          left: { marginLeft: 5 },
+          right: { marginRight: 5 },
+        }}
+        imageStyle={{
+          left: { width: 40, height: 40 },
+          right: { width: 40, height: 40 },
+        }}
+      />
+    );
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.form}>
-        <View style={styles.formItem}>
-          <Text style={styles.formHeader}>First Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => setFirstName(text.trim())}
-            value={firstName}
-            placeholder="First Name"
-          />
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.formHeader}>Last Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => setLastName(text.trim())}
-            value={lastName}
-            placeholder="Last Name"
-          />
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.formHeader}>Email</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => setEmail(text.trim())}
-            value={email}
-            placeholder="Email"
-            keyboardType="email-address"
-          />
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.formHeader}>Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => setPassword(text.trim())}
-              value={password}
-              placeholder="Password"
-              secureTextEntry={isSecure}
-            />
-            <TouchableOpacity onPress={toggleSecureText} style={styles.iconContainer}>
-              <Ionicons name={isSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
-            </TouchableOpacity>
-          </View>
-          {passwordError ? (
-            <Text style={styles.errorText}>{passwordError}</Text>
-          ) : null}
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.formHeader}>Confirm Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => setConfirmPassword(text.trim())}
-              value={confirmPassword}
-              placeholder="Confirm Password"
-              secureTextEntry={isConfirmSecure}
-            />
-            <TouchableOpacity onPress={toggleConfirmSecureText} style={styles.iconContainer}>
-              <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
-            </TouchableOpacity>
-          </View>
-          {confirmPasswordError ? (
-            <Text style={styles.errorText}>{confirmPasswordError}</Text>
-          ) : null}
-        </View>
-
-        {isValid ? (
-          <Link href="./general-information" asChild>
-            <TouchableOpacity style={[styles.button]}>
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-          </Link>
-        ) : (
-          <TouchableOpacity style={[styles.button, styles.buttonDisabled]} disabled={true}>
-            <Text style={styles.buttonText}>Next</Text>
-          </TouchableOpacity>
-        )}
+    <View style={{ flex: 1 }}>
+      <View style={styles.header}>
+        <Text style={textStyles.screenTitle}>Symptom Checker</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('historyscreen')}>
+          <Ionicons name="time-outline" size={24} color="black" style={styles.historyIcon} />
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: 1,
+          avatar: userAvatar, // Use the local avatar for the user
+        }}
+        renderMessageText={CustomMessageText}
+        renderBubble={renderBubble}
+        renderAvatar={renderAvatar}
+        isTyping={isTyping}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: colors.defaultwhite,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
-  },
-  form: {
-    width: '90%',
-  },
-  formItem: {
-    marginBottom: 15,
-  },
-  formHeader: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 5,
-  },
-  inputContainer: {
+  header: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
-  input: {
-    flex: 1,
+  historyIcon: {
+    marginRight: 10,
+  },
+  avatar: {
+    width: 40,
     height: 40,
-    borderColor: '#dbdbdb',
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingLeft: 15,
-  },
-  iconContainer: {
-    marginLeft: 10,
-  },
-  errorText: {
-    fontSize: 12,
-    color: 'red',
-    marginTop: 5,
-  },
-  button: {
-    backgroundColor: '#00000',
-    paddingVertical: 15,
-    borderRadius: 6,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#f7f7f7',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  buttonDisabled: {
-    backgroundColor: '#b0b0b0',
+    borderRadius: 20,
   },
 });
+
+export default ChatScreen;
