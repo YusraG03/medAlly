@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+{/*import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import 'react-native-gesture-handler';
 import * as React from 'react';
@@ -49,3 +49,4 @@ export default function App() {
     </NavigationContainer>
   );
 }
+*/}
