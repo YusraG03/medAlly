@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat, Bubble, Avatar } from 'react-native-gifted-chat';
-import { Button, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import uuid from 'react-native-uuid';
 import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import textStyles from '../_assets/textStyles';
 import colors from '../_assets/colors';
 
@@ -134,7 +135,12 @@ export function ChatScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={textStyles.screenTitle}>Symptom Checker</Text>
+      <View style={styles.header}>
+        <Text style={textStyles.screenTitle}>Symptom Checker</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('historyscreen')}>
+          <Ionicons name="time-outline" size={24} color="black" style={styles.historyIcon} />
+        </TouchableOpacity>
+      </View>
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
@@ -147,15 +153,23 @@ export function ChatScreen({ navigation }) {
         renderAvatar={renderAvatar}
         isTyping={isTyping}
       />
-      <Button
-        title="View History"
-        onPress={() => navigation.navigate('historyscreen')}
-      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  historyIcon: {
+    marginRight: 10,
+  },
   avatar: {
     width: 40,
     height: 40,
