@@ -8,8 +8,8 @@ import textStyles from '../_assets/textStyles';
 import colors from '../_assets/colors';
 
 // Import local images
-import aiAvatar from '../app/_assets/Avatar.png'; // Path to AI avatar
-import userAvatar from '../app/_assets/user-profile-03.png'; // Path to User avatar
+import aiAvatar from '../_assets/Avatar.png'; // Path to AI avatar
+import userAvatar from '../_assets/user-profile-03.png'; // Path to User avatar
 
 const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with your API key
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true });
