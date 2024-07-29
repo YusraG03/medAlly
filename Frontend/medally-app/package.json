@@ -28,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.52.1",
     "react-native": "0.74.3",
+    "react-native-config": "^1.5.2",
     "react-native-dotenv": "^3.4.11",
     "react-native-gifted-chat": "^2.4.0",
     "react-native-markdown-display": "^7.0.2",
