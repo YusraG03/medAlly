@@ -6,10 +6,11 @@ import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
 import { FontSize, FontFamily, Color } from '../_assets/textStyles';
 
+// Import local images
 import aiAvatar from '../app/_assets/Avatar.png'; // Path to AI avatar
 import userAvatar from '../app/_assets/user-profile-03.png'; // Path to User avatar
 
-const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; 
+const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with your API key
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
 export function ChatScreen({ navigation }) {
@@ -99,6 +100,16 @@ export function ChatScreen({ navigation }) {
           right: { backgroundColor: '#dcf8c6' },
           left: { backgroundColor: '#ffffff' },
         }}
+        containerStyle={{
+          right: {
+            paddingHorizontal: 10, 
+            paddingVertical: 5, 
+          },
+          left: {
+            paddingHorizontal: 10, 
+            paddingVertical: 5, 
+          },
+        }}
       />
     );
   };
@@ -115,7 +126,7 @@ export function ChatScreen({ navigation }) {
         onSend={(messages) => onSend(messages)}
         user={{
           _id: 1,
-          avatar: userAvatar,
+          avatar: userAvatar, // Use the local avatar for the user
         }}
         renderMessageText={CustomMessageText}
         renderBubble={renderBubble}
