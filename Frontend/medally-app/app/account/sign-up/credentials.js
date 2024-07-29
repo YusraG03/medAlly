@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import colors from '../../../assets/colors';
+import colors from '../../_assets/colors';
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState('');

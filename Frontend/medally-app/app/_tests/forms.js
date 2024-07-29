@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useForm } from 'react-hook-form';
-import textStyles from '../../assets/textStyles';
-import colors from '../../assets/colors';
+import textStyles from '../_assets/textStyles';
+import colors from '../_assets/colors';
 
 export default function App() {
     const { register, handleSubmit, formState: { errors } } = useForm();

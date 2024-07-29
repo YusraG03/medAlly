@@ -6,7 +6,7 @@ import Markdown from 'react-native-markdown-display';
 
 // Directly set your API key here
 const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with the correct API key
-const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: OPENAI_API_KEY,  dangerouslyAllowBrowser: true  });
 
 export function ChatScreen() {
   const [messages, setMessages] = useState([]);

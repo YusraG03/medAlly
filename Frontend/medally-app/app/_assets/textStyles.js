@@ -22,6 +22,7 @@ const textStyles = StyleSheet.create({
     color: colors.defaultblack,
   },
   containerActionText: {
+    color : colors.defaultwhite,
     fontSize: 18,
     letterSpacing: 0,
     lineHeight: 18,
@@ -43,13 +44,22 @@ const textStyles = StyleSheet.create({
     lineHeight: 18,
     fontFamily: 'Inter-Regular',
     textAlign: 'left',
+
+    secondary:{
+      color : colors.secondarytext
+    },
+    tertiary: {
+      color : colors.secondarytext
+    }
   },
+
   smallParagraphTitle: {
     fontSize: 14,
     letterSpacing: -0.6,
     lineHeight: 16,
     fontFamily: 'Inter-Regular',
     textAlign: 'left',
+    colors : colors.defaultblack
   },
 });
 

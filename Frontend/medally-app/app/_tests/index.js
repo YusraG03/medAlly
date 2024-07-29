@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import textStyles from '../../assets/textStyles';
-import colors from '../../assets/colors';
+import textStyles from '../_assets/textStyles';
+import colors from '../_assets/colors';
 
 export default function App() {
 
@@ -15,7 +15,7 @@ export default function App() {
       <Link style={styles.button} href="./testdatepicker">DatePicker</Link>
       <Link style={styles.button} href="../password&nextbutton/pw">Password Validator</Link>
       <Link style={styles.button} href="../account/sign-up/credentials">Sign Up</Link>
-      <Link style={styles.button} href="../symptom checker/sympchecker">Symptom Checker</Link>
+      <Link style={styles.button} href="../symptom checker/wsympchecker">Symptom Checker</Link>
       <StatusBar style="auto" />
     </View>
   );
@@ -25,8 +25,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    gap: '10%'
+    flexDirection :'column',
+    gap :'2%'
   },
+
   button: {
     color: colors.defaultwhite,
     backgroundColor: colors.defaultblack,
@@ -39,15 +41,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginHorizontal: '5%'
   },
+  
   header: {
     flexDirection: 'column',
     padding: 30,
     alignItems: 'center',
     gap: 6,    
-  },
-  logo: {
-    width: 100, // Adjust as needed
-    height: 100, // Adjust as needed
-    resizeMode: 'contain', // This will maintain the aspect ratio
   },
 });

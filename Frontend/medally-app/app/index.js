@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
-import textStyles from '../assets/textStyles';
-import colors from '../assets/colors';
+import textStyles from './_assets/textStyles';
+import colors from './_assets/colors';
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -12,15 +12,15 @@ export default function App() {
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
-        'Inter-Thin': require('../fonts/Inter-Thin.ttf'),
-        'Inter-ExtraLight': require('../fonts/Inter-ExtraLight.ttf'),
-        'Inter-Light': require('../fonts/Inter-Light.ttf'),
-        'Inter-Regular': require('../fonts/Inter-Regular.ttf'),
-        'Inter-Medium': require('../fonts/Inter-Medium.ttf'),
-        'Inter-SemiBold': require('../fonts/Inter-SemiBold.ttf'),
-        'Inter-Bold': require('../fonts/Inter-Bold.ttf'),
-        'Inter-ExtraBold': require('../fonts/Inter-ExtraBold.ttf'),
-        'Inter-Black': require('../fonts/Inter-Black.ttf'),
+        'Inter-Thin': require('./_assets/fonts/Inter-Thin.ttf'),
+        'Inter-ExtraLight': require('./_assets/fonts/Inter-ExtraLight.ttf'),
+        'Inter-Light': require('./_assets/fonts/Inter-Light.ttf'),
+        'Inter-Regular': require('./_assets/fonts/Inter-Regular.ttf'),
+        'Inter-Medium': require('./_assets/fonts/Inter-Medium.ttf'),
+        'Inter-SemiBold': require('./_assets/fonts/Inter-SemiBold.ttf'),
+        'Inter-Bold': require('./_assets/fonts/Inter-Bold.ttf'),
+        'Inter-ExtraBold': require('./_assets/fonts/Inter-ExtraBold.ttf'),
+        'Inter-Black': require('./_assets/fonts/Inter-Black.ttf'),
       });
       setFontsLoaded(true);
     }
@@ -34,7 +34,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Image 
-      source={require('../assets/medAlly-logo/large.png')} style={styles.logo}/>
+      source={require('./_assets/logo.png')} style={styles.logo}/>
       <View style={styles.header}>
         <Text style={textStyles.screenTitle}>Medally Testing HQ</Text>
         <Text style={textStyles.contentText}>Select your path!</Text>

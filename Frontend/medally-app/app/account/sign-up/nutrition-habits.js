@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import colors from '../../../assets/colors';
+import colors from '../../_assets/colors';
 
 export default function NutritionHabits() {
   const { control, handleSubmit, formState: { errors } } = useForm();
@@ -12,7 +12,7 @@ export default function NutritionHabits() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image 
-          source={require('../../../assets/medAlly-logo/large.png')} 
+          source={require('../../_assets/logo.png')} 
           style={styles.logo}
         />
         <View style={styles.headertext}>
