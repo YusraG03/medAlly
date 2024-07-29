@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat, Bubble, Avatar } from 'react-native-gifted-chat';
-import { Button, View, Text, StyleSheet,PixelRatio } from 'react-native';
+import { Button, View, Text, StyleSheet } from 'react-native';
 import uuid from 'react-native-uuid';
 import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
@@ -75,7 +75,17 @@ export function ChatScreen({ navigation }) {
 
     return (
       <Markdown
-        style={textStyles.contentText.tertiary}>
+        style={{
+          body: {
+            marginHorizontal: 10,
+            fontSize: textStyles.contentText.fontSize,
+            color: textColor,
+            fontFamily: textStyles.contentText.fontFamily,
+            letterSpacing: -0.6,
+            lineHeight: 18,
+          },
+        }}
+      >
         {currentMessage.text}
       </Markdown>
     );
@@ -91,12 +101,14 @@ export function ChatScreen({ navigation }) {
         }}
         containerStyle={{
           right: {
-            paddingHorizontal: 10, 
-            paddingVertical: 5, 
+            marginVertical: 5,
+            paddingHorizontal: 10,
+            paddingVertical: 10,
           },
           left: {
-            paddingHorizontal: 10, 
-            paddingVertical: 5, 
+            marginVertical: 5,
+            paddingHorizontal: 10,
+            paddingVertical: 10,
           },
         }}
       />
@@ -104,9 +116,20 @@ export function ChatScreen({ navigation }) {
   };
 
   const renderAvatar = (props) => {
-    return <Avatar 
-             {...props} 
-             />;
+    const { position } = props;
+    return (
+      <Avatar
+        {...props}
+        containerStyle={{
+          left: { marginLeft: 5 },
+          right: { marginRight: 5 },
+        }}
+        imageStyle={{
+          left: { width: 40, height: 40 },
+          right: { width: 40, height: 40 },
+        }}
+      />
+    );
   };
 
   return (
@@ -124,7 +147,6 @@ export function ChatScreen({ navigation }) {
         renderAvatar={renderAvatar}
         isTyping={isTyping}
       />
-
       <Button
         title="View History"
         onPress={() => navigation.navigate('historyscreen')}
@@ -135,10 +157,10 @@ export function ChatScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   avatar: {
-
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
 });
-
-
 
 export default ChatScreen;
