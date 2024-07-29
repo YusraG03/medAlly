@@ -1,17 +1,34 @@
-import React, { useState, useCallback } from 'react';
-import { GiftedChat } from 'react-native-gifted-chat';
+import React, { useState, useCallback, useEffect } from 'react';
+import { GiftedChat, Bubble, Avatar } from 'react-native-gifted-chat';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import uuid from 'react-native-uuid';
 import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
+import { FontSize, FontFamily, Color } from '../_assets/textStyles';
 
-// Directly set your API key here
-const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with the correct API key
+import aiAvatar from '../app/_assets/Avatar.png'; // Path to AI avatar
+import userAvatar from '../app/_assets/user-profile-03.png'; // Path to User avatar
+
+const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
 export function ChatScreen({ navigation }) {
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    const initialMessage = {
+      _id: uuid.v4(),
+      text: "Hello! Type in what symptoms you are currently experiencing below so we can start with your diagnosis.",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: 'AI Assistant',
+        avatar: aiAvatar,
+      },
+    };
+    setMessages([initialMessage]);
+  }, []);
 
   const fetchAIResponse = async (userMessage) => {
     try {
@@ -26,13 +43,13 @@ export function ChatScreen({ navigation }) {
 
       const aiMessage = response.choices[0].message.content;
       const newMessage = {
-        _id: uuid.v4(), // Generate a random ID
+        _id: uuid.v4(),
         text: aiMessage,
         createdAt: new Date(),
         user: {
           _id: 2,
           name: 'AI Assistant',
-          avatar: 'https://placeimg.com/140/140/any',
+          avatar: aiAvatar,
         },
       };
 
@@ -52,21 +69,42 @@ export function ChatScreen({ navigation }) {
 
   const CustomMessageText = (props) => {
     const { currentMessage } = props;
-    const textColor = currentMessage.user._id === 1 ? 'white' : 'black';
+    const textColor = currentMessage.user._id === 1 ? Color.secondaryText : Color.highlightText;
+    const fontFamily = FontFamily.contentText;
+    const fontSize = FontSize.contentText_size;
 
     return (
       <Markdown
         style={{
           body: {
             marginHorizontal: 10,
-            fontSize: 16,
+            fontSize,
             color: textColor,
+            fontFamily,
+            letterSpacing: -0.6,
+            lineHeight: 18,
           },
         }}
       >
         {currentMessage.text}
       </Markdown>
     );
+  };
+
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: { backgroundColor: '#dcf8c6' },
+          left: { backgroundColor: '#ffffff' },
+        }}
+      />
+    );
+  };
+
+  const renderAvatar = (props) => {
+    return <Avatar {...props} />;
   };
 
   return (
@@ -77,13 +115,16 @@ export function ChatScreen({ navigation }) {
         onSend={(messages) => onSend(messages)}
         user={{
           _id: 1,
+          avatar: userAvatar,
         }}
         renderMessageText={CustomMessageText}
+        renderBubble={renderBubble}
+        renderAvatar={renderAvatar}
         isTyping={isTyping}
       />
       <Button
         title="View History"
-        onPress={() => navigation.navigate('History')}
+        onPress={() => navigation.navigate('HistoryScreen')}
       />
     </View>
   );
@@ -91,12 +132,12 @@ export function ChatScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 24,
+    fontSize: FontSize.screenTitle_size,
     letterSpacing: -0.7,
     lineHeight: 24,
     fontWeight: '800',
-    fontFamily: 'screenTitle', // Ensure you have the appropriate font family
-    color: 'defaultBlack',
+    fontFamily: FontFamily.screenTitle,
+    color: Color.defaultBlack,
     textAlign: 'left',
     margin: 10,
   },
