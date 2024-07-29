@@ -40,6 +40,7 @@ export default function App() {
         <Text style={textStyles.contentText}>Select your path!</Text>
       </View>
       <Link style={styles.button} href="./_tests/playground">Enter the Playground</Link>
+      <Link style={styles.button} href="./account/sign-up/credentials">Sign Up</Link>
       <StatusBar style="auto" />
     </View>
   );

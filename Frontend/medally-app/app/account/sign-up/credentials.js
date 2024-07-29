@@ -132,7 +132,7 @@ export default function SignUp() {
         </View>
 
         {isValid ? (
-          <Link href="/account/sign-up/general-information" asChild>
+          <Link href="./general-information" asChild>
             <TouchableOpacity style={[styles.button]}>
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
