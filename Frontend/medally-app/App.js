@@ -1,11 +1,19 @@
-import { StyleSheet, View } from 'react-native';
-import Chatbot from './sympcheck2yus'
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import SymptomScreen from './symptomChecker'; 
+import HistoryScreen from './symptomChecker';
 
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Chatbot />
+      <Text>Open up App.js to start working on your app!helloooo</Text>
+      <Text>Welcome to MedAlly!</Text>
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -21,3 +29,23 @@ const styles = StyleSheet.create({
     fontSize : 20,
   }
 });
+const Stack = createStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen 
+          name="Chat" 
+          component={ChatScreen} 
+          options={{ title: 'Symptom Checker' }} 
+        />
+        <Stack.Screen 
+          name="History" 
+          component={HistoryScreen} 
+          options={{ title: 'Disease History' }} 
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
