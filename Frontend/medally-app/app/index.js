@@ -39,8 +39,7 @@ export default function App() {
         <Text style={textStyles.screenTitle}>Medally Testing HQ</Text>
         <Text style={textStyles.contentText}>Select your path!</Text>
       </View>
-      <Link style={styles.button} href="./initialtesting">Enter the Playground</Link>
-      <Link style={styles.button} href="../account/sign-up/credentials">Sign Up</Link>
+      <Link style={styles.button} href="./_tests/playground">Enter the Playground</Link>
       <StatusBar style="auto" />
     </View>
   );
