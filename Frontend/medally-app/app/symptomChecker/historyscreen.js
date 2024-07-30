@@ -1,60 +1,77 @@
-import React from 'react';
-import { Text, StyleSheet, View, Image, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { Text, StyleSheet, View, Image, ScrollView, TouchableOpacity, LayoutAnimation, UIManager, Platform } from 'react-native';
 import colors from '../_assets/colors';
 import textStyles from '../_assets/textStyles';
 
+// Enable LayoutAnimation on Android
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 export function HistoryScreen() {
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleExpand = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpanded(!expanded);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={textStyles.screenTitle}>Disease History</Text>
       <View style={styles.Card}>
-        <View id= 'header' style={[styles.upperInfo, styles.upperInfoFlexBox]}>
+        <TouchableOpacity onPress={toggleExpand} style={[styles.upperInfo, styles.upperInfoFlexBox]}>
           <View style={styles.diseaseTime}>
             <Text style={styles.diseaseName}>Common Cold</Text>
             <Text style={styles.timeStamp}>21 July 2024, 8:35pm</Text>
           </View>
-          <Image style={styles.chevronDownIcon} resizeMode="cover" source={require('../_assets/chevron-down.png')} />
-        </View>
+          <Image
+            style={styles.chevronDownIcon}
+            resizeMode="cover"
+            source={expanded ? require('../_assets/chevron-up.png') : require('../_assets/chevron-down.png')}
+          />
+        </TouchableOpacity>
         
-        <View id= 'description-treament-expansion' style={styles.expandedInformation}>
-          <View style = {styles.section}>
-          <Text style={textStyles.smallParagraphTitle}>Description</Text>
-          <Text style={[styles.descriptionText, styles.painRelieversTypo]}>
-            According to your recent lack of vitamin C in your nutrition a common cold is a highly accurate guess. Symptoms such as body aches, blocked nose, sneezing and a general discomfort in the nasal area can also happen.
-          </Text>
+        {expanded && (
+          <View style={styles.expandedInformation}>
+            <View style={styles.section}>
+              <Text style={textStyles.smallParagraphTitle}>Description</Text>
+              <Text style={[styles.descriptionText, styles.painRelieversTypo]}>
+                According to your recent lack of vitamin C in your nutrition a common cold is a highly accurate guess. Symptoms such as body aches, blocked nose, sneezing and a general discomfort in the nasal area can also happen.
+              </Text>
+            </View>
+            
+            <View style={styles.section}>
+              <Text style={textStyles.smallParagraphTitle}>Treatments</Text>
+              <ScrollView horizontal={true} style={styles.treatmentCarousel} showsHorizontalScrollIndicator={false}>
+                <View style={styles.treatmentCard}>
+                  <Text style={[styles.painRelievers, styles.painRelieversTypo]}>Pain Relievers</Text>
+                  <Text style={[styles.reduceFeverHeadaches, styles.treatmentsTypo]}>
+                    Reduce fever, headaches, and body aches. Common options are ibuprofen and acetaminophen.
+                  </Text>
+                </View>
+                <View style={styles.treatmentCard}>
+                  <Text style={[styles.painRelievers, styles.painRelieversTypo]}>Hydration</Text>
+                  <Text style={[styles.reduceFeverHeadaches, styles.treatmentsTypo]}>
+                    Drink plenty of fluids such as water, herbal tea, and broth to stay hydrated and help thin mucus.
+                  </Text>
+                </View>
+                <View style={styles.treatmentCard}>
+                  <Text style={[styles.painRelievers, styles.painRelieversTypo]}>Vitamin C</Text>
+                  <Text style={[styles.reduceFeverHeadaches, styles.treatmentsTypo]}>
+                    May slightly reduce the duration and severity of colds. Found in citrus fruits and supplements.
+                  </Text>
+                </View>
+                <View style={styles.treatmentCard}>
+                  <Text style={[styles.painRelievers, styles.painRelieversTypo]}>Avoid Close Contact</Text>
+                  <Text style={[styles.reduceFeverHeadaches, styles.treatmentsTypo]}>
+                    Stay away from individuals who are sick to prevent catching the virus yourself or infecting others.
+                  </Text>
+                </View>
+              </ScrollView>
+            </View>
           </View>
-        
-          <View style = {styles.section}>
-          <Text style={textStyles.smallParagraphTitle}>Treatments</Text>
-          <ScrollView horizontal={true} style={styles.treatmentCarousel} showsHorizontalScrollIndicator={false}>
-            <View style={styles.treatmentCard}>
-              <Text style={[styles.painRelievers, styles.painRelieversTypo]}>Pain Relievers</Text>
-              <Text style={[styles.reduceFeverHeadaches, styles.treatmentsTypo]}>
-                Reduce fever, headaches, and body aches. Common options are ibuprofen and acetaminophen.
-              </Text>
-            </View>
-            <View style={styles.treatmentCard}>
-              <Text style={[styles.painRelievers, styles.painRelieversTypo]}>Hydration</Text>
-              <Text style={[styles.reduceFeverHeadaches, styles.treatmentsTypo]}>
-                Drink plenty of fluids such as water, herbal tea, and broth to stay hydrated and help thin mucus.
-              </Text>
-            </View>
-            <View style={styles.treatmentCard}>
-              <Text style={[styles.painRelievers, styles.painRelieversTypo]}>Vitamin C</Text>
-              <Text style={[styles.reduceFeverHeadaches, styles.treatmentsTypo]}>
-                May slightly reduce the duration and severity of colds. Found in citrus fruits and supplements.
-              </Text>
-            </View>
-            <View style={styles.treatmentCard}>
-              <Text style={[styles.painRelievers, styles.painRelieversTypo]}>Avoid Close Contact</Text>
-              <Text style={[styles.reduceFeverHeadaches, styles.treatmentsTypo]}>
-                Stay away from individuals who are sick to prevent catching the virus yourself or infecting others.
-              </Text>
-            </View>
-          </ScrollView>
-          </View>
-          
-        </View>
+        )}
       </View>
     </View>
   );
@@ -65,8 +82,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.defaultwhite,
     padding: 16,
-    marginTop : '2%',
-    gap: '2%'
+    marginTop: '2%',
+    gap: '2%',
   },
   title: {
     fontSize: 24,
@@ -74,18 +91,18 @@ const styles = StyleSheet.create({
     color: colors.primary,
     marginBottom: 16,
   },
-  section:{
-    flexDirection : 'column',
-    gap:10
+  section: {
+    flexDirection: 'column',
+    gap: 10,
   },
   placeholder: {
     fontSize: 16,
     color: colors.secondary,
     marginBottom: 16,
   },
-  treamentSection:{
+  treatmentSection: {
     flexDirection: 'column',
-    gap: 10
+    gap: 10,
   },
   upperInfoFlexBox: {
     alignItems: 'center',
@@ -183,13 +200,12 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
-    shadowColor: 'rgba(0, 0, 0, 0.13)'
+    shadowColor: 'rgba(0, 0, 0, 0.13)',
   },
   expandedInformation: {
     width: '100%',
-    gap : 10
+    gap: 10,
   },
-
   Card: {
     borderRadius: 10,
     overflow: 'hidden',
@@ -206,8 +222,8 @@ const styles = StyleSheet.create({
       height: 4,
     },
     shadowColor: 'rgba(0, 0, 0, 0.13)',
-    flexDirection : 'column',
-    gap : 11
+    flexDirection: 'column',
+    gap: 11,
   },
 });
 
