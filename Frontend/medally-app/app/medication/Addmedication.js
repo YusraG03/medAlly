@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   input: {
-    borderColor: '#dbdbdb',
+    backgroundColor: '#000000',
+    borderColor: 'gray',
     borderWidth: 1,
     padding: 8,
     borderRadius: 5,
