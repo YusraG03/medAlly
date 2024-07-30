@@ -1,9 +1,9 @@
 export const colors = {
     labelsprimary: '#000000',
-    defaultBlack: '#121419',
+    defaultblack: '#121419',
     tertiarytext: '#7D7D7D',
-    secondaryText:'#4B4B4B',
-    highlightText: '#262626',
+    secondarytext:'#4B4B4B',
+    highlighttext: '#262626',
     defaultwhite: '#F7F7F7',
     inactivegrey: '#CECECE',
     errorred: '#C20A0A',
