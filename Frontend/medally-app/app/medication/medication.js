@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { format, addDays, startOfWeek } from 'date-fns';
+import { Link } from 'expo-router';
 
 // Weeklycalendar Component
 const Weeklycalendar = ({ onDatePress }) => {
@@ -33,7 +34,7 @@ const Weeklycalendar = ({ onDatePress }) => {
 };
 
 // MedicationScreen Component
-export default function MedicationScreen({ navigation }) {
+export default function MedicationScreen() {
   const [medications, setMedications] = useState([]);
 
   const handleDatePress = (date) => {
@@ -54,9 +55,9 @@ export default function MedicationScreen({ navigation }) {
           keyExtractor={(item) => item.id}
         />
       )}
-      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddMedication')}>
+      <Link href="/medication/Addmedication" style={styles.addButton}>
         <Ionicons name="add-circle" size={60} color="black" />
-      </TouchableOpacity>
+      </Link>
     </View>
   );
 }

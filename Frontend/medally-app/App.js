@@ -2,10 +2,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SymptomScreen from './symptomChecker'; 
 import MedicationScreen from './app/medication/medication';
+import Addmedication from './app/medication/Addmedication';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +25,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="MedicationScreen">
         <Stack.Screen name="MedicationScreen" component={MedicationScreen} />
+        <Stack.Screen name="Addmedication" component={Addmedication} />
       </Stack.Navigator>
     </NavigationContainer>
   );
