@@ -165,6 +165,9 @@ export function ChatScreen({ navigation }) {
             style={styles.logo}
           />
         </Pressable>
+        <Pressable onPress={() => router.push('./resultScreen')}>
+          <Text>R</Text>
+        </Pressable>
       </View>
 
       <GiftedChat
