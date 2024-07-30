@@ -87,28 +87,27 @@ const styles = StyleSheet.create({
   },
   dayOfWeek: {
     fontSize: 16,
-    font: "Inter-ExtraLight",
+    fontWeight: 'bold',
     marginBottom: 4, // Adds space below day name
   },
   dateContainer: {
-    width: 30,
-    height: 30,
-    borderRadius: 20,
+    width: 40, // Change this value to adjust the circle size
+    height: 40, // Change this value to adjust the circle size
+    borderRadius: 20, // Ensure this is half of the width/height for a perfect circle
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent', // Default background color
+    borderWidth: 2, // Add border width if needed
+    borderColor: 'black', // Add border color if needed
   },
   date: {
     fontSize: 16,
-    color: "#000",
-    fontWeight: 'bold',
-
   },
   today: {
-    backgroundColor: 'black',
+    backgroundColor: 'black', // Circle color for today
   },
   todayDate: {
-    color: 'white',
+    color: 'white', // Text color inside the circle
   },
   screenContainer: {
     flex: 1,
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    bottom: 20,
-    right: 20,
+    bottom: 16,
+    right: 16,
   },
 });

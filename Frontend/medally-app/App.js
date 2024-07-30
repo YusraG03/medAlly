@@ -8,7 +8,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SymptomScreen from './symptomChecker'; 
 import MedicationScreen from './app/medication/medication';
 import Addmedication from './app/medication/Addmedication';
+import AppNavigator from './navigation/AppNavigator';
 
+export default function App() {
+  return <AppNavigator />;
+}
 const Stack = createStackNavigator();
 
 export default function App() {
