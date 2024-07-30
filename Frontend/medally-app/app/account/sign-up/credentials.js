@@ -4,6 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { router, Link } from 'expo-router';
 import colors from '../../_assets/colors';
 
+const eyeOpenIcon = require('../../_assets/eye-open.png');
+const eyeClosedIcon = require('../../_assets/eye-closed.png');
+
 export default function SignUp() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -115,7 +118,8 @@ export default function SignUp() {
               secureTextEntry={isSecure}
             />
             <TouchableOpacity onPress={toggleSecureText} style={styles.iconContainer}>
-              <Ionicons name={isSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
+            <Image source={isSecure ? eyeClosedIcon : eyeOpenIcon} style={styles.eyeIcon} />
+            <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
             </TouchableOpacity>
           </View>
           {passwordError ? (
@@ -149,7 +153,7 @@ export default function SignUp() {
             onPress={() => router.push('./general-information')}
             disabled={!isValid}
         >
-            <Text style={isValid ? styles.buttonText.enabled : styles.buttonText.disabled}>Next</Text>
+            <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Next</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -157,6 +161,7 @@ export default function SignUp() {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: colors.defaultwhite,
@@ -182,6 +187,10 @@ const styles = StyleSheet.create({
     color: "#4f4f4f",
     textAlign: "center",
   },
+  inputContainer:{
+    flexDirection : 'row',
+    alignItems : 'center'
+  },
   formHeader: {
     alignSelf: "stretch",
     fontSize: 14,
@@ -196,7 +205,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: '10%',
     marginHorizontal: '5%',
-    gap: '5%',
+    gap: '2%',
   },
   formItem: {
     full: {
@@ -250,6 +259,8 @@ const styles = StyleSheet.create({
   disabledButton:{
     borderRadius: 6,
     backgroundColor: "#cecece",
+    borderStyle: "solid",
+    borderColor: colors.secondarytext,
     flex: 1,
     width: "100%",
     flexDirection: "row",
@@ -264,13 +275,17 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     fontWeight: "600",
     fontFamily: "Inter-SemiBold",
-    enabled:{
-      color: colors.defaultwhite
-    },
-    disabled:{
-      color: colors.defaultblack
-    }
+    color: colors.defaultwhite
   },
+  disabledButtonText:{
+    fontSize: 18,
+    letterSpacing: 0,
+    lineHeight: 18,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: colors.defaultblack
+  },
+
   header: {
     alignItems: 'center',
     gap: 0,
@@ -280,6 +295,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
   },
+
+  eyeIcon:{
+    width: 24,
+    height: 24,
+
+  },
+
   logo: {
     width: 72,
     height: 50,
