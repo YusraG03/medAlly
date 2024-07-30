@@ -26,14 +26,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    flexDirection :'column',
-    gap :'2%'
+    flexDirection: 'column',
+    gap: 16 // Use a valid unit like pixels
   },
-
+  
   button: {
     color: colors.defaultwhite,
     backgroundColor: colors.defaultblack,
-    font: textStyles.containerActionText,
     borderColor: '#282f41',
     borderRadius: 6,
     borderWidth: 2,
@@ -47,6 +46,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 30,
     alignItems: 'center',
-    gap: 6,    
+    gap: 6 // Use a valid unit like pixels
   },
 });
