@@ -5,8 +5,9 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SymptomScreen from './symptomChecker'; 
-import HistoryScreen from './symptomChecker';
+import MedicationScreen from './app/medication/medication';
 
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
@@ -17,7 +18,16 @@ export default function App() {
     </View>
   );
 }
-
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="MedicationScreen">
+        <Stack.Screen name="MedicationScreen" component={MedicationScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
