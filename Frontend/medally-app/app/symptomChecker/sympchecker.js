@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { GiftedChat, Bubble, Avatar } from 'react-native-gifted-chat';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { GiftedChat, Bubble, Avatar, InputToolbar, Send } from 'react-native-gifted-chat';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import uuid from 'react-native-uuid';
 import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
@@ -8,10 +8,14 @@ import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import textStyles from '../_assets/textStyles';
 import colors from '../_assets/colors';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 // Import local images
 import aiAvatar from '../_assets/Avatar.png'; // Path to AI avatar
 import userAvatar from '../_assets/user-profile-03.png'; // Path to User avatar
 
+//loading API KEY (please link to backend later)
 const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with your API key
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
@@ -23,7 +27,6 @@ export function ChatScreen({ navigation }) {
     const initialMessage = {
       _id: uuid.v4(),
       text: "Hello! Type in what symptoms you are currently experiencing below so we can start with your diagnosis.",
-      createdAt: new Date(),
       user: {
         _id: 2,
         name: 'AI Assistant',
@@ -41,14 +44,13 @@ export function ChatScreen({ navigation }) {
           { role: 'system', content: 'You are a chatbot within a Medical Mobile Application whose task is to help the user diagnose their disease upon any symptom they provide. You are allowed to ask the user short but related questions as to properly come to a conclusion as to what sickness the user has.' },
           { role: 'user', content: userMessage },
         ],
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
       });
 
       const aiMessage = response.choices[0].message.content;
       const newMessage = {
         _id: uuid.v4(),
         text: aiMessage,
-        createdAt: new Date(),
         user: {
           _id: 2,
           name: 'AI Assistant',
@@ -97,19 +99,16 @@ export function ChatScreen({ navigation }) {
       <Bubble
         {...props}
         wrapperStyle={{
-          right: { backgroundColor: '#dcf8c6' },
-          left: { backgroundColor: '#ffffff' },
+          //can this be removed? please check :p
+          right: { backgroundColor: colors.defaultwhite },
+          left: { backgroundColor: colors.defaultwhite },
         }}
         containerStyle={{
           right: {
-            marginVertical: 5,
-            paddingHorizontal: 10,
-            paddingVertical: 10,
+            marginVertical: 0,
           },
           left: {
-            marginVertical: 5,
-            paddingHorizontal: 10,
-            paddingVertical: 10,
+            marginVertical: 0,
           },
         }}
       />
@@ -122,25 +121,54 @@ export function ChatScreen({ navigation }) {
       <Avatar
         {...props}
         containerStyle={{
-          left: { marginLeft: 5 },
-          right: { marginRight: 5 },
+          left: { marginVertical: 0},
+          right: { marginVertical: 0},
         }}
         imageStyle={{
-          left: { width: 40, height: 40 },
-          right: { width: 40, height: 40 },
+          left: { width: 25, height: 25 },
+          right: { width: 25, height: 25 },
         }}
       />
     );
   };
 
+  const renderInputToolbar = (props) => {
+    return (
+      <View style = {styles.chatbar}>
+              <InputToolbar
+        {...props}
+        containerStyle={styles.inputToolbar}
+      />
+      </View>
+    );
+  };
+
+  const renderSend = (props) => {
+    return (
+      <Send {...props}>
+        <View style={styles.sendingContainer}>
+        <Image 
+            source={require('../_assets/send-01.png')} 
+            style={styles.logo}
+          />
+        </View>
+      </Send>
+    );
+  };
+
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={textStyles.screenTitle}>Symptom Checker</Text>
         <TouchableOpacity onPress={() => navigation.navigate('historyscreen')}>
-          <Ionicons name="time-outline" size={24} color="black" style={styles.historyIcon} />
+          <Image 
+            source={require('../_assets/clock-forward.png')} 
+            style={styles.logo}
+          />
         </TouchableOpacity>
       </View>
+      
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
@@ -152,6 +180,9 @@ export function ChatScreen({ navigation }) {
         renderBubble={renderBubble}
         renderAvatar={renderAvatar}
         isTyping={isTyping}
+        showUserAvatar = {true}
+        renderInputToolbar={renderInputToolbar}
+        renderSend={renderSend}
       />
     </View>
   );
@@ -164,17 +195,48 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    backgroundColor: colors.defaultwhite,
+    marginTop: '2%',
+    marginHorizontal: '2.5%',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: colors.defaultwhite,
+    flexDirection: 'column'
   },
   historyIcon: {
     marginRight: 10,
   },
+  
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 25,
+    height: 25,
   },
+  logo: {
+    width: 25,
+    height: 25,
+    justifyContent: 'center'
+  },
+
+  chatbar:{
+    marginHorizontal: '2.5%',
+    borderColor : colors.inactivegrey
+  },
+
+  inputToolbar: {
+    shadowColor: "rgba(0, 0, 0, 0.13)",
+    shadowOffset: {
+      width: 5,
+      height: 4
+    },
+    shadowRadius: 20,
+    shadowOpacity: 1,
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    paddingHorizontal: '1%',
+    borderColor : colors.inactivegrey,
+    borderWidth: 1
+    },
 });
 
 export default ChatScreen;
