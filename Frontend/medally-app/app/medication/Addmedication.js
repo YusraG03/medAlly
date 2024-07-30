@@ -43,10 +43,21 @@ export default function AddMedicationScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.screenTitle}>Add a medication</Text>
       <Text style={styles.label}>Name</Text>
-      <TextInput style={styles.input} value={name} onChangeText={setName} />
+      <TextInput
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+        placeholder="Type a message.."
+      />
 
       <Text style={styles.label}>Dosage</Text>
-      <TextInput style={styles.input} value={dosage} onChangeText={setDosage} keyboardType="numeric" />
+      <TextInput
+        style={styles.input}
+        value={dosage}
+        onChangeText={setDosage}
+        keyboardType="numeric"
+        placeholder="...mg"
+      />
 
       <Text style={styles.label}>Duration</Text>
       <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
@@ -72,7 +83,12 @@ export default function AddMedicationScreen() {
       )}
 
       <Text style={styles.label}>Cause</Text>
-      <TextInput style={styles.input} value={cause} onChangeText={setCause} />
+      <TextInput
+        style={styles.input}
+        value={cause}
+        onChangeText={setCause}
+        placeholder="Type a message.."
+      />
 
       <Text style={styles.label}>Reminders</Text>
       <Picker selectedValue={reminder} onValueChange={(itemValue) => setReminder(itemValue)}>
@@ -112,19 +128,22 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   input: {
-    borderColor: 'gray',
+    borderColor: '#dbdbdb',
     borderWidth: 1,
     padding: 8,
     borderRadius: 5,
     marginVertical: 8,
+    height: 40,
   },
   dateText: {
     fontSize: 16,
     padding: 8,
-    borderColor: 'gray',
+    borderColor: '#dbdbdb',
     borderWidth: 1,
     borderRadius: 5,
     marginVertical: 8,
+    height: 40,
+    textAlignVertical: 'center',
   },
   addButton: {
     backgroundColor: '#121419',
