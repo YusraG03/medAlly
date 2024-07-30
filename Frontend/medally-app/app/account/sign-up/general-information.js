@@ -249,5 +249,5 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: 'contain',
     marginBottom: 20,
-  },
+  }
 });
