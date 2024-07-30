@@ -59,7 +59,7 @@ const textStyles = StyleSheet.create({
     lineHeight: 16,
     fontFamily: 'Inter-Regular',
     textAlign: 'left',
-    colors : colors.defaultblack
+    colors : colors.inactivegrey
   },
 });
 

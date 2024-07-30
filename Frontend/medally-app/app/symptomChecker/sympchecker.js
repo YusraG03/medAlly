@@ -1,15 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat, Bubble, Avatar, InputToolbar, Send } from 'react-native-gifted-chat';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
 import uuid from 'react-native-uuid';
 import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import textStyles from '../_assets/textStyles';
+import { router, Link } from 'expo-router';
 import colors from '../_assets/colors';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Import local images
 import aiAvatar from '../_assets/Avatar.png'; // Path to AI avatar
@@ -105,10 +102,10 @@ export function ChatScreen({ navigation }) {
         }}
         containerStyle={{
           right: {
-            marginVertical: 0,
+            margin: 0,
           },
           left: {
-            marginVertical: 0,
+            margin: 0,
           },
         }}
       />
@@ -121,8 +118,8 @@ export function ChatScreen({ navigation }) {
       <Avatar
         {...props}
         containerStyle={{
-          left: { marginVertical: 0},
-          right: { marginVertical: 0},
+          left: { margin: 0},
+          right: { margin: 0 },
         }}
         imageStyle={{
           left: { width: 25, height: 25 },
@@ -134,41 +131,42 @@ export function ChatScreen({ navigation }) {
 
   const renderInputToolbar = (props) => {
     return (
-      <View style = {styles.chatbar}>
-              <InputToolbar
+      <InputToolbar
         {...props}
         containerStyle={styles.inputToolbar}
       />
-      </View>
     );
+  };
+
+  const renderDay = () => {
+    return null;
   };
 
   const renderSend = (props) => {
     return (
       <Send {...props}>
         <View style={styles.sendingContainer}>
-        <Image 
+          <Image 
             source={require('../_assets/send-01.png')} 
-            style={styles.logo}
+            style={styles.sendlogo}
           />
         </View>
       </Send>
     );
   };
 
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={textStyles.screenTitle}>Symptom Checker</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('historyscreen')}>
-          <Image 
+        <Pressable onPress={() => router.push('./historyscreen')}>
+        <Image 
             source={require('../_assets/clock-forward.png')} 
             style={styles.logo}
           />
-        </TouchableOpacity>
+        </Pressable>
       </View>
-      
+
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
@@ -180,8 +178,9 @@ export function ChatScreen({ navigation }) {
         renderBubble={renderBubble}
         renderAvatar={renderAvatar}
         isTyping={isTyping}
-        showUserAvatar = {true}
+        showUserAvatar={true}
         renderInputToolbar={renderInputToolbar}
+        renderDay={renderDay}
         renderSend={renderSend}
       />
     </View>
@@ -202,12 +201,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.defaultwhite,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    justifyContent: 'flex-end', // Ensure content is aligned to the bottom
   },
   historyIcon: {
     marginRight: 10,
   },
-  
   avatar: {
     width: 25,
     height: 25,
@@ -215,28 +214,22 @@ const styles = StyleSheet.create({
   logo: {
     width: 25,
     height: 25,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-
-  chatbar:{
-    marginHorizontal: '2.5%',
-    borderColor : colors.inactivegrey
+  sendlogo: {
+    width: 25,
+    height: 25,
   },
-
   inputToolbar: {
-    shadowColor: "rgba(0, 0, 0, 0.13)",
-    shadowOffset: {
-      width: 5,
-      height: 4
-    },
-    shadowRadius: 20,
-    shadowOpacity: 1,
-    borderRadius: 10,
-    backgroundColor: "#fff",
-    paddingHorizontal: '1%',
     borderColor : colors.inactivegrey,
-    borderWidth: 1
-    },
+    justifyContent: 'center',
+    paddingHorizontal : '2.5%',
+    fontFamily : textStyles.contentText.fontFamily
+  },
+  
+  sendingContainer: {
+    borderWidth: 0,
+  },
 });
 
 export default ChatScreen;
