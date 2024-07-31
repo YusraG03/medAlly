@@ -1,63 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image,  Text, View, TextInput, TouchableOpacity, ScrollView, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { router, Link } from 'expo-router';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Platform, ScrollView, Pressable } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
 
-const eyeOpenIcon = require('../../_assets/eye-open.png');
-const eyeClosedIcon = require('../../_assets/eye-closed.png');
+export default function GeneralInformation() {
+  const router = useRouter();
 
-export default function SignUp() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isSecure, setIsSecure] = useState(true);
-  const [isConfirmSecure, setIsConfirmSecure] = useState(true);
+  const [gender, setGender] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
   const [isValid, setIsValid] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     validateForm();
-  }, [firstName, lastName, email, password, confirmPassword]);
+  }, [gender, dateOfBirth, weight, height]);
 
-  const toggleSecureText = () => {
-    setIsSecure(!isSecure);
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    setDateOfBirth(currentDate.toLocaleDateString('en-GB'));
   };
 
-  const toggleConfirmSecureText = () => {
-    setIsConfirmSecure(!isConfirmSecure);
-  };
-
-  const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return regex.test(password);
+  const showDatepicker = () => {
+    setShow(true);
   };
 
   const validateForm = () => {
-    let valid = true;
-    
-    if (!firstName || !lastName || !email) {
-      valid = false;
+    const isGenderValid = gender !== '';
+    const isDateOfBirthValid = dateOfBirth !== '';
+    const isWeightValid = weight !== '' && !isNaN(weight);
+    const isHeightValid = height !== '' && !isNaN(height);
+
+    setIsValid(isGenderValid && isDateOfBirthValid && isWeightValid && isHeightValid);
+  };
+
+  const onSubmit = () => {
+    if (isValid) {
+      console.log({ gender, dateOfBirth, weight, height });
+      router.push('./physical-habits');
     }
-    
-    if (!password || !validatePassword(password)) {
-      setPasswordError('Password should be at least 8 characters long, and should contain at least one capital letter and a numerical character.');
-      valid = false;
-    } else {
-      setPasswordError('');
-    }
-    
-    if (password !== confirmPassword) {
-      setConfirmPasswordError('Passwords do not match.');
-      valid = false;
-    } else {
-      setConfirmPasswordError('');
-    }
-    
-    setIsValid(valid);
   };
 
   return (
@@ -73,87 +61,66 @@ export default function SignUp() {
         </View>
       </View>
       <View style={styles.form}>
-        <View style = {styles.names}>
-        <View style={styles.formItem.half}>
-          <Text style={styles.formHeader}>First Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => setFirstName(text.trim())}
-            value={firstName}
-            placeholder="First Name"
-          />
-        </View>
-
-        <View style={styles.formItem.half}>
-          <Text style={styles.formHeader}>Last Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => setLastName(text.trim())}
-            value={lastName}
-            placeholder="Last Name"
-          />
-        </View>
-        </View>
-        
-
-        <View style={styles.formItem}>
-          <Text style={styles.formHeader}>Email</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => setEmail(text.trim())}
-            value={email}
-            placeholder="Email"
-            keyboardType="email-address"
-          />
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.formHeader}>Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
+        <View style={styles.GenderAndDOB}>
+          <View style={styles.formItem.half}>
+            <Text style={styles.formHeader}>Gender:</Text>
+            <Picker
+              selectedValue={gender}
+              onValueChange={(itemValue) => setGender(itemValue)}
               style={styles.input}
-              onChangeText={(text) => setPassword(text.trim())}
-              value={password}
-              placeholder="Password"
-              secureTextEntry={isSecure}
-            />
-            <TouchableOpacity onPress={toggleSecureText} style={styles.iconContainer}>
-            <Image source={isSecure ? eyeClosedIcon : eyeOpenIcon} style={styles.eyeIcon} />
-            <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
-            </TouchableOpacity>
+            >
+              <Picker.Item label="Select Gender" value="" />
+              <Picker.Item label="Male" value="Male" />
+              <Picker.Item label="Female" value="Female" />
+            </Picker>
           </View>
-          {passwordError ? (
-            <Text style={styles.errorText}>{passwordError}</Text>
-          ) : null}
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.formHeader}>Confirm Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => setConfirmPassword(text.trim())}
-              value={confirmPassword}
-              placeholder="Confirm Password"
-              secureTextEntry={isConfirmSecure}
-            />
-            <TouchableOpacity onPress={toggleConfirmSecureText} style={styles.iconContainer}>
-              <Ionicons name={isConfirmSecure ? 'eye-off' : 'eye'} size={20} color="#000" />
+          <View style={styles.formItem.half}>
+            <Text style={styles.formHeader}>Date of Birth:</Text>
+            <TouchableOpacity onPress={showDatepicker}>
+              <TextInput
+                style={styles.input}
+                placeholder="DD/MM/YYYY"
+                value={dateOfBirth}
+                editable={false}
+              />
             </TouchableOpacity>
+            {show && (
+              <DateTimePicker
+                value={date}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
+            )}
           </View>
-          {confirmPasswordError ? (
-            <Text style={styles.errorText}>{confirmPasswordError}</Text>
-          ) : null}
         </View>
-
-
-
+        <View style={styles.formItem.full}>
+          <Text style={styles.formHeader}>Weight(kg):</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="000"
+            onChangeText={setWeight}
+            value={weight}
+            keyboardType="numeric"
+          />
+        </View>
+        <View style={styles.formItem.full}>
+          <Text style={styles.formHeader}>Height(cm):</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="000"
+            onChangeText={setHeight}
+            value={height}
+            keyboardType="numeric"
+          />
+        </View>
         <Pressable 
-            style={[styles.button, !isValid && styles.disabledButton]} 
-            onPress={() => router.push('./general-information')}
-            disabled={!isValid}
+          style={[styles.button, !isValid && styles.disabledButton]} 
+          onPress={onSubmit}
+          disabled={!isValid}
         >
-            <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Next</Text>
+          <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Next</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -161,87 +128,9 @@ export default function SignUp() {
 }
 
 const styles = StyleSheet.create({
-
-  container: {
-    flex: 1,
-    backgroundColor: colors.defaultwhite,
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
-  screenTitle: {
-    alignSelf: "stretch",
-    fontSize: 24,
-    letterSpacing: -0.7,
-    lineHeight: 24,
-    fontWeight: "800",
-    fontFamily: "Inter-ExtraBold",
-    color: "#121419",
-    textAlign: "center",
-  },
-  contentText: {
-    alignSelf: "stretch",
-    fontSize: 14,
-    letterSpacing: -0.6,
-    lineHeight: 16,
-    fontFamily: "Inter-Regular",
-    color: "#4f4f4f",
-    textAlign: "center",
-  },
-  inputContainer:{
-    flexDirection : 'row',
-    alignItems : 'center'
-  },
-  formHeader: {
-    alignSelf: "stretch",
-    fontSize: 14,
-    letterSpacing: -0.1,
-    lineHeight: 20,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: "#121419",
-    textAlign: "left",
-  },
-  form: {
-    flexDirection: 'column',
-    marginTop: '10%',
-    marginHorizontal: '5%',
-    gap: '2%',
-  },
-  formItem: {
-    full: {
-      width: '100%',
-    },
-    half: {
-      width: '49%',
-    },
-  },
-  names: {
-    flexDirection: 'row',
-    gap: '2%',
-    width: '100%',
-  },
-  errorText: {
-    fontSize: 12,
-    letterSpacing: 0,
-    lineHeight: 12,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: colors.errorred,
-  },
-  input: {
-    height: 40,
-    borderColor: '#dbdbdb',
-    fontSize: 16,
-    letterSpacing: -0.2,
-    lineHeight: 17,
-    fontFamily: "Inter-Regular",
-    color: "#7d7d7d",
-    textAlign: "left",
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingLeft: 15,
-    marginBottom: 10,
-  },
+  // ... (keep the existing styles)
+  
+  // Add these new styles
   button: {
     borderRadius: 6,
     backgroundColor: "#121419",
@@ -256,18 +145,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
-  disabledButton:{
+  disabledButton: {
     borderRadius: 6,
+    borderWidth: 0,
     backgroundColor: "#cecece",
-    borderStyle: "solid",
-    borderColor: colors.secondarytext,
     flex: 1,
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
-    paddingVertical:20
+    paddingVertical: 20
   },
   buttonText: {
     fontSize: 18,
@@ -277,7 +165,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-SemiBold",
     color: colors.defaultwhite
   },
-  disabledButtonText:{
+  disabledButtonText: {
     fontSize: 18,
     letterSpacing: 0,
     lineHeight: 18,
@@ -285,27 +173,4 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-SemiBold",
     color: colors.defaultblack
   },
-
-  header: {
-    alignItems: 'center',
-    gap: 0,
-  },
-  headertext: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-
-  eyeIcon:{
-    width: 24,
-    height: 24,
-
-  },
-
-  logo: {
-    width: 72,
-    height: 50,
-    resizeMode: 'contain',
-    marginBottom: 20,
-  }
 });
