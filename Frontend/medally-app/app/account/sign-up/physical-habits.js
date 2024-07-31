@@ -5,7 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
 
-export default function App() {
+export default function physicalHabits() {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const router = useRouter();
 

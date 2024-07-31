@@ -12,6 +12,7 @@ export default function App() {
         <Text style={textStyles.screenTitle}>Playground</Text>
       </View>
       <Link style={styles.button} href="./forms">Forms</Link>
+      <Link style={styles.button} href="./camera">Camera</Link>
       <Link style={styles.button} href="./testdatepicker">DatePicker</Link>
       <Link style={styles.button} href="./password&nextbutton/pw">Password Validator</Link>
       <Link style={styles.button} href="../account/sign-up/credentials">Sign Up</Link>
