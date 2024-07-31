@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
 
-export default function App() {
+export default function generalInformation() {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const router = useRouter();
 
