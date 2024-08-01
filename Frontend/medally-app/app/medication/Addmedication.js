@@ -23,7 +23,6 @@ export default function Addmedication() {
   const [isToDateSelected, setIsToDateSelected] = useState(false);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
   
-
   const reminders = [
     { label: 'None', value: 'none' },
     { label: 'At time specified', value: 'at_time' },
@@ -56,22 +55,7 @@ export default function Addmedication() {
     setIsTimeSelected(true);
   };
 
-  const handleAddMedicine = () => {
-    const newMedication = {
-      id: Date.now().toString(),
-      name,
-      dosage,
-      fromDate,
-      toDate,
-      time,
-      cause,
-      reminder,
-    };
-    
-    // Navigate back to the MedicationScreen and pass the new medication as a parameter
-    navigation.navigate('Medication', { newMedication });
-  };
-
+ 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.screenTitle}>Add a medication</Text>

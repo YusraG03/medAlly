@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Pedometer } from 'expo-sensors';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Placeholder for user credentials and general information
 const userCredentials = {
@@ -55,7 +56,12 @@ export default function DashboardScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome, {userCredentials.name}!</Text>
+      <View style={styles.header}>
+        <Text style={styles.welcomeText}>Welcome, {userCredentials.name}!</Text>
+        <TouchableOpacity style={styles.notificationIcon}>
+          <Ionicons name="notifications-outline" size={30} color="#121419" />
+        </TouchableOpacity>
+      </View>
       <Text style={styles.subText}>How do you feel today?</Text>
       <View style={styles.stepsContainer}>
         <Text style={styles.stepsText}>{stepCount}</Text>
@@ -66,10 +72,12 @@ export default function DashboardScreen() {
           <Text style={styles.metricTitle}>Calories</Text>
           <Text style={styles.metricValue}>{caloriesBurned} Kcal</Text>
         </View>
+        <View style={styles.verticalBar} />
         <View style={styles.metricBox}>
           <Text style={styles.metricTitle}>Distance</Text>
           <Text style={styles.metricValue}>{distanceWalked} km</Text>
         </View>
+        <View style={styles.verticalBar} />
         <View style={styles.metricBox}>
           <Text style={styles.metricTitle}>Progress</Text>
           <Text style={styles.metricValue}>{progress}%</Text>
@@ -96,20 +104,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
   },
+  notificationIcon: {
+    padding: 10,
+  },
+  verticalBar: {
+    width: 2, 
+    height: 60, 
+    backgroundColor: '#7D7D7D',
+    marginHorizontal: 10, 
+  },
   subText: {
     fontSize: 18,
     color: '#555',
-    marginVertical: 10,
+    marginVertical: -30,
   },
   stepsContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 20,
+    marginVertical: 50,
   },
   stepsText: {
     fontSize: 48,

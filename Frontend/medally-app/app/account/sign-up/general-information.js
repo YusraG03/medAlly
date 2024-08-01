@@ -25,11 +25,6 @@ export default function generalInformation() {
     setShow(true);
   };
 
-  const onSubmit = data => {
-    console.log(data);
-    router.push('./physical-habits');
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -51,13 +46,13 @@ export default function generalInformation() {
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
-                <Picker selectedValue={value} onValueChange={onChange} style={styles.input}>
-                  <Picker.Item label="Male" value="Male" />
-                  <Picker.Item label="Female" value="Female" />
+                <Picker selectedValue={value} onValueChange={onChange} style={styles.picker}>
+                  <Picker.Item label="Male" value="male" />
+                  <Picker.Item label="Female" value="female" />
+                  <Picker.Item label="Other" value="other" />
                 </Picker>
               )}
             />
-            {errors.Gender && <Text style={styles.errorText}>This field is required.</Text>}
           </View>
           <View style={styles.formItem.half}>
             <Text style={styles.formHeader}>Date of Birth:</Text>
@@ -66,72 +61,73 @@ export default function generalInformation() {
               control={control}
               rules={{ required: true }}
               render={({ field: { value } }) => (
-                <View>
-                  <TouchableOpacity onPress={showDatepicker}>
+                <>
+                  <TouchableOpacity onPress={showDatepicker} style={styles.datePicker}>
                     <TextInput
-                      style={styles.input}
-                      placeholder="DD/MM/YYYY"
+                      style={styles.datePickerInput}
                       value={value}
-                      editable={false} // Disable direct input
+                      editable={false}
+                      placeholder="Select Date"
                     />
                   </TouchableOpacity>
                   {show && (
                     <DateTimePicker
+                      testID="dateTimePicker"
                       value={date}
                       mode="date"
-                      is24Hour={true}
                       display="default"
                       onChange={onChange}
                     />
                   )}
-                </View>
+                </>
               )}
             />
-            {errors.DateOfBirth && <Text style={styles.errorText}>This field is required.</Text>}
           </View>
         </View>
-        <View style={styles.formItem.full}>
-          <Text style={styles.formHeader}>Weight(kg):</Text>
-          <Controller
-            name="Weight"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="000"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
-              />
-            )}
-          />
-          {errors.Weight && <Text style={styles.errorText}>This field is required.</Text>}
+        <View style={styles.HeightAndWeight}>
+          <View style={styles.formItem.half}>
+            <Text style={styles.formHeader}>Height (in cm):</Text>
+            <Controller
+              name="Height"
+              control={control}
+              rules={{ required: true, pattern: /^\d+$/ }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="numeric"
+                  placeholder="Height"
+                />
+              )}
+            />
+            {errors.Height && <Text style={styles.errorText}>Height is required and should be a number.</Text>}
+          </View>
+          <View style={styles.formItem.half}>
+            <Text style={styles.formHeader}>Weight (in kg):</Text>
+            <Controller
+              name="Weight"
+              control={control}
+              rules={{ required: true, pattern: /^\d+$/ }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="numeric"
+                  placeholder="Weight"
+                />
+              )}
+            />
+            {errors.Weight && <Text style={styles.errorText}>Weight is required and should be a number.</Text>}
+          </View>
         </View>
-        <View style={styles.formItem.full}>
-          <Text style={styles.formHeader}>Height(cm):</Text>
-          <Controller
-            name="Height"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="000"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
-              />
-            )}
-          />
-          {errors.Height && <Text style={styles.errorText}>This field is required.</Text>}
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
       </View>
+      <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button}>
+        <Text style={styles.buttonText}>Next</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -139,115 +135,91 @@ export default function generalInformation() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.defaultwhite,
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
-  screenTitle: {
-    alignSelf: "stretch",
-    fontSize: 24,
-    letterSpacing: -0.7,
-    lineHeight: 24,
-    fontWeight: "800",
-    fontFamily: "Inter-ExtraBold",
-    color: "#121419",
-    textAlign: "center",
-  },
-  contentText: {
-    alignSelf: "stretch",
-    fontSize: 14,
-    letterSpacing: -0.6,
-    lineHeight: 16,
-    fontFamily: "Inter-Regular",
-    color: "#4f4f4f",
-    textAlign: "center",
-  },
-  formHeader: {
-    alignSelf: "stretch",
-    fontSize: 14,
-    letterSpacing: -0.1,
-    lineHeight: 20,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: "#121419",
-    textAlign: "left",
-  },
-  form: {
-    flexDirection: 'column',
-    marginTop: '10%',
-    marginHorizontal: '5%',
-    gap: '5%',
-  },
-  formItem: {
-    full: {
-      width: '100%',
-    },
-    half: {
-      width: '49%',
-    },
-  },
-  GenderAndDOB: {
-    flexDirection: 'row',
-    gap: '2%',
-    width: '100%',
-  },
-  errorText: {
-    fontSize: 12,
-    letterSpacing: 0,
-    lineHeight: 12,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: colors.errorred,
-  },
-  input: {
-    height: 40,
-    borderColor: '#dbdbdb',
-    fontSize: 16,
-    letterSpacing: -0.2,
-    lineHeight: 17,
-    fontFamily: "Inter-Regular",
-    color: "#7d7d7d",
-    textAlign: "left",
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingLeft: 15,
-    marginBottom: 10,
-  },
-  button: {
-    borderRadius: 6,
-    backgroundColor: "#121419",
-    borderStyle: "solid",
-    borderColor: "#282f41",
-    borderWidth: 1,
-    flex: 1,
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: colors.lightpink,
     paddingHorizontal: 20,
-    paddingVertical: 20,
-  },
-  buttonText: {
-    fontSize: 18,
-    letterSpacing: 0,
-    lineHeight: 18,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: "#f7f7f7",
+    paddingTop: 50,
   },
   header: {
     alignItems: 'center',
-    gap: 0,
+    marginBottom: 30,
+  },
+  logo: {
+    width: 100,
+    height: 100,
   },
   headertext: {
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
   },
-  logo: {
-    width: 72,
-    height: 50,
-    resizeMode: 'contain',
-    marginBottom: 20,
-  }
+  screenTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: colors.darkbrown,
+    marginBottom: 10,
+  },
+  contentText: {
+    fontSize: 16,
+    color: colors.brown,
+    textAlign: 'center',
+  },
+  form: {
+    marginBottom: 30,
+  },
+  GenderAndDOB: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  HeightAndWeight: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  formItem: {
+    flex: 1,
+    half: {
+      flex: 0.45,
+      marginBottom: 20,
+    },
+  },
+  formHeader: {
+    fontSize: 16,
+    color: colors.darkbrown,
+    marginBottom: 10,
+  },
+  input: {
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    padding: 10,
+    fontSize: 16,
+    color: colors.darkbrown,
+  },
+  picker: {
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    padding: 10,
+    fontSize: 16,
+    color: colors.darkbrown,
+  },
+  datePicker: {
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    padding: 10,
+  },
+  datePickerInput: {
+    fontSize: 16,
+    color: colors.darkbrown,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+  },
+  button: {
+    backgroundColor: colors.darkbrown,
+    borderRadius: 10,
+    paddingVertical: 15,
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 18,
+    color: colors.white,
+    fontWeight: 'bold',
+  },
 });
