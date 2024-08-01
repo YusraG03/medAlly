@@ -108,12 +108,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
+    marginBottom: 30,
   },
   notificationIcon: {
     padding: 10,
