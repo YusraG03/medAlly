@@ -22,7 +22,6 @@ export default function Addmedication() {
   const [isFromDateSelected, setIsFromDateSelected] = useState(false);
   const [isToDateSelected, setIsToDateSelected] = useState(false);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
-  
 
   const reminders = [
     { label: 'None', value: 'none' },
@@ -69,7 +68,7 @@ export default function Addmedication() {
     };
     
     // Navigate back to the MedicationScreen and pass the new medication as a parameter
-    navigation.navigate('Medication', { newMedication });
+    navigation.navigate('medication', { newMedication });
   };
 
   return (
@@ -89,54 +88,34 @@ export default function Addmedication() {
         style={[styles.input, { color: dosage ? 'black' : '#7d7d7d' }]}
         value={dosage}
         onChangeText={setDosage}
-        keyboardType="numeric"
-        placeholder="...mg"
+        placeholder="Enter dosage..."
         placeholderTextColor="#7d7d7d"
       />
 
-      <Text style={styles.label}>Duration</Text>
-      <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
-        <Text style={[styles.dateText, { color: isFromDateSelected || showFromDatePicker ? 'black' : '#7d7d7d' }]}>
-          {fromDate.toDateString()}
+      <Text style={styles.label}>From Date</Text>
+      <TouchableOpacity onPress={() => setShowFromDatePicker(true)} style={styles.dateInput}>
+        <Text style={styles.dateText}>
+          {isFromDateSelected ? fromDate.toDateString() : 'Select from date'}
         </Text>
       </TouchableOpacity>
       {showFromDatePicker && (
-        <DateTimePicker 
-          value={fromDate} 
-          mode="date" 
-          display="default" 
-          onChange={onChangeFromDate} 
-        />
+        <DateTimePicker value={fromDate} mode="date" display="default" onChange={onChangeFromDate} />
       )}
 
-      <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
-        <Text style={[styles.dateText, { color: isToDateSelected || showToDatePicker ? 'black' : '#7d7d7d' }]}>
-          {toDate.toDateString()}
-        </Text>
+      <Text style={styles.label}>To Date</Text>
+      <TouchableOpacity onPress={() => setShowToDatePicker(true)} style={styles.dateInput}>
+        <Text style={styles.dateText}>{isToDateSelected ? toDate.toDateString() : 'Select to date'}</Text>
       </TouchableOpacity>
       {showToDatePicker && (
-        <DateTimePicker 
-          value={toDate} 
-          mode="date" 
-          display="default" 
-          minimumDate={fromDate}
-          onChange={onChangeToDate} 
-        />
+        <DateTimePicker value={toDate} mode="date" display="default" onChange={onChangeToDate} />
       )}
 
       <Text style={styles.label}>Time</Text>
-      <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-        <Text style={[styles.dateText, { color: isTimeSelected || showTimePicker ? 'black' : '#7d7d7d' }]}>
-          {time.toLocaleTimeString()}
-        </Text>
+      <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.dateInput}>
+        <Text style={styles.dateText}>{isTimeSelected ? time.toLocaleTimeString() : 'Select time'}</Text>
       </TouchableOpacity>
       {showTimePicker && (
-        <DateTimePicker 
-          value={time} 
-          mode="time" 
-          display="default" 
-          onChange={onChangeTime} 
-        />
+        <DateTimePicker value={time} mode="time" display="default" onChange={onChangeTime} />
       )}
 
       <Text style={styles.label}>Cause</Text>
@@ -144,38 +123,40 @@ export default function Addmedication() {
         style={[styles.input, { color: cause ? 'black' : '#7d7d7d' }]}
         value={cause}
         onChangeText={setCause}
-        placeholder="Reason for medication..."
+        placeholder="Enter cause..."
         placeholderTextColor="#7d7d7d"
       />
 
-      <Text style={styles.label}>Reminders</Text>
-      <TouchableOpacity style={styles.dropdown} onPress={() => setShowReminderModal(true)}>
-        <Text style={styles.dropdownText}>{reminders.find(r => r.value === reminder)?.label || 'Select reminder'}</Text>
+      <Text style={styles.label}>Reminder</Text>
+      <TouchableOpacity
+        style={[styles.input, styles.reminderInput]}
+        onPress={() => setShowReminderModal(true)}
+      >
+        <Text style={{ color: reminder ? 'black' : '#7d7d7d' }}>{reminder}</Text>
       </TouchableOpacity>
 
-      <Modal
-        visible={showReminderModal}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setShowReminderModal(false)}
-      >
+      <Modal visible={showReminderModal} animationType="slide" transparent>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select a reminder</Text>
             <FlatList
               data={reminders}
               keyExtractor={(item) => item.value}
               renderItem={({ item }) => (
-                <Pressable
-                  style={styles.modalItem}
+                <TouchableOpacity
+                  style={styles.reminderOption}
                   onPress={() => {
-                    setReminder(item.value);
+                    setReminder(item.label);
                     setShowReminderModal(false);
                   }}
                 >
-                  <Text style={styles.modalItemText}>{item.label}</Text>
-                </Pressable>
+                  <Text style={styles.reminderText}>{item.label}</Text>
+                </TouchableOpacity>
               )}
             />
+            <Pressable onPress={() => setShowReminderModal(false)}>
+              <Text style={styles.closeModalText}>Close</Text>
+            </Pressable>
           </View>
         </View>
       </Modal>
@@ -190,55 +171,50 @@ export default function Addmedication() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 16,
-    backgroundColor: 'white',
+    padding: 20,
   },
   screenTitle: {
     fontSize: 24,
-    fontWeight: '800',
-    textAlign: 'left',
-    letterSpacing: -0.7,
-    lineHeight: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
   label: {
     fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'left',
-    letterSpacing: -0.3,
-    lineHeight: 16,
-    marginVertical: 8,
+    marginBottom: 8,
   },
   input: {
-    borderColor: 'gray',
     borderWidth: 1,
-    padding: 8,
-    borderRadius: 5,
-    marginVertical: 8,
-    height: 40,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  dateInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dateText: {
-    fontSize: 16,
-    padding: 8,
-    borderColor: '#dbdbdb',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginVertical: 8,
-    height: 40,
-    textAlignVertical: 'center',
-  },
-  dropdown: {
-    borderColor: '#dbdbdb',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginVertical: 8,
-    height: 40,
-    justifyContent: 'center',
-    paddingHorizontal: 8,
-  },
-  dropdownText: {
-    fontSize: 16,
     color: '#7d7d7d',
-    textAlignVertical: 'center',
+  },
+  reminderInput: {
+    justifyContent: 'center',
+  },
+  addButton: {
+    backgroundColor: 'blue',
+    padding: 15,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   modalContainer: {
     flex: 1,
@@ -249,28 +225,24 @@ const styles = StyleSheet.create({
   modalContent: {
     width: '80%',
     backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 16,
-  },
-  modalItem: {
-    paddingVertical: 12,
-    borderBottomColor: '#ddd',
-    borderBottomWidth: 1,
-  },
-  modalItemText: {
-    fontSize: 16,
-    color: 'black',
-  },
-  addButton: {
-    backgroundColor: '#121419',
-    paddingVertical: 12,
-    borderRadius: 5,
-    marginVertical: 16,
+    borderRadius: 8,
+    padding: 20,
     alignItems: 'center',
   },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
+  reminderOption: {
+    paddingVertical: 10,
+  },
+  reminderText: {
+    fontSize: 16,
+  },
+  closeModalText: {
+    marginTop: 20,
+    fontSize: 16,
+    color: 'blue',
+  }
 });

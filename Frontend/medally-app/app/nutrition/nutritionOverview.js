@@ -4,6 +4,7 @@ import colors from '../_assets/colors';
 import textStyles from '../_assets/textStyles';
 import { mealIcons } from '../_assets/assets';
 import ProgressBar from '../components/ProgressBar.js'; // Import the ProgressBar component
+import { Link } from 'expo-router';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -92,6 +93,7 @@ const MealPage = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={textStyles.screenTitle}>Nutrition Overview</Text>
+	  <Link href="./nutritionResults">go to results</Link>
 
       <View style={styles.card}>
         <View style={styles.cardHeader}>

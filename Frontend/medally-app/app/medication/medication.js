@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -45,8 +46,24 @@ export default function MedicationScreen() {
   const route = useRoute();
 
   useEffect(() => {
+    const loadMedications = async () => {
+      try {
+        const storedMedications = await AsyncStorage.getItem('medications');
+        if (storedMedications) {
+          setMedications(JSON.parse(storedMedications));
+        }
+      } catch (error) {
+        console.error('Failed to load medications.', error);
+      }
+    };
+    loadMedications();
+  }, []);
+
+  useEffect(() => {
     if (route.params?.newMedication) {
-      setMedications((prevMedications) => [...prevMedications, route.params.newMedication]);
+      const newMedicationsList = [...medications, route.params.newMedication];
+      setMedications(newMedicationsList);
+      AsyncStorage.setItem('medications', JSON.stringify(newMedicationsList));
     }
   }, [route.params?.newMedication]);
 
@@ -66,7 +83,7 @@ export default function MedicationScreen() {
         )}
       />
 
-<Link href="/medication/Addmedication" style={styles.addButton}>
+      <Link href="/medication/Addmedication" style={styles.addButton}>
         <Ionicons name="add-circle" size={60} color="black" />
       </Link>
     </View>
