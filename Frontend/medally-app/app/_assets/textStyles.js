@@ -22,7 +22,7 @@ const textStyles = StyleSheet.create({
     color: colors.defaultblack,
   },
   containerActionText: {
-    color : colors.defaultwhite,
+    color : colors.defaultblack,
     fontSize: 18,
     letterSpacing: 0,
     lineHeight: 18,
