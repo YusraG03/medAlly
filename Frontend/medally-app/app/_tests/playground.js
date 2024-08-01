@@ -19,7 +19,7 @@ export default function App() {
       <Link style={styles.button} href="../account/sign-up/credentials">Sign Up</Link>
       <Link style={styles.button} href="../symptomChecker/sympchecker">Symptom Checker</Link>
       <Link style={styles.button} href="../medication/medication">Medications Page</Link>
-      <Link style={styles.button} href="../NavigationBar/Home">Nav Bar</Link>
+      <Link style={styles.button} href="../NavigationBar">Nav Bar</Link>
       <Link style={styles.button} href="../nutrition/nutritionOverview">Nutrition</Link>
       <Link style={styles.button} href="../Homepage/homepage">Homepage</Link>
       <StatusBar style="auto" />

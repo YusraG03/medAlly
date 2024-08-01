@@ -3,15 +3,15 @@ import React from 'react'
 import { Tabs } from 'expo-router'
 import TabBar from '../components/TabBar'
 
-const _layout = () => {
+const _layout = (...props) => {
   return (
     <Tabs
         tabBar={props=> <TabBar {...props} />}
     >
         <Tabs.Screen
+        name="Home"
             options={{
-                href: '../Homepage',
-                title: "Home"
+                href: './Home/'
             }}
         />
         <Tabs.Screen
