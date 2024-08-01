@@ -22,7 +22,7 @@ export default function Addmedication() {
   const [isFromDateSelected, setIsFromDateSelected] = useState(false);
   const [isToDateSelected, setIsToDateSelected] = useState(false);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
-
+  
   const reminders = [
     { label: 'None', value: 'none' },
     { label: 'At time specified', value: 'at_time' },
@@ -68,7 +68,7 @@ export default function Addmedication() {
     };
     
     // Navigate back to the MedicationScreen and pass the new medication as a parameter
-    navigation.navigate('medication', { newMedication });
+    navigation.navigate('Medication', { newMedication });
   };
 
   return (
