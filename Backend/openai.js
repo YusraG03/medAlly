@@ -7,10 +7,9 @@ class openaichat{
     constructor(apiKey) {
         this.openai = new OpenAI({ apiKey: process.env.openaikey})
     }
-    async getChatCompletion(chat) {
+    async getChatCompletion(chat, userThreadID) {  //call this function within the created object with the user's message and their thread_id (use: "thread_DlQO7yZt4PvJOmMbz8D5zLhj" for testing)
         this.assistant = await this.openai.beta.assistants.retrieve("asst_vhKUyzAvbJVVETPj1J5tVoai");
-        this.thread = await this.openai.beta.threads.retrieve("thread_6x9LXBslPmhLYfQno5yrGuEq"); //need to assign a thread to each user
-        //this.chat = "hello"; // what the user will say to the bot
+        this.thread = await this.openai.beta.threads.retrieve(userThreadID);
         this.message = await this.openai.beta.threads.messages.create(
             this.thread.id,
             {
