@@ -107,13 +107,13 @@ app.post('/addUserPhysicalHabits', async (req, res) =>
 
 app.post('/getUserPhysicalHabits', async (req, res) =>
 {
-    const message = await db.getUserPhysicalHabits(req.body.userCreds);
+    const message = await db.getUserPhysicalHabbits(req.body.userCreds);
     res.json(message);
 });
 
 app.post('/modifyUserPhysicalHabits', async (req, res) =>
 {
-    const message = await db.modifyUserPhysicalHabits(req.body.physicalHabits, req.body.userCreds);
+    const message = await db.modifyUserPhysicalHabbits(req.body.physicalHabits, req.body.userCreds);
     res.json({"message": message});
 });
 
