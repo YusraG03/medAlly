@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, LayoutAnimation, UIManager, Platform } from "react-native";
 import colors from '../_assets/colors';
 import textStyles from '../_assets/textStyles';
+import { mealIcons } from '../_assets/assets';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -12,6 +13,7 @@ const mealData = [
   {
     id: 1,
     mealName: 'Breakfast',
+    mealIcon: 'breakfast',
     calories: '576 Kcal',
     mealDescription: 'Scrambled Eggs, Sausages and Bacon',
     nutrition: {
@@ -24,6 +26,7 @@ const mealData = [
   {
     id: 2,
     mealName: 'Lunch',
+    mealIcon: 'lunch',
     calories: '215 Kcal',
     mealDescription: 'Chopped Chicken Salad',
     nutrition: {
@@ -36,6 +39,7 @@ const mealData = [
   {
     id: 3,
     mealName: 'Dinner',
+    mealIcon: 'dinner',
     calories: '450 Kcal',
     mealDescription: 'Grilled Salmon with Quinoa and Steamed Vegetables',
     nutrition: {
@@ -48,6 +52,7 @@ const mealData = [
   {
     id: 4,
     mealName: 'Snacks',
+    mealIcon: 'snacks',
     calories: '150 Kcal',
     mealDescription: 'Greek Yogurt with Honey and Almonds',
     nutrition: {
@@ -92,7 +97,13 @@ const MealPage = () => {
         {mealData.map((meal) => (
           <View key={meal.id} style={styles.card}>
             <TouchableOpacity onPress={() => toggleExpand(meal.id)} style={[styles.upperInfo, styles.upperInfoFlexBox]}>
-              <View style={styles.mealTime}>
+				<View style = {styles.header}>
+				<Image
+                style={styles.mealIcon}
+                resizeMode="cover"
+                source={mealIcons[meal.mealIcon]}
+              />
+			  <View style={styles.mealTime}>
                 <Text style={styles.mealName}>{meal.mealName}</Text>
                 <Text style={styles.calories}>{meal.calories}</Text>
               </View>
@@ -101,6 +112,8 @@ const MealPage = () => {
                 resizeMode="cover"
                 source={expandedMeals[meal.id] ? require('../_assets/chevron-up.png') : require('../_assets/chevron-down.png')}
               />
+				</View>
+			  
             </TouchableOpacity>
             
             {expandedMeals[meal.id] && (
@@ -144,6 +157,13 @@ const styles = StyleSheet.create({
     marginTop: '2%',
     gap: '2%',
   },
+  header:{
+	flexDirection: "row",
+	alignItems: "center",
+	justifyContent: "space-between",
+	gap : 15,
+	width : '82%'
+  },
   cards: {
     flexDirection: 'column',
     gap: 10,
@@ -173,7 +193,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   mealTime: {
-    width: 164,
+    width: '95%',
   },
   cardHeader:{
 	flex : 1,
@@ -232,6 +252,10 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     letterSpacing: -0.6,
     alignSelf: 'stretch',
+  },
+  mealIcon:{
+	width: 30,
+	height:30
   },
   cardTitle: {
     color: '#212121',
