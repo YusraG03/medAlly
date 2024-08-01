@@ -3,6 +3,7 @@ import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView,
 import { router } from 'expo-router';
 import colors from '../../_assets/colors';
 
+
 // Import eye icons
 const eyeOpenIcon = require('../../_assets/eye-open.png');
 const eyeClosedIcon = require('../../_assets/eye-closed.png');
@@ -20,6 +21,8 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
+
+ 
   // Validate form whenever any input changes
   useEffect(() => {
     validateForm();
