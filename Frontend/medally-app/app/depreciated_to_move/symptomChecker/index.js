@@ -4,13 +4,13 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'reac
 import uuid from 'react-native-uuid';
 import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
-import textStyles from '../_assets/textStyles';
+import textStyles from '../../_assets/textStyles';
 import { router, Link } from 'expo-router';
-import colors from '../_assets/colors';
+import colors from '../../_assets/colors';
 
 // Import local images
-import aiAvatar from '../_assets/Avatar.png'; // Path to AI avatar
-import userAvatar from '../_assets/user-profile-03.png'; // Path to User avatar
+import aiAvatar from '../../_assets/Avatar.png'; // Path to AI avatar
+import userAvatar from '../../_assets/user-profile-03.png'; // Path to User avatar
 
 //loading API KEY (please link to backend later)
 const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with your API key
@@ -147,7 +147,7 @@ export function ChatScreen({ navigation }) {
       <Send {...props}>
         <View style={styles.sendingContainer}>
           <Image 
-            source={require('../_assets/send-01.png')} 
+            source={require('../../_assets/send-01.png')} 
             style={styles.sendlogo}
           />
         </View>
@@ -161,7 +161,7 @@ export function ChatScreen({ navigation }) {
         <Text style={textStyles.screenTitle}>Symptom Checker</Text>
         <Pressable onPress={() => router.push('./historyscreen')}>
         <Image 
-            source={require('../_assets/clock-forward.png')} 
+            source={require('../../_assets/clock-forward.png')} 
             style={styles.logo}
           />
         </Pressable>

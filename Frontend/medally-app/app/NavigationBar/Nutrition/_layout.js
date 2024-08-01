@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, LayoutAnimation, UIManager, Platform } from "react-native";
-import colors from '../_assets/colors';
-import textStyles from '../_assets/textStyles';
-import { mealIcons } from '../_assets/assets';
-import ProgressBar from '../components/ProgressBar.js'; // Import the ProgressBar component
+import colors from '../../_assets/colors';
+import textStyles from '../../_assets/textStyles';
+import { mealIcons } from '../../_assets/assets';
+import ProgressBar from '../../components/ProgressBar.js'; // Import the ProgressBar component
 import { Link } from 'expo-router';
 
 // Enable LayoutAnimation on Android
@@ -131,7 +131,7 @@ const MealPage = () => {
 		<Image
                   style={styles.chevronIcon}
                   resizeMode="cover"
-                  source={require('../_assets/chevron-left.png')}
+                  source={require('../../_assets/chevron-left.png')}
                 />
 		</TouchableOpacity>
 
@@ -140,7 +140,7 @@ const MealPage = () => {
 		<Image
                   style={styles.chevronIcon}
                   resizeMode="cover"
-                  source={require('../_assets/chevron-right.png')}
+                  source={require('../../_assets/chevron-right.png')}
                 />
 		</TouchableOpacity>
 	</View>
@@ -162,7 +162,7 @@ const MealPage = () => {
                 <Image
                   style={styles.chevronIcon}
                   resizeMode="cover"
-                  source={expandedMeals[meal.id] ? require('../_assets/chevron-up.png') : require('../_assets/chevron-down.png')}
+                  source={expandedMeals[meal.id] ? require('../../_assets/chevron-up.png') : require('../../_assets/chevron-down.png')}
                 />
               </View>
             </TouchableOpacity>

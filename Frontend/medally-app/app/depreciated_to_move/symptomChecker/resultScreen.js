@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import colors from '../_assets/colors';
-import textStyles from '../_assets/textStyles';
+import colors from '../../_assets/colors';
+import textStyles from '../../_assets/textStyles';
 
 const data = {
   diseaseName: "Common Cold",

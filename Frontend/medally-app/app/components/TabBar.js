@@ -1,81 +1,78 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, StyleSheet } from 'react-native';
+import React from 'react';
 import TabBarButton from './TabBarButton';
 
 const TabBar = ({ state, descriptors, navigation }) => {
-
-
     const primaryColor = '#0891b2';
     const greyColor = '#737373';
-  return (
-    <View style={styles.tabbar}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
 
-        if(['_sitemap', '+not-found'].includes(route.name)) return null;
+    return (
+        <View style={styles.tabbar}>
+            {state.routes.map((route, index) => {
+                const { options } = descriptors[route.key];
+                const label =
+                    options.tabBarLabel !== undefined
+                        ? options.tabBarLabel
+                        : options.title !== undefined
+                        ? options.title
+                        : route.name;
 
-        const isFocused = state.index === index;
+                if (['+not-found', '_sitemap'].includes(route.name)) return null;
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
+                const isFocused = state.index === index;
 
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
-          }
-        };
+                const onPress = () => {
+                    const event = navigation.emit({
+                        type: 'tabPress',
+                        target: route.key,
+                        canPreventDefault: true,
+                    });
 
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
+                    if (!isFocused && !event.defaultPrevented) {
+                        navigation.navigate(route.name, route.params);
+                    }
+                };
 
-        return (
-          <TabBarButton 
-            key={route.name}
-            style={styles.tabbarItem}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            isFocused={isFocused}
-            routeName={route.name}
-            color={isFocused? primaryColor: greyColor}
-            label={label}
-          />
-        )
+                const onLongPress = () => {
+                    navigation.emit({
+                        type: 'tabLongPress',
+                        target: route.key,
+                    });
+                };
 
-      })}
-    </View>
-  )
-}
+                return (
+                    <TabBarButton
+                        key={route.name}
+                        style={styles.tabbarItem}
+                        onPress={onPress}
+                        onLongPress={onLongPress}
+                        isFocused={isFocused}
+                        routeName={route.name}
+                        color={isFocused ? primaryColor : greyColor}
+                        label={label}
+                    />
+                );
+            })}
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     tabbar: {
-        position: 'absolute', 
         bottom: 0,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: 'white',
-        marginHorizontal: 0,
-        paddingVertical: 10,
-        borderCurve: 'continuous',
+        borderTopWidth : 2,
+        borderColor: '#D6D6D6',
+        paddingVertical: 15,
         shadowColor: 'black',
-        shadowOffset: {width: 0, height: 10},
+        shadowOffset: { width: 0, height: 10 },
         shadowRadius: 10,
         shadowOpacity: 0.1,
-        width: '100%'
-    }
-})
+        zIndex: 1,
+    },
+});
 
-export default TabBar
+export default TabBar;

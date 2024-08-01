@@ -1,13 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-
-const SymptomChecker = () => {
+const Profile = () => {
   return (
     <View>
-      <Text> Checker</Text>
+      <Text> Profile</Text>
     </View>
   )
 }
 
-export default SymptomChecker
+export default Profile

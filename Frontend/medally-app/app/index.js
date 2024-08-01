@@ -5,6 +5,9 @@ import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
 import textStyles from './_assets/textStyles';
 import colors from './_assets/colors';
+import APIEndpoint from './API';
+
+
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -36,11 +39,10 @@ export default function App() {
       <Image 
       source={require('./_assets/logo.png')} style={styles.logo}/>
       <View style={styles.header}>
-        <Text style={textStyles.screenTitle}>Medally Testing HQ</Text>
-        <Text style={textStyles.contentText}>Select your path!</Text>
+        <Text style={textStyles.screenTitle}>Medally</Text>
+        <Text style={textStyles.contentText}>A health app by GMC</Text>
       </View>
-      <Link style={styles.button} href="./_tests/playground">Enter the Playground</Link>
-      <Link style={styles.button} href="./account/sign-up/credentials">Sign Up</Link>
+      <Link style={styles.button} href="./_tests/playground">Enter</Link>
       <StatusBar style="auto" />
     </View>
   );
