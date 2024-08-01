@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => 
 {
     db.testConnection();
-    res.send('Oweiss Gunga');
+    res.send('If you are reading this, then it works!');
 });
 
 app.post('/login', async (req, res) =>

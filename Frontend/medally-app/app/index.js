@@ -7,8 +7,6 @@ const api = new APIEndpoint();
 
 const App = () => {
     api.testConnection();
-   api.registerUser({ email: "test", password: "test" });
-
 
     return (
         <View style={styles.container}>
