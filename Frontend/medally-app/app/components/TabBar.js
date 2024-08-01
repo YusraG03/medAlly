@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
-import { AntDesign, Feather } from '@expo/vector-icons';
 import TabBarButton from './TabBarButton';
 
 const TabBar = ({ state, descriptors, navigation }) => {
@@ -74,7 +73,8 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOffset: {width: 0, height: 10},
         shadowRadius: 10,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        width: '100%'
     }
 })
 

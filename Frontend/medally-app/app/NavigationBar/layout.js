@@ -9,8 +9,8 @@ const _layout = () => {
         tabBar={props=> <TabBar {...props} />}
     >
         <Tabs.Screen
-            name="Home"
             options={{
+                href: '../Homepage',
                 title: "Home"
             }}
         />
