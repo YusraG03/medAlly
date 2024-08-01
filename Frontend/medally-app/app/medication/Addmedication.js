@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, Platform, TouchableOpacity, Modal, FlatList, Pressable } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, FlatList, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 
-export default function AddMedicationScreen() {
+export default function Addmedication() {
+  const navigation = useNavigation();
+
   const [name, setName] = useState('');
   const [dosage, setDosage] = useState('');
   const [fromDate, setFromDate] = useState(new Date());
@@ -19,6 +22,7 @@ export default function AddMedicationScreen() {
   const [isFromDateSelected, setIsFromDateSelected] = useState(false);
   const [isToDateSelected, setIsToDateSelected] = useState(false);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
+  
 
   const reminders = [
     { label: 'None', value: 'none' },
@@ -30,10 +34,9 @@ export default function AddMedicationScreen() {
 
   const onChangeFromDate = (event, selectedDate) => {
     const currentDate = selectedDate || fromDate;
-    setShowFromDatePicker(Platform.OS === 'ios');
+    setShowFromDatePicker(false);
     setFromDate(currentDate);
     setIsFromDateSelected(true);
-    // Ensure the "To Date" is not before the "From Date"
     if (toDate < currentDate) {
       setToDate(currentDate);
     }
@@ -41,21 +44,32 @@ export default function AddMedicationScreen() {
 
   const onChangeToDate = (event, selectedDate) => {
     const currentDate = selectedDate || toDate;
-    setShowToDatePicker(Platform.OS === 'ios');
+    setShowToDatePicker(false);
     setToDate(currentDate);
     setIsToDateSelected(true);
   };
 
   const onChangeTime = (event, selectedTime) => {
     const currentTime = selectedTime || time;
-    setShowTimePicker(Platform.OS === 'ios');
+    setShowTimePicker(false);
     setTime(currentTime);
     setIsTimeSelected(true);
   };
 
   const handleAddMedicine = () => {
-    // Handle the add medicine action
-    console.log('Medicine added');
+    const newMedication = {
+      id: Date.now().toString(),
+      name,
+      dosage,
+      fromDate,
+      toDate,
+      time,
+      cause,
+      reminder,
+    };
+    
+    // Navigate back to the MedicationScreen and pass the new medication as a parameter
+    navigation.navigate('Medication', { newMedication });
   };
 
   return (
@@ -66,7 +80,7 @@ export default function AddMedicationScreen() {
         style={[styles.input, { color: name ? 'black' : '#7d7d7d' }]}
         value={name}
         onChangeText={setName}
-        placeholder="Type a message.."
+        placeholder="Enter medication name..."
         placeholderTextColor="#7d7d7d"
       />
 
@@ -105,7 +119,7 @@ export default function AddMedicationScreen() {
           value={toDate} 
           mode="date" 
           display="default" 
-          minimumDate={fromDate} // Set the minimum date for the To Date picker
+          minimumDate={fromDate}
           onChange={onChangeToDate} 
         />
       )}
@@ -130,7 +144,7 @@ export default function AddMedicationScreen() {
         style={[styles.input, { color: cause ? 'black' : '#7d7d7d' }]}
         value={cause}
         onChangeText={setCause}
-        placeholder="Type a message.."
+        placeholder="Reason for medication..."
         placeholderTextColor="#7d7d7d"
       />
 

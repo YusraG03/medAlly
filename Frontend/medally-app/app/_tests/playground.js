@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image,ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import textStyles from '../_assets/textStyles';
@@ -11,6 +11,7 @@ export default function App() {
       <View style={styles.header}>
         <Text style={textStyles.screenTitle}>Playground</Text>
       </View>
+
       <Link style={styles.button} href="./forms">Forms</Link>
       <Link style={styles.button} href="./camera">Camera</Link>
       <Link style={styles.button} href="./testdatepicker">DatePicker</Link>
@@ -20,6 +21,7 @@ export default function App() {
       <Link style={styles.button} href="../medication/medication">Medications Page</Link>
       <Link style={styles.button} href="../NavigationBar/Home">Nav Bar</Link>
       <Link style={styles.button} href="../nutrition/nutritionOverview">Nutrition</Link>
+      <Link style={styles.button} href="../Homepage/homepage">Homepage</Link>
       <StatusBar style="auto" />
     </View>
   );
