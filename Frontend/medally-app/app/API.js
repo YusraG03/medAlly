@@ -77,6 +77,26 @@ class APIEndpoint
             console.error('Error storing medication:', error);
         }
     }
+    async modifyMedication(medication, userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/modifyMedication`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ medication, userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error modifying medication:', error);
+        }
+    }
     async getAllMedication(userCreds) 
     {
         try 
@@ -158,6 +178,7 @@ class APIEndpoint
             console.error('Error modifying basic info:', error);
         }
     }
+    as
 }
 
 // const test = new APIEndpoint();
