@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, Image, ScrollView, TouchableOpacity, LayoutAnimation, UIManager, Platform } from 'react-native';
-import colors from '../_assets/colors';
-import textStyles from '../_assets/textStyles';
+import colors from '../../_assets/colors';
+import textStyles from '../../_assets/textStyles.js';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -121,7 +121,7 @@ export function HistoryScreen() {
             <Image
               style={styles.chevronDownIcon}
               resizeMode="cover"
-              source={expandedCards[item.id] ? require('../_assets/chevron-up.png') : require('../_assets/chevron-down.png')}
+              source={expandedCards[item.id] ? require('../../_assets/chevron-up.png') : require('../../_assets/chevron-down.png')}
             />
           </TouchableOpacity>
           

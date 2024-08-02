@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Pedometer } from 'expo-sensors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// Placeholder for user credentials and general information
+// Import local images
+import manIcon from '../../_assets/man.png'; // Path to the man icon image
+import circularImage from '../../_assets/circle.png'; // Path to the circular progress image
+
 const userCredentials = {
-  name: 'User', // This will be dynamically changed to the actual user's name
+  name: 'User',
 };
 
 const userGeneralInfo = {
-  height: 1.75, // in meters
-  weight: 68, // in kg
+  height: 1.75,
+  weight: 68,
 };
 
 const medicationInfo = {
   name: 'Panadol',
   dosage: '500mg',
-  time: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes from now
+  time: new Date(Date.now() + 30 * 60 * 1000),
 };
 
-// Helper function to calculate BMI
 const calculateBMI = (height, weight) => {
   return (weight / (height * height)).toFixed(1);
 };
@@ -50,8 +52,6 @@ export default function DashboardScreen() {
 
   // Calculations
   const stepsGoal = 10000;
-  const caloriesBurned = (stepCount * 0.04).toFixed(2);
-  const distanceWalked = (stepCount * 0.762 / 1000).toFixed(2); // in kilometers
   const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
 
   return (
@@ -64,18 +64,24 @@ export default function DashboardScreen() {
       </View>
       <Text style={styles.subText}>How do you feel today?</Text>
       <View style={styles.stepsContainer}>
-        <Text style={styles.stepsText}>{stepCount}</Text>
-        <Text style={styles.stepsLabel}>/10000 steps</Text>
+        <View style={styles.circularContainer}>
+          <Image source={circularImage} style={styles.circularImage} />
+          <View style={styles.progressTextContainer}>
+            <Text style={styles.stepsText}>{stepCount}</Text>
+            <Text style={styles.stepsLabel}>/10000 steps</Text>
+          </View>
+          <Image source={manIcon} style={styles.manIcon} resizeMode="contain" />
+        </View>
       </View>
       <View style={styles.metricsContainer}>
         <View style={styles.metricBox}>
           <Text style={styles.metricTitle}>Calories</Text>
-          <Text style={styles.metricValue}>{caloriesBurned} Kcal</Text>
+          <Text style={styles.metricValue}>{(stepCount * 0.04).toFixed(2)} Kcal</Text>
         </View>
         <View style={styles.verticalBar} />
         <View style={styles.metricBox}>
           <Text style={styles.metricTitle}>Distance</Text>
-          <Text style={styles.metricValue}>{distanceWalked} km</Text>
+          <Text style={styles.metricValue}>{(stepCount * 0.762 / 1000).toFixed(2)} km</Text>
         </View>
         <View style={styles.verticalBar} />
         <View style={styles.metricBox}>
@@ -120,10 +126,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   verticalBar: {
-    width: 2, 
-    height: 60, 
+    width: 2,
+    height: 60,
     backgroundColor: '#7D7D7D',
-    marginHorizontal: 10, 
+    marginHorizontal: 10,
   },
   subText: {
     fontSize: 18,
@@ -135,14 +141,41 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 50,
   },
+  circularContainer: {
+    width: 220,
+    height: 220,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  circularImage: {
+    width: 260,
+    height: 300,
+    position: 'absolute',
+  },
+  manIcon: {
+    width: 30, // Adjust the size as needed
+    height: 95, // Adjust the size as needed
+    position: 'absolute',
+    top: 20, // Position the manIcon above the text
+    zIndex: 1, // Ensure it's above the progress text
+  },
+  progressTextContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: 80, // Adjust to position the text below the manIcon
+  },
   stepsText: {
-    fontSize: 48,
+    fontSize: 50,
     fontWeight: 'bold',
     color: '#333',
+    textAlign: 'center',
   },
   stepsLabel: {
-    fontSize: 18,
+    fontSize: 14,
     color: '#555',
+    textAlign: 'center',
   },
   metricsContainer: {
     flexDirection: 'row',

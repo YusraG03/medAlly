@@ -1,10 +1,10 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
 import React, { useEffect } from 'react';
-import { icons } from '../_assets/navicons';
+import { Pressable, StyleSheet } from 'react-native';
+import { icons } from '../_assets/icons';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 const TabBarButton = (props) => {
-    const { isFocused, label, routeName, color } = props;
+    const { isFocused, routeName, color, onPress, onLongPress } = props;
 
     const scale = useSharedValue(0);
 
@@ -19,12 +19,12 @@ const TabBarButton = (props) => {
         const scaleValue = interpolate(
             scale.value,
             [0, 1],
-            [1, 1.4]
+            [1, 1.1]
         );
         const top = interpolate(
             scale.value,
             [0, 1],
-            [0, 8]
+            [0, 1]
         );
 
         return {
@@ -33,37 +33,22 @@ const TabBarButton = (props) => {
         };
     });
 
-    const animatedTextStyle = useAnimatedStyle(() => {
-        const opacity = interpolate(
-            scale.value,
-            [0, 1],
-            [1, 0]
-        );
+    const IconComponent = isFocused ? icons[routeName].filled : icons[routeName].regular;
 
-        return {
-            opacity
-        };
-    });
-
-    
-
-    const IconComponent = icons[routeName];
     return (
-        <Pressable {...props} style={styles.container}>
+        <Pressable
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={styles.container}
+            android_ripple={{ color: 'transparent' }} // Remove default ripple effect on Android
+        >
             <Animated.View style={[animatedIconStyle]}>
                 {IconComponent ? (
                     <IconComponent color={color} />
                 ) : (
-                    <Text style={{ color }}>Text</Text> // Fallback UI, could be an icon or text
+                    <Text style={{ color }}>Icon</Text> // Fallback UI, could be an icon or text
                 )}
             </Animated.View>
-
-            <Animated.Text style={[{ 
-                color,
-                fontSize: 11
-            }, animatedTextStyle]}>
-                {label}
-            </Animated.Text>
         </Pressable>
     );
 };
@@ -73,7 +58,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 4
     }
 });
 

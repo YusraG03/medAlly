@@ -1,38 +1,81 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import APIEndpoint from './API.js/'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { Link } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import * as Font from 'expo-font';
+import textStyles from './_assets/textStyles';
+import colors from './_assets/colors';
+import APIEndpoint from './API';
 
 
-const api = new APIEndpoint();
 
-const App = () => {
-    api.testConnection();
-   api.registerUser({ email: "test", password: "test" });
+export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        'Inter-Thin': require('./_assets/fonts/Inter-Thin.ttf'),
+        'Inter-ExtraLight': require('./_assets/fonts/Inter-ExtraLight.ttf'),
+        'Inter-Light': require('./_assets/fonts/Inter-Light.ttf'),
+        'Inter-Regular': require('./_assets/fonts/Inter-Regular.ttf'),
+        'Inter-Medium': require('./_assets/fonts/Inter-Medium.ttf'),
+        'Inter-SemiBold': require('./_assets/fonts/Inter-SemiBold.ttf'),
+        'Inter-Bold': require('./_assets/fonts/Inter-Bold.ttf'),
+        'Inter-ExtraBold': require('./_assets/fonts/Inter-ExtraBold.ttf'),
+        'Inter-Black': require('./_assets/fonts/Inter-Black.ttf'),
+      });
+      setFontsLoaded(true);
+    }
+    loadFonts();
+  }, []);
 
-    return (
-        <View style={styles.container}>
-            <Text>Success!</Text>
-        </View>
-    );
-};
+  if (!fontsLoaded) {
+    return <View><Text>Loading fonts...</Text></View>;
+  }
+
+  return (
+    <View style={styles.container}>
+      <Image 
+      source={require('./_assets/logo.png')} style={styles.logo}/>
+      <View style={styles.header}>
+        <Text style={textStyles.screenTitle}>Medally</Text>
+        <Text style={textStyles.contentText}>A health app by GMC</Text>
+      </View>
+      <Link style={styles.button} href="./_tests/playground">Enter</Link>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    label: {
-        fontSize: 16,
-        marginBottom: 8,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        borderRadius: 8,
-        marginBottom: 16,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    color: colors.defaultwhite,
+    backgroundColor: colors.defaultblack,
+    font: textStyles.containerActionText,
+    borderColor: '#282f41',
+    borderRadius: 6,
+    borderWidth: 2,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    fontSize: 18,
+    marginTop: '5%',
+  },
+  header: {
+    flexDirection: 'column',
+    padding: 30,
+    alignItems: 'center',
+    gap: 6,    
+  },
+  logo: {
+    width: 100, // Adjust as needed
+    height: 100, // Adjust as needed
+    resizeMode: 'contain', // This will maintain the aspect ratio
+  },
 });
-
-export default App;
