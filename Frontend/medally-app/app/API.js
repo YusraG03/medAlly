@@ -178,9 +178,67 @@ class APIEndpoint
             console.error('Error modifying basic info:', error);
         }
     }
-    as
+    async addUserMedicalHistory(medicalHistory, userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserMedicalHistory`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ medicalHistory, userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error storing medical history:', error);
+        }
+    }
+    async getUserMedicalHistory(userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserMedicalHistory`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting medical history:', error);
+        }
+    }
+    async modifyUserMedicalHistory(medicalHistory, userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/modifyUserMedicalHistory`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ medicalHistory, userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error modifying medical history:', error);
+        }
+    }
 }
-
 // const test = new APIEndpoint();
 // test.addMedication({"medicationName":"portlouis"},{"email":"example@gmail.com"});
 
