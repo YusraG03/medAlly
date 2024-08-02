@@ -78,4 +78,4 @@ function getCurrentDate()
     return currentDate.toLocaleDateString();
 }
 
-export default getMedicalFact();
+export default getMedicalFact;
