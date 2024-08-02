@@ -238,8 +238,82 @@ class APIEndpoint
             console.error('Error modifying medical history:', error);
         }
     }
+    async addUserNutrition(nutrition, userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserNutrition`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nutrition, userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        }
+        catch (error) 
+        {
+            console.error('Error storing nutrition:', error);
+        }
+          
+    }
+    async getUserNutrition(userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserNutrition`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        }
+        catch(error) 
+        {
+            console.error('Error getting nutrition:', error);
+        }
+    }
+    async modifyUserNutrition(nutrition, userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/modifyUserNutrition`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nutrition, userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error modifying nutrition:', error);
+        }
+    }
+    async getDailyMedicalFact()
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getDailyMedicalFact`);
+            const data = await response.text();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting daily medical fact:', error);
+        }
+    }
 }
-// const test = new APIEndpoint();
-// test.addMedication({"medicationName":"portlouis"},{"email":"example@gmail.com"});
+const api = new APIEndpoint();
+api.getDailyMedicalFact();
 
 //export default APIEndpoint;   
