@@ -97,8 +97,70 @@ class APIEndpoint
             console.error('Error getting medication:', error);
         }
     }
+    async addUserBasicInfo(basicInfo, userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserBasicInfo`, 
+            {
+                method: 'POST',
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ basicInfo, userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);    
+        } 
+        catch (error) 
+        {
+            console.error('Error storing basic info:', error);
+        }
+    }
+    async getUserBasicInfo(userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserBasicInfo`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting basic info:', error);
+        }
+    }
+    async modifyUserBasicInfo(basicInfo, userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/modifyUserBasicInfo`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ basicInfo, userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error modifying basic info:', error);
+        }
+    }
 }
-const test = new APIEndpoint();
-test.addMedication({"medicationName":"portlouis"},{"email":"example@gmail.com"});
+
+// const test = new APIEndpoint();
+// test.addMedication({"medicationName":"portlouis"},{"email":"example@gmail.com"});
 
 //export default APIEndpoint;   
