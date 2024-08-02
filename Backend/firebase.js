@@ -300,6 +300,46 @@ class firebase
             console.error('Error modifying user physical habbits:', error);
         }
     }
+    async addUserChatConsultation(chatConsultation, userCreds)
+    {
+        try
+        {
+            const dateOfConsultation = new Date().toISOString();
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalHistory').doc(dateOfConsultation);
+            await ref.set(chatConsultation);
+            return("Chat consultation added successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error adding chat consultation:', error);
+        }
+    }
+    async getUserChatConsultation(userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalHistory');
+            const snapshot = await ref.get();
+        
+            if (snapshot.empty) 
+            {
+                return('No chat consultations found.');
+            }
+        
+            const chatConsultations = [];
+
+            snapshot.forEach(doc => {
+                chatConsultations.push(doc.data());
+            });
+        
+            return chatConsultations;
+        }
+        catch(error)
+        {
+            console.error('Error retrieving chat consultations:', error);
+        }
+    }
+    
 }
 
 export default firebase;
