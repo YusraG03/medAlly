@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import firebase from './firebase.js';
 import openaichat from './openai.js';
+import {getMedicalFact} from './medicalFacts.js';
 
 const app = express();
 const PORT = 3000;
@@ -114,6 +115,11 @@ app.post('/getUserPhysicalHabits', async (req, res) =>
 app.post('/modifyUserPhysicalHabits', async (req, res) =>
 {
     const message = await db.modifyUserPhysicalHabbits(req.body.physicalHabits, req.body.userCreds);
+    res.json({"message": message});
+});
+app.get('/getDailyFact', async (req, res) =>
+{
+    const message = getMedicalFact();
     res.json({"message": message});
 });
 
