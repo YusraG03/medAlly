@@ -117,7 +117,7 @@ app.post('/modifyUserPhysicalHabits', async (req, res) =>
     const message = await db.modifyUserPhysicalHabbits(req.body.physicalHabits, req.body.userCreds);
     res.json({"message": message});
 });
-app.get('/getDailyFact', async (req, res) =>
+app.get('/getDailyMedicalFact', async (req, res) =>
 {
     const message = getMedicalFact();
     res.json({"message": message});
