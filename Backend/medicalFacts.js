@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 // Define the file location
 const FILELOCATION = path.join(__dirname, 'medicalFacts.txt');
 
-function getMedicalFact() 
+export function getMedicalFact() 
 {
     const fileData = readFile();
     checkCurrentDate(fileData);
@@ -78,4 +78,4 @@ function getCurrentDate()
     return currentDate.toLocaleDateString();
 }
 
-export default getMedicalFact;
+
