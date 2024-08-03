@@ -42,7 +42,7 @@ export default function App() {
         <Text style={textStyles.screenTitle}>Medally</Text>
         <Text style={textStyles.contentText}>A health app by GMC</Text>
       </View>
-      <Link style={styles.button} href="./_tests/playground">Enter</Link>
+      <Link style={styles.button} href="./NavigationBar">Enter</Link>
       <StatusBar style="auto" />
     </View>
   );
