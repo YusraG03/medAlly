@@ -122,13 +122,23 @@ app.get('/getDailyMedicalFact', async (req, res) =>
     const message = getMedicalFact();
     res.json({"message": message});
 });
+app.post('/addUserDailyFoodIntake', async (req, res) =>
+{
+    const message = await db.addUserDailyFoodIntake(req.body.dailyFoodIntake, req.body.userCreds);
+    res.json({"message": message});
+});
+app.post('/getUserDailyFoodIntake', async (req, res) =>
+{
+    const message = await db.getUserDailyFoodIntake(req.body.dateOfIntake, req.body.userCreds);
+    res.json(message);
+});
 
 app.post('/chat', async(req, res) => 
-    {
-        const { chat } = req.body
-        const message = await openaichat.getChatCompletion(chat);
-        res.json({ "message": message });
-    });
+{
+    const { chat } = req.body
+    const message = await openaichat.getChatCompletion(chat);
+    res.json({ "message": message });
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
