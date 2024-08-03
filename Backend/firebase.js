@@ -300,7 +300,7 @@ class firebase
             console.error('Error modifying user physical habbits:', error);
         }
     }
-    async addUserChatConsultation(chatConsultation, userCreds)
+    async addUserChatConsulta(chatConsultation, userCreds)
     {
         try
         {
@@ -339,7 +339,33 @@ class firebase
             console.error('Error retrieving chat consultations:', error);
         }
     }
-    
+    async addUserDailyFoodIntake(dailyFoodIntake, userCreds)
+    {
+        try
+        {
+            const dateOfIntake = new Date().toLocaleDateString();
+            const ref = this.db.collection('users').doc(userCreds.email).collection('nutrition').doc(dateOfIntake);
+            await ref.set(dailyFoodIntake);
+            return("Daily food intake added successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error adding daily food intake:', error);
+        }
+    }
+    async getUserDailyFoodIntake(dateOfIntake,userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.email).collection('nutrition').doc(dateOfIntake);
+            const document = await ref.get();
+            return document.data();
+        }
+        catch(error)
+        {
+            console.error('Error retrieving daily food intake:', error);
+        }
+    }
 }
 
 export default firebase;
