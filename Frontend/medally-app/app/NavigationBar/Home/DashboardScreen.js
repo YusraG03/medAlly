@@ -1,58 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Linking, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Pedometer } from 'expo-sensors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import axios from 'axios';
 
-// Import local images
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
-import circularImage from '../../_assets/circle.png'; // Path to the circular progress image
 
 const userCredentials = {
-  name: 'User',
-};
-
-const userGeneralInfo = {
-  height: 1.75,
-  weight: 68,
-};
-
-const medicationInfo = {
-  name: 'Panadol',
-  dosage: '500mg',
-  time: new Date(Date.now() + 30 * 60 * 1000),
+  email: 'user@example.com', // Replace with actual user email or credentials
 };
 
 const calculateBMI = (height, weight) => {
   return (weight / (height * height)).toFixed(1);
 };
 
-// Define articlesData array
-const articlesData = [
-  {
-    id: 1,
-    title: 'Article 1',
-    description: 'Description for Article 1',
-    url: 'https://example.com/article1'
-  },
-  {
-    id: 2,
-    title: 'Article 2',
-    description: 'Description for Article 2',
-    url: 'https://example.com/article2'
-  },
-  // Add more articles here
-];
-
-const getTodaysArticles = () => {
-  return articlesData.slice(0, 4); // Return first 4 articles for now
-};
-
 export default function DashboardScreen() {
   const [stepCount, setStepCount] = useState(0);
   const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
-  const [dailyArticles, setDailyArticles] = useState([]);
+  const [userGeneralInfo, setUserGeneralInfo] = useState({ height: 0, weight: 0 });
+  const [bmi, setBmi] = useState('0');
+  const [userName, setUserName] = useState('User');
+  const [medicationInfo, setMedicationInfo] = useState({ name: 'MedName', dosage: '500mg', time: new Date() });
 
   useEffect(() => {
+    // Fetch user profile info from backend
+    axios.post('http://localhost:3000/getUserProfile', userCredentials)
+      .then(response => {
+        const { height, weight, name } = response.data;
+        setUserGeneralInfo({ height, weight });
+        setUserName(name);
+        setBmi(calculateBMI(height, weight));
+      })
+      .catch(error => {
+        console.error('Error fetching user profile info:', error);
+      });
+
+    // Fetch medication info from backend
+    axios.post('http://localhost:3000/getAllMedication', userCredentials)
+      .then(response => {
+        // Assuming response.data contains an array of medication objects
+        const medication = response.data[0]; // Adjust as needed
+        setMedicationInfo({
+          name: medication.name,
+          dosage: medication.dosage,
+          time: new Date(medication.time), // Convert to Date object if needed
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching medication info:', error);
+      });
+
     Pedometer.isAvailableAsync().then(
       result => {
         setIsPedometerAvailable(String(result));
@@ -69,35 +67,49 @@ export default function DashboardScreen() {
     return () => subscription && subscription.remove();
   }, []);
 
-  useEffect(() => {
-    setDailyArticles(getTodaysArticles());
-  }, []);
-
-  const userBMI = calculateBMI(userGeneralInfo.height, userGeneralInfo.weight);
   const timeDifferenceInMinutes = Math.round((medicationInfo.time - new Date()) / 60000);
 
-  // Calculations
   const stepsGoal = 10000;
   const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
+
+  const getTintColor = (progress) => {
+    if (progress < 33) {
+      return '#ff0000'; // Red
+    } else if (progress < 66) {
+      return '#ffff00'; // Yellow
+    } else {
+      return '#00ff00'; // Green
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.welcomeText}>Welcome, {userCredentials.name}!</Text>
+        <Text style={styles.welcomeText}>Welcome, {userName}!</Text>
         <TouchableOpacity style={styles.notificationIcon}>
           <Ionicons name="notifications-outline" size={30} color="#121419" />
         </TouchableOpacity>
       </View>
       <Text style={styles.subText}>How do you feel today?</Text>
       <View style={styles.stepsContainer}>
-        <View style={styles.circularContainer}>
-          <Image source={circularImage} style={styles.circularImage} />
-          <View style={styles.progressTextContainer}>
-            <Text style={styles.stepsText}>{stepCount}</Text>
-            <Text style={styles.stepsLabel}>/10000 steps</Text>
-          </View>
-          <Image source={manIcon} style={styles.manIcon} resizeMode="contain" />
-        </View>
+        <AnimatedCircularProgress
+          size={220}
+          width={15}
+          fill={parseFloat(progress)}
+          tintColor={getTintColor(progress)}
+          onAnimationComplete={() => console.log('onAnimationComplete')}
+          backgroundColor="#3d5875"
+          rotation={0}
+          lineCap="round"
+        >
+          {() => (
+            <View style={styles.progressTextContainer}>
+              <Text style={styles.stepsText}>{stepCount}</Text>
+              <Text style={styles.stepsLabel}>/10000 steps</Text>
+              <Image source={manIcon} style={styles.manIcon} resizeMode="contain" />
+            </View>
+          )}
+        </AnimatedCircularProgress>
       </View>
       <View style={styles.metricsContainer}>
         <View style={styles.metricBox}>
@@ -122,23 +134,8 @@ export default function DashboardScreen() {
         </View>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>BMI</Text>
-          <Text style={styles.infoSubtitle}>{userBMI} kg/m2</Text>
+          <Text style={styles.infoSubtitle}>{bmi} kg/m²</Text>
         </View>
-      </View>
-      <View style={styles.articlesContainer}>
-        <Text style={styles.articlesHeader}>Health Articles</Text>
-        <ScrollView>
-          {dailyArticles.map(article => (
-            <TouchableOpacity 
-              key={article.id} 
-              style={styles.articleBox} 
-              onPress={() => Linking.openURL(article.url)}
-            >
-              <Text style={styles.articleTitle}>{article.title}</Text>
-              <Text style={styles.articleDescription}>{article.description}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
       </View>
     </View>
   );
@@ -182,30 +179,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 50,
   },
-  circularContainer: {
-    width: 220,
-    height: 220,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  circularImage: {
-    width: 260,
-    height: 300,
-    position: 'absolute',
-  },
   manIcon: {
     width: 30,
     height: 95,
     position: 'absolute',
-    top: 20,
+    top: -58,
     zIndex: 1,
   },
   progressTextContainer: {
-    position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    top: 80,
   },
   stepsText: {
     fontSize: 50,
@@ -261,32 +244,5 @@ const styles = StyleSheet.create({
   infoSubtitle: {
     fontSize: 16,
     color: '#555',
-  },
-  articlesContainer: {
-    marginTop: 20,
-  },
-  articlesHeader: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  articleBox: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  articleTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  articleDescription: {
-    fontSize: 16,
   },
 });

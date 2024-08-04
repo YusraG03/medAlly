@@ -12,7 +12,7 @@ const ProfileScreen = () => {
         <Text style={styles.profileEmail}>janedoe@gmail.com</Text>
         <TouchableOpacity
           style={styles.editProfileButton}
-          onPress={() => navigation.navigate('EditProfile')}
+          onPress={() => navigation.navigate('editprofile')}
         >
           <Text style={styles.editProfileText}>Edit Profile</Text>
         </TouchableOpacity>

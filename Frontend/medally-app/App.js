@@ -6,10 +6,10 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SymptomScreen from './symptomChecker'; 
-import MedicationScreen from './app/medication/medication';
+import MedicationScreen from './app/medication/layout';
 import Addmedication from './app/medication/Addmedication';
-import ProfileScreen from './ProfileScreen/_layout';
-import EditProfileScreen from './ProfileScreen/editprofile';
+import ProfileScreen from './app/ProfileScreen/_layout';
+import EditProfileScreen from './app/ProfileScreen/editprofile';
 
 const Stack = createStackNavigator();
 
