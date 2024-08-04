@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Linking, Image } from 'react-native';
 import { Pedometer } from 'expo-sensors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Import local images
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 import circularImage from '../../_assets/circle.png'; // Path to the circular progress image
+
+import ArticlesScreen from './ArticlesScreen'; // Adjust the path if needed
+
+export default function Layout() {
+  return (
+    <View style={styles.container}>
+      <ArticlesScreen />
+    </View>
+  );
+}
 
 const userCredentials = {
   name: 'User',
@@ -26,9 +36,15 @@ const calculateBMI = (height, weight) => {
   return (weight / (height * height)).toFixed(1);
 };
 
+const getTodaysArticles = () => {
+  // Optionally: Implement logic to select articles based on the day
+  return articlesData.slice(0, 4); // Return first 4 articles for now
+};
+
 export default function DashboardScreen() {
   const [stepCount, setStepCount] = useState(0);
   const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
+  const [dailyArticles, setDailyArticles] = useState([]);
 
   useEffect(() => {
     Pedometer.isAvailableAsync().then(
@@ -45,6 +61,10 @@ export default function DashboardScreen() {
     });
 
     return () => subscription && subscription.remove();
+  }, []);
+
+  useEffect(() => {
+    setDailyArticles(getTodaysArticles());
   }, []);
 
   const userBMI = calculateBMI(userGeneralInfo.height, userGeneralInfo.weight);
@@ -98,6 +118,21 @@ export default function DashboardScreen() {
           <Text style={styles.infoTitle}>BMI</Text>
           <Text style={styles.infoSubtitle}>{userBMI} kg/m2</Text>
         </View>
+      </View>
+      <View style={styles.articlesContainer}>
+        <Text style={styles.articlesHeader}>Health Articles</Text>
+        <ScrollView>
+          {dailyArticles.map(article => (
+            <TouchableOpacity 
+              key={article.id} 
+              style={styles.articleBox} 
+              onPress={() => Linking.openURL(article.url)}
+            >
+              <Text style={styles.articleTitle}>{article.title}</Text>
+              <Text style={styles.articleDescription}>{article.description}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -154,17 +189,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   manIcon: {
-    width: 30, // Adjust the size as needed
-    height: 95, // Adjust the size as needed
+    width: 30,
+    height: 95,
     position: 'absolute',
-    top: 20, // Position the manIcon above the text
-    zIndex: 1, // Ensure it's above the progress text
+    top: 20,
+    zIndex: 1,
   },
   progressTextContainer: {
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    top: 80, // Adjust to position the text below the manIcon
+    top: 80,
   },
   stepsText: {
     fontSize: 50,
@@ -220,5 +255,32 @@ const styles = StyleSheet.create({
   infoSubtitle: {
     fontSize: 16,
     color: '#555',
+  },
+  articlesContainer: {
+    marginTop: 20,
+  },
+  articlesHeader: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  articleBox: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  articleTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  articleDescription: {
+    fontSize: 16,
   },
 });

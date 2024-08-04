@@ -1,5 +1,5 @@
-import { View, StyleSheet } from 'react-native';
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import TabBarButton from './TabBarButton';
 
 const TabBar = ({ state, descriptors, navigation }) => {
@@ -10,12 +10,11 @@ const TabBar = ({ state, descriptors, navigation }) => {
         <View style={styles.tabbar}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
-                const label =
-                    options.tabBarLabel !== undefined
-                        ? options.tabBarLabel
-                        : options.title !== undefined
-                        ? options.title
-                        : route.name;
+                const label = options.tabBarLabel !== undefined
+                    ? options.tabBarLabel
+                    : options.title !== undefined
+                    ? options.title
+                    : route.name;
 
                 if (['+not-found', '_sitemap'].includes(route.name)) return null;
 
@@ -43,7 +42,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
                 return (
                     <TabBarButton
                         key={route.name}
-                        style={styles.tabbarItem}
                         onPress={onPress}
                         onLongPress={onLongPress}
                         isFocused={isFocused}
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderTopWidth : 2,
+        borderTopWidth: 2,
         borderColor: '#D6D6D6',
         paddingVertical: 15,
         shadowColor: 'black',
