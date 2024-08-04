@@ -146,10 +146,8 @@ app.get('/getDailyArticles', async (req, res) =>
 
 app.post('/chat', async(req, res) => 
 {
-    const { chat } = req.body.chat
-    console.log(chat);
+    const { chat } = req.body
     const threadID = await db.getUserThreadID(req.body.userCreds);
-    console.log(threadID);
     const message = await openchat.getChatCompletion(chat,threadID);
     res.json({ "message": message });
 });
