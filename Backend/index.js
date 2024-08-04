@@ -142,10 +142,11 @@ app.get('/getDailyArticles', async (req, res) =>
     const message = getArticles();
     res.json(message);
 });
+
 app.post('/chat', async(req, res) => 
 {
     const { chat } = req.body
-    const message = await openaichat.getChatCompletion(chat);
+    const message = await openaichat.getChatCompletion(chat,db.getUserThreadID(req.body.userCreds));
     res.json({ "message": message });
 });
 
