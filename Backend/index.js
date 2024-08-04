@@ -141,7 +141,7 @@ app.post('/getUserDailyFoodIntake', async (req, res) =>
 app.get('/getDailyArticles', async (req, res) =>
 {   
     const message = getArticles();
-    res.json(getMedicalFact);
+    res.json(message);
 });
 
 app.post('/chat', async(req, res) => 
