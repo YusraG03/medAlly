@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 import bodyParser from 'body-parser';
 import firebase from './firebase.js';
 import openaichat from './openai.js';
@@ -24,7 +24,11 @@ app.post('/login', async (req, res) =>
 
 app.post('/register', async (req, res) => 
 {
-    const message = await db.signUp(req.body.userCreds);
+    var jsonObject = JSON.parse(req.body.userCreds);
+    const threadID = "call to function ici RAHHHHH";
+    jsonObject["threadID"] = "met threadID ici stp";
+    jsonObject = JSON.stringify(jsonObject);
+    const message = await db.signUp(jsonObject);
     res.json({"message": message});
 });
 
