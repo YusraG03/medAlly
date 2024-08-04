@@ -5,7 +5,7 @@ import { Camera } from 'expo-camera/legacy';
 import * as MediaLibrary from 'expo-media-library';
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../../components/CameraButton';
-import ExcludeImage from '../../components/ExcludeImage'; // Adjust the path accordingly
+
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
