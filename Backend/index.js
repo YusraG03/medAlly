@@ -26,10 +26,9 @@ app.post('/login', async (req, res) =>
 
 app.post('/register', async (req, res) => 
 {
-    var jsonObject = JSON.parse(req.body.userCreds);
+    var jsonObject = (req.body.userCreds);
     const threadID = await newThread.getThreadID();
-    jsonObject["threadID"] = threadID.id;
-    jsonObject = JSON.stringify(jsonObject);
+    jsonObject["threadID"] = threadID;
     const message = await db.signUp(jsonObject);
     res.json({"message": message});
 });
