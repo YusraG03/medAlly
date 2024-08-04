@@ -28,7 +28,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email);
+            const ref = this.db.collection('users').doc();
             const document = await ref.get();
             const isEmailTaken = await this.checkIfEmailExists(document);
 
@@ -53,7 +53,7 @@ class firebase
     {
         try 
         {
-            const ref = this.db.collection('users').doc(userCreds.email);
+            const ref = this.db.collection('users').doc(userCreds.userID);
             const document = await ref.get();
             const doesEmailExist = await this.checkIfEmailExists(document);
 
@@ -89,7 +89,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medications').doc(medicationDetails.medicationName);
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medications').doc(medicationDetails.medicationName);
             await ref.set(medicationDetails);
             return("Medication added successfully!");
         }
@@ -102,7 +102,7 @@ class firebase
     {
         try 
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medications');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medications');
             const snapshot = await ref.get();
         
             if (snapshot.empty) 
@@ -128,7 +128,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medications').doc(medicationDetails.medicationName);
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medications').doc(medicationDetails.medicationName);
             // delete medication by setting freq to "delete"
             if(medicationDetails.freq === "delete")
             {
@@ -147,7 +147,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('basicInfo');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('basicInfo');
             await ref.set(userBasicInfo);
             return("Basic info added successfully!");
         }
@@ -160,7 +160,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('basicInfo');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('basicInfo');
             const document = await ref.get();
             return document.data();
         }
@@ -173,7 +173,7 @@ class firebase
     {   
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('basicInfo');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('basicInfo');
             await ref.update(userBasicInfo);
             return("Basic info modified successfully!");
         }
@@ -186,7 +186,7 @@ class firebase
     {   
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('medicalHistory');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('medicalHistory');
             await ref.set(userMedicalHistory);
             return ("Medical history added successfully!");
         }
@@ -199,7 +199,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('medicalHistory');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('medicalHistory');
             const document = await ref.get();
             return document.data();
         }
@@ -213,7 +213,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('medicalHistory');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('medicalHistory');
             await ref.update(userMedicalHistory);
             return("Medical history modified successfully!");
         }
@@ -226,7 +226,7 @@ class firebase
     {
         try 
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('nutrition');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('nutrition');
             await ref.set(userNutrition);
             return("Nutrition added successfully!");
         } 
@@ -239,7 +239,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('nutrition');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('nutrition');
             const document = await ref.get();
             return document.data();
         }
@@ -252,7 +252,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('nutrition');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('nutrition');
             await ref.update(userNutrition);
             return("Nutrition modified successfully!");
         }
@@ -265,7 +265,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('physicalHabbits');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('physicalHabbits');
             await ref.set(userPhysicalHabbits);
             return("Physical habbits added successfully!");
         }
@@ -278,7 +278,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('physicalHabbits');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('physicalHabbits');
             const document = await ref.get();
             return document.data();
         }
@@ -291,7 +291,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalInfo').doc('physicalHabbits');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('physicalHabbits');
             await ref.update(userPhysicalHabbits);
             return("Physical habbits modified successfully!");
         }
@@ -300,12 +300,12 @@ class firebase
             console.error('Error modifying user physical habbits:', error);
         }
     }
-    async addUserChatConsulta(chatConsultation, userCreds)
+    async addUserChatConsultation(chatConsultation, userCreds)
     {
         try
         {
             const dateOfConsultation = new Date().toISOString();
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalHistory').doc(dateOfConsultation);
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalHistory').doc(dateOfConsultation);
             await ref.set(chatConsultation);
             return("Chat consultation added successfully!");
         }
@@ -318,7 +318,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('medicalHistory');
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalHistory');
             const snapshot = await ref.get();
         
             if (snapshot.empty) 
@@ -344,7 +344,7 @@ class firebase
         try
         {
             const dateOfIntake = new Date().toLocaleDateString();
-            const ref = this.db.collection('users').doc(userCreds.email).collection('nutrition').doc(dateOfIntake);
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('nutrition').doc(dateOfIntake);
             await ref.set(dailyFoodIntake);
             return("Daily food intake added successfully!");
         }
@@ -357,7 +357,7 @@ class firebase
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.email).collection('nutrition').doc(dateOfIntake);
+            const ref = this.db.collection('users').doc(userCreds.userID).collection('nutrition').doc(dateOfIntake);
             const document = await ref.get();
             return document.data();
         }
