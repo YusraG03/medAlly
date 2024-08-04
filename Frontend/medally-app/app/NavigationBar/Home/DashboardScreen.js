@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, ScrollView } from 'react-native';
 import { Pedometer } from 'expo-sensors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
@@ -22,6 +22,35 @@ export default function DashboardScreen() {
   const [bmi, setBmi] = useState('0');
   const [userName, setUserName] = useState('User');
   const [medicationInfo, setMedicationInfo] = useState({ name: 'MedName', dosage: '500mg', time: new Date() });
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Sample notifications data
+  const [notifications, setNotifications] = useState([
+    {
+      id: '1',
+      title: 'Fitness Update',
+      message: 'Congratulations! You have achieved your fitness goal for today.',
+      date: 'Today',
+    },
+    {
+      id: '2',
+      title: 'Meal Alert',
+      message: 'Your lunch was high in sugar, which can impact you given you have diabetes.',
+      date: 'Today',
+    },
+    {
+      id: '3',
+      title: 'Reminder',
+      message: 'Don’t forget to take your evening medication.',
+      date: 'Yesterday',
+    },
+    {
+      id: '4',
+      title: 'Fitness Alert',
+      message: 'You did not complete all your steps today!',
+      date: '2 Days Ago',
+    },
+  ]);
 
   useEffect(() => {
     // Fetch user profile info from backend
@@ -39,7 +68,6 @@ export default function DashboardScreen() {
     // Fetch medication info from backend
     axios.post('http://localhost:3000/getAllMedication', userCredentials)
       .then(response => {
-        // Assuming response.data contains an array of medication objects
         const medication = response.data[0]; // Adjust as needed
         setMedicationInfo({
           name: medication.name,
@@ -82,11 +110,25 @@ export default function DashboardScreen() {
     }
   };
 
+  const handleNotificationPress = () => {
+    setModalVisible(true);
+  };
+
+  const renderNotification = (notification) => (
+    <View key={notification.id} style={styles.notificationContainer}>
+      <View style={styles.notificationContent}>
+        <Text style={styles.notificationTitle}>{notification.title}</Text>
+        <Text style={styles.notificationMessage}>{notification.message}</Text>
+      </View>
+      <Text style={styles.notificationDate}>{notification.date}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.welcomeText}>Welcome, {userName}!</Text>
-        <TouchableOpacity style={styles.notificationIcon}>
+        <TouchableOpacity style={styles.notificationIcon} onPress={handleNotificationPress}>
           <Ionicons name="notifications-outline" size={30} color="#121419" />
         </TouchableOpacity>
       </View>
@@ -137,6 +179,26 @@ export default function DashboardScreen() {
           <Text style={styles.infoSubtitle}>{bmi} kg/m²</Text>
         </View>
       </View>
+
+      {/* Notification Modal */}
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalHeader}>Notifications</Text>
+            <ScrollView style={styles.modalScrollView}>
+              {notifications.map(notification => renderNotification(notification))}
+            </ScrollView>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -244,5 +306,64 @@ const styles = StyleSheet.create({
   infoSubtitle: {
     fontSize: 16,
     color: '#555',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    width: '90%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    elevation: 5,
+  },
+  modalHeader: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalScrollView: {
+    maxHeight: 300, // Adjust height as needed
+  },
+  notificationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  notificationContent: {
+    flex: 1,
+  },
+  notificationTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  notificationMessage: {
+    fontSize: 16,
+    color: '#555',
+  },
+  notificationDate: {
+    fontSize: 14,
+    color: '#888',
+    marginLeft: 10,
+    alignSelf: 'flex-start',
+  },
+  closeButton: {
+    marginTop: 15,
+    backgroundColor: '#121419',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
