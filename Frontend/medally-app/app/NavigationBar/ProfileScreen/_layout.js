@@ -89,7 +89,7 @@ const ProfileScreen = () => {
               <Text style={styles.checkboxLabel}>I agree to the Terms and Conditions</Text>
             </View>
             <TouchableOpacity
-              style={[styles.closeButton, { backgroundColor: isAgreed ? '#007BFF' : '#cccccc' }]}
+              style={[styles.closeButton, { backgroundColor: isAgreed ? '#000' : '#cccccc' }]}
               disabled={!isAgreed}
               onPress={handleCloseTermsModal}
             >
@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
+    
   },
   closeButtonText: {
     color: '#fff',

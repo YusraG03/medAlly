@@ -52,6 +52,7 @@ export default function DashboardScreen() {
     },
   ]);
 
+  const [article, setArticle] = useState({ title: 'Loading...', content: 'Please wait...' });
   useEffect(() => {
     // Fetch user profile info from backend
     axios.post('http://localhost:3000/getUserProfile', userCredentials)
@@ -78,6 +79,17 @@ export default function DashboardScreen() {
       .catch(error => {
         console.error('Error fetching medication info:', error);
       });
+
+       // Fetch article info from backend
+    axios.post('http://localhost:3000/getLatestArticle', userCredentials)
+    .then(response => {
+      console.log('Article Response:', response.data);
+      const { title, content } = response.data;
+      setArticle({ title, content });
+    })
+    .catch(error => {
+      console.error('Error fetching article info:', error);
+    });
 
     Pedometer.isAvailableAsync().then(
       result => {
@@ -178,6 +190,12 @@ export default function DashboardScreen() {
           <Text style={styles.infoTitle}>BMI</Text>
           <Text style={styles.infoSubtitle}>{bmi} kg/m²</Text>
         </View>
+      </View>
+
+  {/* Article Section */}
+  <View style={styles.articleContainer}>
+        <Text style={styles.articleTitle}>{article.title}</Text>
+        <Text style={styles.articleContent}>{article.content}</Text>
       </View>
 
       {/* Notification Modal */}
@@ -306,6 +324,28 @@ const styles = StyleSheet.create({
   infoSubtitle: {
     fontSize: 16,
     color: '#555',
+  },
+  articleContainer: {
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+    marginBottom: 20,
+  },
+   articleTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+  },
+  articleContent: {
+    fontSize: 16,
+    color: '#666',
+    lineHeight: 22,
   },
   modalOverlay: {
     flex: 1,
