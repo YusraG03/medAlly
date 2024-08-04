@@ -43,7 +43,7 @@ class caloriecalc{
             this.lastmsg = await this.openai.beta.threads.messages.retrieve(this.thread.id,this.messages.data[0].id);
             this.textvalue = this.lastmsg.content[0].text.value
         }
-        console.log(this.textvalue); //this value can be returned or whatever
+        return this.textvalue;
     }
 }
 

@@ -3,7 +3,9 @@ import bodyParser from 'body-parser';
 import firebase from './firebase.js';
 import openaichat from './openai.js';
 import {getMedicalFact, getArticles} from './medicalFacts.js';
+import getThread from './generateThreadID.js';
 
+const newThread = new getThread();
 const app = express();
 const PORT = 3000;
 const db = new firebase();
@@ -25,8 +27,8 @@ app.post('/login', async (req, res) =>
 app.post('/register', async (req, res) => 
 {
     var jsonObject = JSON.parse(req.body.userCreds);
-    const threadID = "call to function ici RAHHHHH";
-    jsonObject["threadID"] = "met threadID ici stp";
+    const threadID = await newThread.getThreadID;
+    jsonObject["threadID"] = threadID.id;
     jsonObject = JSON.stringify(jsonObject);
     const message = await db.signUp(jsonObject);
     res.json({"message": message});
