@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import firebase from './firebase.js';
 import openaichat from './openai.js';
-import {getMedicalFact} from './medicalFacts.js';
+import {getMedicalFact, getArticles} from './medicalFacts.js';
 
 const app = express();
 const PORT = 3000;
@@ -132,7 +132,11 @@ app.post('/getUserDailyFoodIntake', async (req, res) =>
     const message = await db.getUserDailyFoodIntake(req.body.dateOfIntake, req.body.userCreds);
     res.json(message);
 });
-
+app.get('/getDailyArticles', async (req, res) =>
+{   
+    const message = getArticles();
+    res.json(message);
+});
 app.post('/chat', async(req, res) => 
 {
     const { chat } = req.body
