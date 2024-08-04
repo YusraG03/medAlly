@@ -5,6 +5,7 @@ import openaichat from './openai.js';
 import {getMedicalFact, getArticles} from './medicalFacts.js';
 import getThread from './generateThreadID.js';
 
+const openchat = new openaichat();
 const newThread = new getThread();
 const app = express();
 const PORT = 3000;
@@ -145,8 +146,11 @@ app.get('/getDailyArticles', async (req, res) =>
 
 app.post('/chat', async(req, res) => 
 {
-    const { chat } = req.body
-    const message = await openaichat.getChatCompletion(chat,db.getUserThreadID(req.body.userCreds));
+    const { chat } = req.body.chat
+    console.log(chat);
+    const threadID = await db.getUserThreadID(req.body.userCreds);
+    console.log(threadID);
+    const message = await openchat.getChatCompletion(chat,threadID);
     res.json({ "message": message });
 });
 
