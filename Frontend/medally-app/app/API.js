@@ -312,8 +312,20 @@ class APIEndpoint
             console.error('Error getting daily medical fact:', error);
         }
     }
+    async getArticles()
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getDailyArticles`);
+            const data = await response.json();
+            console.log(data);
+        }
+        catch (error) 
+        {
+            console.error('Error getting articles:', error);
+        }
+    }
 }
 const api = new APIEndpoint();
-api.getDailyMedicalFact();
-
+api.getArticles()
 //export default APIEndpoint;   
