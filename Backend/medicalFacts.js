@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import articles from './articles.json' assert { type: 'json' };
+import seedrandom from 'seedrandom';
 
 // Resolve __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -17,6 +19,32 @@ export function getMedicalFact()
     const factCounter = Number(lines[0]);
     const fact = lines[factCounter];
     return fact;
+}
+export function getArticles()
+{
+    const articleIDS = getUniqueRandomNumbers(3, 0, articles.length - 1);
+    const articleArray = [];
+    articleIDS.forEach(id => 
+    {
+        articleArray.push(articles[id]);
+    });
+    return articleArray;
+}
+
+function getUniqueRandomNumbers(count, min, max) {
+    const uniqueNumbers = new Set();
+    const date = new Date();
+    // Generate a seed based on the current date (YYYYMMDD format)
+    const seed = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+    const rng = seedrandom(seed);
+    
+    while (uniqueNumbers.size < count)     
+    {
+        const number = Math.floor(rng() * (max - min + 1)) + min;
+        uniqueNumbers.add(number);
+    }
+    
+    return Array.from(uniqueNumbers);
 }
 
 function readFile() {
