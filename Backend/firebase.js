@@ -366,6 +366,19 @@ class firebase
             console.error('Error retrieving daily food intake:', error);
         }
     }
+    async getUserThreadID(userCreds)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userCreds.userID);
+            const document = await ref.get();
+            return document.data().threadID;
+        }
+        catch(error)
+        {
+            console.error('Error retrieving threadID:', error);
+        }
+    }
 }
 
 export default firebase;
