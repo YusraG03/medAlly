@@ -4,7 +4,7 @@ export default function Layout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ title: 'Home' }} />
-      <Stack.Screen name="addMedication" options={{ title: 'addMedication' }} />
+      <Stack.Screen name="editprofile" options={{ title: 'Edit Profile' }} />
     </Stack>
   );
 }

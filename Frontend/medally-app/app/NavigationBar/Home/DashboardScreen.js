@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, ScrollView, Linking } from 'react-native';
 import { Pedometer } from 'expo-sensors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import axios from 'axios';
+import APIEndpoint from '../../API';
 
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 
@@ -23,8 +23,6 @@ export default function DashboardScreen() {
   const [userName, setUserName] = useState('User');
   const [medicationInfo, setMedicationInfo] = useState({ name: 'MedName', dosage: '500mg', time: new Date() });
   const [modalVisible, setModalVisible] = useState(false);
-
-  // Sample notifications data
   const [notifications, setNotifications] = useState([
     {
       id: '1',
@@ -51,45 +49,25 @@ export default function DashboardScreen() {
       date: '2 Days Ago',
     },
   ]);
+  const [articles, setArticles] = useState([]);
 
-  const [article, setArticle] = useState({ title: 'Loading...', content: 'Please wait...' });
   useEffect(() => {
-    // Fetch user profile info from backend
-    axios.post('http://localhost:3000/getUserProfile', userCredentials)
-      .then(response => {
-        const { height, weight, name } = response.data;
-        setUserGeneralInfo({ height, weight });
-        setUserName(name);
-        setBmi(calculateBMI(height, weight));
-      })
-      .catch(error => {
-        console.error('Error fetching user profile info:', error);
-      });
+    const API = new APIEndpoint();
+    const fetchArticles = async () => {
+      try {
+        const fetchedArticles = await API.getArticles();
+        if (fetchedArticles.length > 0) {
+          setArticles(fetchedArticles);
+        } else {
+          setArticles([]);
+        }
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+        setArticles([]);
+      }
+    };
 
-    // Fetch medication info from backend
-    axios.post('http://localhost:3000/getAllMedication', userCredentials)
-      .then(response => {
-        const medication = response.data[0]; // Adjust as needed
-        setMedicationInfo({
-          name: medication.name,
-          dosage: medication.dosage,
-          time: new Date(medication.time), // Convert to Date object if needed
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching medication info:', error);
-      });
-
-       // Fetch article info from backend
-    axios.post('http://localhost:3000/getLatestArticle', userCredentials)
-    .then(response => {
-      console.log('Article Response:', response.data);
-      const { title, content } = response.data;
-      setArticle({ title, content });
-    })
-    .catch(error => {
-      console.error('Error fetching article info:', error);
-    });
+    fetchArticles();
 
     Pedometer.isAvailableAsync().then(
       result => {
@@ -104,11 +82,12 @@ export default function DashboardScreen() {
       setStepCount(result.steps);
     });
 
-    return () => subscription && subscription.remove();
+    return () => {
+      subscription && subscription.remove();
+    };
   }, []);
 
   const timeDifferenceInMinutes = Math.round((medicationInfo.time - new Date()) / 60000);
-
   const stepsGoal = 10000;
   const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
 
@@ -192,10 +171,22 @@ export default function DashboardScreen() {
         </View>
       </View>
 
-  {/* Article Section */}
-  <View style={styles.articleContainer}>
-        <Text style={styles.articleTitle}>{article.title}</Text>
-        <Text style={styles.articleContent}>{article.content}</Text>
+      {/* Articles Section */}
+      <View style={styles.articleSection}>
+        <Text style={styles.articleHeader}>Articles</Text>
+        <ScrollView style={styles.articleList}>
+          {articles.map(article => (
+            <View key={article.id} style={styles.articleContainer}>
+              <Text style={styles.articleTitle}>{article.title}</Text>
+              <Text style={styles.articleContent}>{article.description}</Text>
+              {article.url ? (
+                <TouchableOpacity onPress={() => Linking.openURL(article.url)}>
+                  <Text style={styles.articleLink}>Read More</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          ))}
+        </ScrollView>
       </View>
 
       {/* Notification Modal */}
@@ -336,7 +327,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginBottom: 20,
   },
-   articleTitle: {
+  articleTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
@@ -346,6 +337,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     lineHeight: 22,
+  },
+  articleLink: {
+    fontSize: 16,
+    color: '#007BFF',
+    marginTop: 10,
   },
   modalOverlay: {
     flex: 1,

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, FlatList, Pressable } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, FlatList, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
+import { Link, useRouter } from 'expo-router';
 
 export default function Addmedication() {
   const navigation = useNavigation();
-
+  const router = useRouter();
   const [name, setName] = useState('');
   const [dosage, setDosage] = useState('');
   const [fromDate, setFromDate] = useState(new Date());
@@ -68,7 +69,8 @@ export default function Addmedication() {
     };
     
     // Navigate back to the MedicationScreen and pass the new medication as a parameter
-    navigation.navigate('Medication', { newMedication });
+
+    router.back()
   };
 
   return (
@@ -160,10 +162,7 @@ export default function Addmedication() {
           </View>
         </View>
       </Modal>
-
-      <TouchableOpacity style={styles.addButton} onPress={handleAddMedicine}>
-        <Text style={styles.addButtonText}>Add Medicine</Text>
-      </TouchableOpacity>
+      <Button title="add medicine" onPress={handleAddMedicine}/>
     </ScrollView>
   );
 }

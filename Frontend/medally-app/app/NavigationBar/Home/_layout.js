@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import DashboardScreen  from './DashboardScreen';
 
 export default function Layout() {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <DashboardScreen></DashboardScreen>
-    </View>
+    </ScrollView>
   );
 }
 
