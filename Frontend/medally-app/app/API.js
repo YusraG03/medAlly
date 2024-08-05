@@ -3,7 +3,7 @@ class APIEndpoint
 {
     constructor()
     {
-        this.url = "http://medally.ddns.net:3000/";
+        this.url = "http://medally.ddns.net:3000";
     }
     async testConnection() 
     {

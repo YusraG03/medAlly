@@ -3,8 +3,9 @@ import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView,
 import { router } from 'expo-router';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
-const { saveUserId } = require('./userStorage');
+import userStore from '../userStorage';
 
+const API = new APIEndpoint()
 const eyeOpenIcon = require('../../_assets/eye-open.png');
 const eyeClosedIcon = require('../../_assets/eye-closed.png');
 
@@ -107,14 +108,14 @@ export default function Login() {
                   email: email,
                   password: password,
                 }
-                const response = await APIEndpoint.login(userCreds);
+                const response = await API.loginUser(userCreds);
                 if(response == "Wrong Credentials!")
                 {
                   alert("Wrong Credentials! Please try again.");
                 }
                 else
                 {
-                  saveUserId(response.userID)
+                  userStore.saveUserId(response.userID)
                   router.push('../../NavigationBar/Home');
                 }
               }
