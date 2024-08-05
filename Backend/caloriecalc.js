@@ -12,7 +12,7 @@ class caloriecalc{
         this.assistant = await this.openai.beta.assistants.retrieve("asst_I3bTUlZj5EKfWqv0gW44dOtH");
         this.thread = await this.openai.beta.threads.create();
         this.file = this.openai.files.create({
-            file: fs.createReadStream(imagePath),
+            file: imagePath,//fs.createReadStream(imagePath),
             purpose: "vision"
         })
         const file_id = (await this.file).id;
