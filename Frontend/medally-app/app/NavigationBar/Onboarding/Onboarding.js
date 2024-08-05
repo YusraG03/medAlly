@@ -21,6 +21,12 @@ const slides = [
     text: 'Welcome to MedAlly, an application that tracks your health and focuses on your wellbeing.',
     image: require('../../_assets/ab.png'),
   },
+  {
+    key: '4',
+    title: 'Safety Alert for meals',
+    text: 'Welcome to MedAlly, an application that tracks your health and focuses on your wellbeing.',
+    image: require('../../_assets/ab.png'), 
+  },
 ];
 
 const Onboarding = () => {
