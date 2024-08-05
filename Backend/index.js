@@ -186,8 +186,6 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         fs.unlink(imagePath, (err) => {
             if (err) {
                 console.error('Error deleting the file:', err);
-            } else {
-                console.log('File deleted successfully');
             }
         });
 
