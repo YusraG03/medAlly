@@ -110,7 +110,7 @@ export default function Login() {
                   password: password,
                 }
                 const response = await API.loginUser(userCreds);
-                if(response == "Wrong Credentials!")
+                if(response.message == "Wrong Credentials!")
                 {
                   alert("Wrong Credentials! Please try again.");
                 }
