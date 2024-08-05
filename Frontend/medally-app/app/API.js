@@ -11,7 +11,7 @@ class APIEndpoint
         {
             const response = await fetch(this.url);
             const data = await response.text();
-            console.log('data');
+            return('data');
         } 
         catch (error) 
         {
@@ -31,7 +31,7 @@ class APIEndpoint
                 body: JSON.stringify({ userCreds }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -51,7 +51,7 @@ class APIEndpoint
                 body: JSON.stringify({ userCreds }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } catch (error) 
         {
             console.error('Error logging in user:', error);
@@ -70,7 +70,7 @@ class APIEndpoint
                 body: JSON.stringify({ medication, userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -90,7 +90,7 @@ class APIEndpoint
                 body: JSON.stringify({ medication, userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -110,7 +110,7 @@ class APIEndpoint
                 body: JSON.stringify({ userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -131,7 +131,7 @@ class APIEndpoint
                 body: JSON.stringify({ basicInfo, userID }),
             });
             const data = await response.json();
-            console.log(data);    
+            return(data);    
         } 
         catch (error) 
         {
@@ -151,7 +151,7 @@ class APIEndpoint
                 body: JSON.stringify({ userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -171,7 +171,7 @@ class APIEndpoint
                 body: JSON.stringify({ basicInfo, userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -191,7 +191,7 @@ class APIEndpoint
                 body: JSON.stringify({ medicalHistory, userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -211,7 +211,7 @@ class APIEndpoint
                 body: JSON.stringify({ userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -231,7 +231,7 @@ class APIEndpoint
                 body: JSON.stringify({ medicalHistory, userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -251,7 +251,7 @@ class APIEndpoint
                 body: JSON.stringify({ nutrition, userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         }
         catch (error) 
         {
@@ -272,7 +272,7 @@ class APIEndpoint
                 body: JSON.stringify({ userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         }
         catch(error) 
         {
@@ -292,7 +292,7 @@ class APIEndpoint
                 body: JSON.stringify({ nutrition, userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -305,7 +305,7 @@ class APIEndpoint
         {
             const response = await fetch(`${this.url}/getDailyMedicalFact`);
             const data = await response.text();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -319,7 +319,7 @@ class APIEndpoint
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
-          console.log('API response data:', data); // Log the data to understand its structure
+          return('API response data:', data); // Log the data to understand its structure
     
           // Assuming the JSON structure is { articles: [...] }
           const articles = data || []; // Adjust this line based on your actual JSON structure
@@ -362,7 +362,7 @@ class APIEndpoint
                 body: formData, 
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         }
         catch (error) 
         {
@@ -382,7 +382,7 @@ class APIEndpoint
                 body: JSON.stringify({ foodIntake, userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         } 
         catch (error) 
         {
@@ -402,7 +402,7 @@ class APIEndpoint
                 body: JSON.stringify({ userID }),
             });
             const data = await response.json();
-            console.log(data);
+            return(data);
         }
         catch (error)
         {
