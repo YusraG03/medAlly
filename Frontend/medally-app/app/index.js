@@ -43,13 +43,8 @@ export default function App() {
         <Text style={textStyles.contentText}>A health app by GMC</Text>
       </View>
       <Link style={styles.button} href="./NavigationBar">Enter</Link>
-<<<<<<< Updated upstream
       <Link style={styles.button} href="./account/sign-up/credential">Sign Up</Link>
       <Link style={styles.button} href="./account/login/loginScreen">Log In</Link>
-=======
-      <Link style={styles.button} href="./account/sign-up">Sign-Up
-      </Link>
->>>>>>> Stashed changes
       <StatusBar style="auto" />
     </View>
   );
