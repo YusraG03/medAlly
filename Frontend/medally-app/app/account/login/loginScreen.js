@@ -3,6 +3,7 @@ import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView,
 import { router } from 'expo-router';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
+const { saveUserId } = require('./userStorage');
 
 const eyeOpenIcon = require('../../_assets/eye-open.png');
 const eyeClosedIcon = require('../../_assets/eye-closed.png');
@@ -113,6 +114,7 @@ export default function Login() {
                 }
                 else
                 {
+                  saveUserId(response.userID)
                   router.push('../../NavigationBar/Home');
                 }
               }
