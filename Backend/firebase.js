@@ -24,29 +24,31 @@ class firebase
     async testConnection(){
         console.log('Hello World')
     }
-    async signUp(userCreds)
+    async signUp(userCreds) 
     {
-        try
+        try 
         {
-            const ref = this.db.collection('users').doc();
-            const document = await ref.get();
-            //const isEmailTaken = await this.checkIfEmailExists(document);
-
-            if(isEmailTaken)
-            {
-                return("Email already taken!");
+            const userQuery = await this.db.collection('users').where('email', '==', userCreds.email).get();
+    
+            if (!userQuery.empty) {
+                return "Email Already Exists!";
             }
-
-            //hash user password
+    
+            // Hash user password
             const hashedPassword = await bcrypt.hash(userCreds.password, SALT_ROUNDS);
             userCreds.password = hashedPassword;
-        
+    
+            // Initialize ref after email check
+            const ref = this.db.collection('users').doc();
             await ref.set(userCreds);
-            return("Account created successfully!");
-        }
-        catch(error)
-        {
-            console.error('Error creating account:', error);
+    
+            return {
+                message: "Account created successfully!",
+                userID: ref.id
+            };
+        } catch (error) {
+            console.error(error);
+            return "An error occurred during sign-up.";
         }
     }
     async signIn(userCreds)
@@ -76,14 +78,6 @@ class firebase
             console.error(error);
             return "An error occurred during sign-in.";
         }
-    }
-    async checkIfEmailExists(document)
-    {   
-        if (document.exists) 
-        {   
-            return true;
-        }
-        return false;
     }
     async addMedication(medicationDetails, userID)
     {
