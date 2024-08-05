@@ -9,7 +9,7 @@ import getThread from './generateThreadID.js';
 import multer from 'multer';
 import caloriecalc from './caloriecalc.js';
 import cors from 'cors';
-
+//prod
 const openchat = new openaichat();
 const newThread = new getThread();
 const app = express();
