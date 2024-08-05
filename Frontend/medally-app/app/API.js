@@ -57,7 +57,7 @@ class APIEndpoint
             console.error('Error logging in user:', error);
         }
     }
-    async addMedication(medication, userCreds)
+    async addMedication(medication, userID)
     {
         try 
         {
@@ -67,7 +67,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ medication, userCreds }),
+                body: JSON.stringify({ medication, userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -77,7 +77,7 @@ class APIEndpoint
             console.error('Error storing medication:', error);
         }
     }
-    async modifyMedication(medication, userCreds)
+    async modifyMedication(medication, userID)
     {
         try 
         {
@@ -87,7 +87,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ medication, userCreds }),
+                body: JSON.stringify({ medication, userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -97,7 +97,7 @@ class APIEndpoint
             console.error('Error modifying medication:', error);
         }
     }
-    async getAllMedication(userCreds) 
+    async getAllMedication(userID) 
     {
         try 
         {
@@ -107,7 +107,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userCreds }),
+                body: JSON.stringify({ userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -117,7 +117,7 @@ class APIEndpoint
             console.error('Error getting medication:', error);
         }
     }
-    async addUserBasicInfo(basicInfo, userCreds)
+    async addUserBasicInfo(basicInfo, userID)
     {
         try 
         {
@@ -128,7 +128,7 @@ class APIEndpoint
                 {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ basicInfo, userCreds }),
+                body: JSON.stringify({ basicInfo, userID }),
             });
             const data = await response.json();
             console.log(data);    
@@ -138,7 +138,7 @@ class APIEndpoint
             console.error('Error storing basic info:', error);
         }
     }
-    async getUserBasicInfo(userCreds)
+    async getUserBasicInfo(userID)
     {
         try 
         {
@@ -148,7 +148,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userCreds }),
+                body: JSON.stringify({ userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -158,7 +158,7 @@ class APIEndpoint
             console.error('Error getting basic info:', error);
         }
     }
-    async modifyUserBasicInfo(basicInfo, userCreds)
+    async modifyUserBasicInfo(basicInfo, userID)
     {
         try 
         {
@@ -168,7 +168,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ basicInfo, userCreds }),
+                body: JSON.stringify({ basicInfo, userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -178,7 +178,7 @@ class APIEndpoint
             console.error('Error modifying basic info:', error);
         }
     }
-    async addUserMedicalHistory(medicalHistory, userCreds)
+    async addUserMedicalHistory(medicalHistory, userID)
     {
         try 
         {
@@ -188,7 +188,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ medicalHistory, userCreds }),
+                body: JSON.stringify({ medicalHistory, userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -198,7 +198,7 @@ class APIEndpoint
             console.error('Error storing medical history:', error);
         }
     }
-    async getUserMedicalHistory(userCreds)
+    async getUserMedicalHistory(userID)
     {
         try 
         {
@@ -208,7 +208,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userCreds }),
+                body: JSON.stringify({ userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -218,7 +218,7 @@ class APIEndpoint
             console.error('Error getting medical history:', error);
         }
     }
-    async modifyUserMedicalHistory(medicalHistory, userCreds)
+    async modifyUserMedicalHistory(medicalHistory, userID)
     {
         try 
         {
@@ -228,7 +228,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ medicalHistory, userCreds }),
+                body: JSON.stringify({ medicalHistory, userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -238,7 +238,7 @@ class APIEndpoint
             console.error('Error modifying medical history:', error);
         }
     }
-    async addUserNutrition(nutrition, userCreds)
+    async addUserNutrition(nutrition, userID)
     {
         try 
         {
@@ -248,7 +248,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nutrition, userCreds }),
+                body: JSON.stringify({ nutrition, userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -259,7 +259,7 @@ class APIEndpoint
         }
           
     }
-    async getUserNutrition(userCreds)
+    async getUserNutrition(userID)
     {
         try 
         {
@@ -269,7 +269,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userCreds }),
+                body: JSON.stringify({ userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -279,7 +279,7 @@ class APIEndpoint
             console.error('Error getting nutrition:', error);
         }
     }
-    async modifyUserNutrition(nutrition, userCreds)
+    async modifyUserNutrition(nutrition, userID)
     {
         try 
         {
@@ -289,7 +289,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nutrition, userCreds }),
+                body: JSON.stringify({ nutrition, userID }),
             });
             const data = await response.json();
             console.log(data);
@@ -329,7 +329,7 @@ class APIEndpoint
           return []; // Return an empty array if there's an error
         }
       }
-    async chatWithGPT(chat, userCreds)
+    async chatWithGPT(chat, userID)
     {
         try 
         {
@@ -339,7 +339,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ chat, userCreds }),
+                body: JSON.stringify({ chat, userID }),
             });
             const data = await response.json();
             console.log(data);
