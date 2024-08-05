@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, FlatList, Pressable } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, FlatList, Pressable, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
@@ -8,6 +8,8 @@ import APIEndpoint from '../../API';
 export default function Addmedication() {
   const navigation = useNavigation();
   const router = useRouter();
+  const api = new APIEndpoint(); // Instantiate the APIEndpoint class
+
   const [name, setName] = useState('');
   const [dosage, setDosage] = useState('');
   const [fromDate, setFromDate] = useState(new Date());
@@ -57,21 +59,38 @@ export default function Addmedication() {
     setIsTimeSelected(true);
   };
 
-  const handleAddMedicine = () => {
+  const handleAddMedicine = async () => {
     const newMedication = {
-      id: Date.now().toString(),
       name,
       dosage,
-      fromDate,
-      toDate,
-      time,
+      fromDate: fromDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
+      toDate: toDate.toISOString().split('T')[0],
+      time: time.toTimeString().split(' ')[0], // Format time to HH:MM:SS
       cause,
       reminder,
     };
-    
-    // Navigate back to the MedicationScreen and pass the new medication as a parameter
 
-    router.back()
+    const userID = '12345'; // replace with actual user ID
+
+    try {
+      const response = await api.addMedication(newMedication, userID);
+      Alert.alert('Success', 'Medication added successfully');
+      // Optionally clear the input fields after successful submission
+      setName('');
+      setDosage('');
+      setFromDate(new Date());
+      setToDate(new Date());
+      setTime(new Date());
+      setCause('');
+      setReminder('10 minutes before');
+      setIsFromDateSelected(false);
+      setIsToDateSelected(false);
+      setIsTimeSelected(false);
+      router.back();
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to add medication');
+    }
   };
 
   return (
@@ -163,7 +182,7 @@ export default function Addmedication() {
           </View>
         </View>
       </Modal>
-      <Button title="add medicine" onPress={handleAddMedicine}/>
+      <Button title="Add Medication" onPress={handleAddMedicine}/>
     </ScrollView>
   );
 }

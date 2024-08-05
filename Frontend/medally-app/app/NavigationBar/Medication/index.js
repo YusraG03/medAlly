@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
+import APIEndpoint from '../../API';
 
 // Weeklycalendar Component
 const Weeklycalendar = ({ onDatePress }) => {
@@ -85,7 +86,7 @@ export default function MedicationScreen() {
   const renderItem = ({ item }) => (
     <View style={styles.medicationItem}>
       <Text style={styles.medicationName}>{item.name}</Text>
-      <Text style={styles.medicationDetails}>{`${item.dosage}, ${item.fromDate.toDateString()} - ${item.toDate.toDateString()}`}</Text>
+      <Text style={styles.medicationDetails}>{`${item.dosage}, ${new Date(item.fromDate).toDateString()} - ${new Date(item.toDate).toDateString()}`}</Text>
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={() => handleMenuPress(item)}>
           <Ionicons name="ellipsis-vertical" size={24} color="black" />
@@ -99,11 +100,16 @@ export default function MedicationScreen() {
       <Text style={styles.screenTitle}>Medications</Text>
       <Weeklycalendar onDatePress={(date) => console.log(date)} />
       
-      <FlatList
-        data={medications}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-      />
+      {medications.length > 0 ? (
+        <FlatList
+          data={medications}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+        />
+      ) : (
+        <Text style={styles.noMedicationsText}>No medications for now</Text>
+      )}
+
       <Button title="Add Medication" onPress={() => router.push('./Medication/addMedication')} />
       <Link href="/medication/Addmedication" style={styles.addButton}>
         <Ionicons name="add-circle" size={60} color="black" />
@@ -200,6 +206,12 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     marginLeft: 'auto',
+  },
+  noMedicationsText: {
+    fontSize: 18,
+    color: '#555',
+    textAlign: 'center',
+    marginTop: 20,
   },
   modalContainer: {
     flex: 1,
