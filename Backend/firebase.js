@@ -30,7 +30,7 @@ class firebase
         {
             const ref = this.db.collection('users').doc();
             const document = await ref.get();
-            const isEmailTaken = await this.checkIfEmailExists(document);
+            //const isEmailTaken = await this.checkIfEmailExists(document);
 
             if(isEmailTaken)
             {
@@ -51,30 +51,30 @@ class firebase
     }
     async signIn(userCreds)
     {
-        try 
-        {
-            const ref = this.db.collection('users').doc(userCreds.userID);
-            const document = await ref.get();
-            const doesEmailExist = await this.checkIfEmailExists(document);
-
-            if(!doesEmailExist)
-            {
-                return("Email does not exist!");
-            }
+        try {
+            // Find the user document by email
+            const userQuery = await this.db.collection('users').where('email', '==', userCreds.email).get();
             
-            if(await bcrypt.compare(userCreds.password, document.data().password))
-            {
-                return("Login successful!");
+            if (userQuery.empty) {
+                return "Wrong Credentials!";
             }
-            else
-            {
-                return("Incorrect password!");
+    
+            const userDoc = userQuery.docs[0];
+            const userData = userDoc.data();
+    
+            // Check if the password matches
+            if (await bcrypt.compare(userCreds.password, userData.password)) {
+                return {
+                    message: "Login successful!",
+                    userID: userDoc.id // Return userID for future use
+                };
+            } else {
+                return "Wrong Credentials!";
             }
-            
-        } 
-        catch (error) 
-        {
-            console.log('Error signing in user:', error);
+    
+        } catch (error) {
+            console.error(error);
+            return "An error occurred during sign-in.";
         }
     }
     async checkIfEmailExists(document)
