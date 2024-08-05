@@ -1,16 +1,21 @@
-import fs from 'fs/promises';
-import { existsSync } from 'fs';
+import fs from 'fs';
+import { promisify } from 'util';
+
+const writeFile = promisify(fs.writeFile);
+const readFile = promisify(fs.readFile);
+const fileExists = promisify(fs.exists);
 
 const userFilePath = './user_id.txt';
 
 class UserStorage {
     async saveUserId(userId) {
-        await fs.writeFile(userFilePath, userId, 'utf8');
+        await writeFile(userFilePath, userId, 'utf8');
     }
     
     async getUserId() {
-        if (existsSync(userFilePath)) {
-            return await fs.readFile(userFilePath, 'utf8');
+        const exists = await fileExists(userFilePath);
+        if (exists) {
+            return await readFile(userFilePath, 'utf8');
         }
         return null;
     }
