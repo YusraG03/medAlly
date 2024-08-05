@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { StyleSheet, Button, Text, View, Image, TextInput, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
@@ -125,7 +125,6 @@ export default function generalInformation() {
           </View>
         </View>
       </View>
-      <Button title="Go to Meal Breakdown" onPress={() => router.push('./Nutrition/results')} />
       <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
