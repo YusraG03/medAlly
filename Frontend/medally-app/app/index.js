@@ -43,7 +43,7 @@ export default function App() {
         <Text style={textStyles.contentText}>A health app by GMC</Text>
       </View>
       <Link style={styles.button} href="./NavigationBar">Enter</Link>
-      <Link style={styles.button} href="./account/sign-up/credential">Sign Up</Link>
+      <Link style={styles.button} href="./account/sign-up">Sign Up</Link>
       <Link style={styles.button} href="./account/login/loginScreen">Log In</Link>
       <StatusBar style="auto" />
     </View>
