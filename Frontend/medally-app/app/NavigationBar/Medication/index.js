@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity, Modal, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
-
 
 // Weeklycalendar Component
 const Weeklycalendar = ({ onDatePress }) => {
@@ -43,9 +42,13 @@ const Weeklycalendar = ({ onDatePress }) => {
 // MedicationScreen Component
 export default function MedicationScreen() {
   const [medications, setMedications] = useState([]);
+  const [selectedMedication, setSelectedMedication] = useState(null);
+  const [showMenuModal, setShowMenuModal] = useState(false);
+
   const navigation = useNavigation();
   const route = useRoute();
   const router = useRouter();
+
   useEffect(() => {
     const loadMedications = async () => {
       try {
@@ -68,6 +71,29 @@ export default function MedicationScreen() {
     }
   }, [route.params?.newMedication]);
 
+  const handleMenuPress = (medication) => {
+    setSelectedMedication(medication);
+    setShowMenuModal(true);
+  };
+
+  const handleAction = (action) => {
+    // Implement action handling (Take or Skip)
+    console.log(`Medication ${selectedMedication.name} ${action}`);
+    setShowMenuModal(false);
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.medicationItem}>
+      <Text style={styles.medicationName}>{item.name}</Text>
+      <Text style={styles.medicationDetails}>{`${item.dosage}, ${item.fromDate.toDateString()} - ${item.toDate.toDateString()}`}</Text>
+      <View style={styles.menuContainer}>
+        <TouchableOpacity onPress={() => handleMenuPress(item)}>
+          <Ionicons name="ellipsis-vertical" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.screenTitle}>Medications</Text>
@@ -76,17 +102,36 @@ export default function MedicationScreen() {
       <FlatList
         data={medications}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.medicationItem}>
-            <Text style={styles.medicationName}>{item.name}</Text>
-            <Text style={styles.medicationDetails}>{`${item.dosage}, ${item.fromDate.toDateString()} - ${item.toDate.toDateString()}`}</Text>
-          </View>
-        )}
+        renderItem={renderItem}
       />
-<Button title="add medication" onPress={() => router.push('./Medication/addMedication')} />
+      <Button title="Add Medication" onPress={() => router.push('./Medication/addMedication')} />
       <Link href="/medication/Addmedication" style={styles.addButton}>
         <Ionicons name="add-circle" size={60} color="black" />
       </Link>
+
+      {/* Menu Modal */}
+      <Modal visible={showMenuModal} animationType="slide" transparent>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Action</Text>
+            <TouchableOpacity
+              style={styles.modalOption}
+              onPress={() => handleAction('Take')}
+            >
+              <Text style={styles.modalText}>Take</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalOption}
+              onPress={() => handleAction('Skip')}
+            >
+              <Text style={styles.modalText}>Skip</Text>
+            </TouchableOpacity>
+            <Pressable onPress={() => setShowMenuModal(false)}>
+              <Text style={styles.closeModalText}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -141,6 +186,9 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#f9f9f9',
     borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   medicationName: {
     fontSize: 18,
@@ -150,4 +198,38 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#555',
   },
+  menuContainer: {
+    marginLeft: 'auto',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  modalOption: {
+    paddingVertical: 10,
+    width: '100%',
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+  },
+  closeModalText: {
+    marginTop: 20,
+    fontSize: 16,
+    color: 'blue',
+  }
 });
