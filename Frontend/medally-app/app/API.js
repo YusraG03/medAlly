@@ -409,5 +409,45 @@ class APIEndpoint
             console.error('Error getting food intake:', error);
         }
     }
+    async addUserDiagnosis(diagnosis, userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserDiagnosis`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ diagnosis, userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error storing diagnosis:', error);
+        }
+    }
+    async getUserDiagnosis(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserDiagnosis`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting diagnosis:', error);
+        }
+    }
 }
 export default APIEndpoint;   
