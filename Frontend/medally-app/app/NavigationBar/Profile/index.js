@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, CheckBox } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, Modal, ScrollView, CheckBox } from 'react-native';
+import { useRouter, Link } from 'expo-router';
 
 const ProfileScreen = () => {
-  const navigation = useNavigation();
   const [isTermsVisible, setIsTermsVisible] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
 
   const handleTermsPress = () => {
     setIsTermsVisible(true);
   };
-
+  const router = useRouter();
   const handleCloseTermsModal = () => {
     setIsTermsVisible(false);
   };
@@ -21,12 +20,7 @@ const ProfileScreen = () => {
         <View style={styles.profilePic} />
         <Text style={styles.profileName}>Jane Doe</Text>
         <Text style={styles.profileEmail}>janedoe@gmail.com</Text>
-        <TouchableOpacity
-          style={styles.editProfileButton}
-          onPress={() => navigation.navigate('editprofile')}
-        >
-          <Text style={styles.editProfileText}>Edit Profile</Text>
-        </TouchableOpacity>
+        <Button title="Edit Profile" onPress={() => router.push('./Profile/editprofile')} />
       </View>
       <View style={styles.menu}>
         <TouchableOpacity style={styles.menuItem}>
