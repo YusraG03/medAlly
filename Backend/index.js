@@ -41,13 +41,13 @@ app.get('/', (req, res) =>
 
 app.post('/login', async (req, res) =>
 {
-    const message = await db.signIn(req.body.userCredsd);
+    const message = await db.signIn(req.body.userCreds);
     res.json({"message": message});
 });
 
 app.post('/register', async (req, res) => 
 {
-    var jsonObject = (req.body.userCredsd);
+    var jsonObject = (req.body.userCreds);
     const threadID = await newThread.getThreadID();
     jsonObject["threadID"] = threadID;
     const message = await db.signUp(jsonObject);
