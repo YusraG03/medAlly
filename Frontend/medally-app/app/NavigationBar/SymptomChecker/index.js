@@ -172,7 +172,6 @@ export function ChatScreen({ navigation }) {
             style={styles.logo}
           />
         </Pressable>
-        <Button title="History" onPress={() => router.push('./SymptomChecker/results')} />
       </View>
 
       <GiftedChat
