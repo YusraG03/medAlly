@@ -346,4 +346,4 @@ class APIEndpoint
         }
     }
 }
-//export default APIEndpoint;   
+export default APIEndpoint;   
