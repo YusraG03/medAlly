@@ -325,7 +325,25 @@ class APIEndpoint
             console.error('Error getting articles:', error);
         }
     }
+    async chatWithGPT(chat, userCreds)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/chat`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ chat, userCreds }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error chatting with GPT:', error);
+        }
+    }
 }
-const api = new APIEndpoint();
-api.getArticles()
 //export default APIEndpoint;   
