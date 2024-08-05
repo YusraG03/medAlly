@@ -3,7 +3,7 @@ class APIEndpoint
 {
     constructor()
     {
-        this.url = "http://localhost:3000";
+        this.url = "http://102.113.243.40:3000";
     }
     async testConnection() 
     {
@@ -314,7 +314,7 @@ class APIEndpoint
     }
     async getArticles() {
         try {
-          const response = await fetch('http://localhost:3000/getDailyArticles');
+          const response = await fetch(`${this.url}/getDailyArticles`);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
