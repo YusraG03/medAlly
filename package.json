@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@react-native-community/datetimepicker": "^8.2.0"
+    "@react-native-community/datetimepicker": "^8.2.0",
+    "expo-file-system": "^17.0.1"
   }
 }

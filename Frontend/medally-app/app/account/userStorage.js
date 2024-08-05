@@ -1,33 +1,27 @@
-import fs from 'fs';
+import * as FileSystem from 'expo-file-system';
 
-const userFilePath = './user_id.txt';
+const userFilePath = FileSystem.documentDirectory + 'user_id.txt';
 
 class UserStorage {
     async saveUserId(userId) {
-        return new Promise((resolve, reject) => {
-            fs.writeFile(userFilePath, userId, 'utf8', (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve();
-            });
-        });
+        try {
+            await FileSystem.writeAsStringAsync(userFilePath, userId, { encoding: FileSystem.EncodingType.UTF8 });
+        } catch (error) {
+            console.error('Error saving user ID:', error);
+        }
     }
     
     async getUserId() {
-        return new Promise((resolve, reject) => {
-            fs.access(userFilePath, fs.constants.F_OK, (err) => {
-                if (err) {
-                    return resolve(null);
-                }
-                fs.readFile(userFilePath, 'utf8', (err, data) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve(data);
-                });
-            });
-        });
+        try {
+            const fileInfo = await FileSystem.getInfoAsync(userFilePath);
+            if (!fileInfo.exists) {
+                return null;
+            }
+            return await FileSystem.readAsStringAsync(userFilePath, { encoding: FileSystem.EncodingType.UTF8 });
+        } catch (error) {
+            console.error('Error reading user ID:', error);
+            return null;
+        }
     }
 }
 
