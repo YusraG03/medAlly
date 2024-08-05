@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, Button, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router'; // Updated import
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API.js';
 
 // Import eye icons
 const eyeOpenIcon = require('../../_assets/eye-open.png');
 const eyeClosedIcon = require('../../_assets/eye-closed.png');
+const API = new APIEndpoint();
 
 export default function SignUp() {
   const router = useRouter(); // Initialize router
@@ -194,7 +196,19 @@ export default function SignUp() {
         {/* Submit button */}
         <Pressable 
           style={[styles.button, !isValid && styles.disabledButton]} 
-          onPress={() => router.push('/general-information')}
+          onPress={async () => {
+            const userCreds =
+            {
+              firstName: firstName,
+              lastName: lastName,
+              email: email,
+              password: password
+            }
+            const response = await API.registerUser(userCreds);
+            
+            router.push('/general-information')
+          }
+          }
           disabled={!isValid}
         >
           <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Next</Text>
