@@ -1,19 +1,30 @@
-import fs from 'fs';
+import { promises as fs } from 'fs';
+import path from 'path';
 
-const userFilePath = "./user-id.txt";
+const userFilePath = path.join(__dirname, 'user-id.txt');
 
-class saveUser{
+class SaveUser {
     async saveUserId(userId) {
-        fs.writeFileSync(userFilePath, userId, 'utf8');
+        try {
+            await fs.writeFile(userFilePath, userId, 'utf8');
+        } catch (error) {
+            console.error('Error saving user ID:', error);
+        }
     }
     
     async getUserId() {
-        if (fs.existsSync(userFilePath)) {
-            return fs.readFileSync(userFilePath, 'utf8');
+        try {
+            await fs.access(userFilePath);
+            const data = await fs.readFile(userFilePath, 'utf8');
+            return data;
+        } catch (error) {
+            if (error.code === 'ENOENT') {
+                return null; // File does not exist
+            }
+            console.error('Error reading user ID:', error);
         }
         return null;
     }
-    
 }
 
-export default saveUser;
+export default SaveUser;
