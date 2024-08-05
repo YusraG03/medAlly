@@ -7,19 +7,19 @@ const slides = [
     key: '1',
     title: 'Get a diagnose for your symptoms',
     text: 'Welcome to MedAlly, an application that tracks your health and focuses on your wellbeing.',
-    image: require('../_assets/a.png'),
+    image: require('../../_assets/a.png'),
   },
   {
     key: '2',
     title: 'Keep track of your nutrition',
     text: 'With AI technology, simply take a picture of your meal and our app will keep track of the nutrients you take.',
-    image: require('../_assets/Frame.png'),
+    image: require('../../_assets/Frame.png'),
   },
   {
     key: '3',
     title: 'Get notified for medications',
     text: 'Welcome to MedAlly, an application that tracks your health and focuses on your wellbeing.',
-    image: require('../_assets/ab.png'),
+    image: require('../../_assets/ab.png'),
   },
 ];
 
@@ -45,7 +45,12 @@ const Onboarding = () => {
 
   const goToNextSlide = () => {
     if (currentIndex < slides.length - 1) {
-      flatListRef.current.scrollToIndex({ index: currentIndex + 1 });
+      const nextIndex = currentIndex + 1;
+      flatListRef.current?.scrollToOffset({
+        offset: nextIndex * width,
+        animated: true,
+      });
+      setCurrentIndex(nextIndex); // Update index after scrolling
     } else {
       navigation.navigate('Home');
     }
@@ -53,7 +58,12 @@ const Onboarding = () => {
 
   const goToPreviousSlide = () => {
     if (currentIndex > 0) {
-      flatListRef.current.scrollToIndex({ index: currentIndex - 1 });
+      const prevIndex = currentIndex - 1;
+      flatListRef.current?.scrollToOffset({
+        offset: prevIndex * width,
+        animated: true,
+      });
+      setCurrentIndex(prevIndex); // Update index after scrolling
     }
   };
 
@@ -85,7 +95,7 @@ const Onboarding = () => {
       </View>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, { opacity: currentIndex === 0 ? 0.5 : 1 }]}
           onPress={goToPreviousSlide}
           disabled={currentIndex === 0}
         >
@@ -159,7 +169,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: 'blue',
+    backgroundColor: 'black',
     borderRadius: 5,
   },
   buttonText: {
@@ -169,3 +179,4 @@ const styles = StyleSheet.create({
 });
 
 export default Onboarding;
+
