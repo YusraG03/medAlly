@@ -369,5 +369,45 @@ class APIEndpoint
             console.error('Error calculating calories:', error);
         }
     }
+    async addUserDailyFoodIntake(foodIntake, userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserDailyFoodIntake`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ foodIntake, userID }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error storing food intake:', error);
+        }
+    }
+    async getUserDailyFoodIntake(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserDailyFoodIntake`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            console.log(data);
+        }
+        catch (error)
+        {
+            console.error('Error getting food intake:', error);
+        }
+    }
 }
 export default APIEndpoint;   
