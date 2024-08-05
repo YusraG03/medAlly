@@ -2,46 +2,35 @@ import React from 'react';
 import { Text, StyleSheet, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import colors from '../../_assets/colors';
 import textStyles from '../../_assets/textStyles';
+import { useLocalSearchParams } from 'expo-router';
 
-const data = {
-  diseaseName: "Common Cold",
-  timeStamp: "21 July 2024, 8:35pm",
-  likelihood: "9 out of 10",
-  description: "According to your recent lack of vitamin C in your nutrition, a common cold is a highly accurate guess. Symptoms such as body aches, blocked nose, sneezing, and a general discomfort in the nasal area can also happen.",
-  treatments: [
-    {
-      title: "Pain Relievers",
-      description: "Reduce fever, headaches, and body aches. Common options are ibuprofen and acetaminophen."
-    },
-    {
-      title: "Hydration",
-      description: "Drink plenty of fluids such as water, herbal tea, and broth to stay hydrated and help thin mucus."
-    },
-    {
-      title: "Vitamin C",
-      description: "May slightly reduce the duration and severity of colds. Found in citrus fruits and supplements."
-    },
-    {
-      title: "Avoid Close Contact",
-      description: "Stay away from individuals who are sick to prevent catching the virus yourself or infecting others."
-    }
-  ]
-};
+
 
 export function ResultScreen() {
+	const params = useLocalSearchParams();
+  
+// Use the received data instead of the hardcoded data
+const data = {
+  disease: params.disease || "No disease information",
+  timeStamp: new Date().toLocaleString(), // You may want to pass this from the ChatScreen
+  likelihood: params.likelihood || "0",
+  description: params.description || "No description available",
+  treatments: params.treatments ? JSON.parse(params.treatments) : []
+};
+
   return (
     <View style={styles.container}>
       <Text style={textStyles.screenTitle}>Symptom Checker</Text>
       <ScrollView style={styles.content}>
         <View style={styles.section}>
           <Text style={textStyles.smallParagraphTitle}>You have the</Text>
-          <Text style={styles.diseaseName}>{data.diseaseName}</Text>
+          <Text style={styles.diseaseName}>{data.disease}</Text>
         </View>
         
         <View style={styles.section}>
           <Text style={textStyles.smallParagraphTitle}>Likelihood</Text>
           <Text style={styles.boldContent}>
-            {data.likelihood} people with these symptoms were experiencing the same disease.
+            {data.likelihood} out of 10 people with these symptoms were experiencing the same disease.
           </Text>
         </View>
         

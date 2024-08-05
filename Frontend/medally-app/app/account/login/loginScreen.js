@@ -100,7 +100,7 @@ export default function Login() {
        
         <Pressable 
           style={[styles.button, !isValid && styles.disabledButton]} 
-          onPress={() => router.push('../NavigationBar/Home/DashboardSceen')}
+          onPress={() => router.push('../../NavigationBar/Home')}
           disabled={!isValid}
         >
           <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Login</Text>
