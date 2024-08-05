@@ -1,15 +1,30 @@
 import express, { json } from 'express';
+import path from 'path';
+import fs from 'fs';
 import bodyParser from 'body-parser';
 import firebase from './firebase.js';
 import openaichat from './openai.js';
 import {getMedicalFact, getArticles} from './medicalFacts.js';
 import getThread from './generateThreadID.js';
+import multer from 'multer';
+import caloriecalc from './caloriecalc.js';
 
 const openchat = new openaichat();
 const newThread = new getThread();
 const app = express();
 const PORT = 3000;
-const db = new firebase();
+const db = new firebase()
+const calorie = new caloriecalc();
+const storage = multer.diskStorage({
+    destination: './uploads/',
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({
+    storage: storage,
+    //limits: { fileSize: 1000000 }, // Limit file size to 1MB
+});
 
 app.use(bodyParser.json());
 
@@ -150,6 +165,32 @@ app.post('/chat', async(req, res) =>
     const threadID = await db.getUserThreadID(req.body.userCreds);
     const message = await openchat.getChatCompletion(chat,threadID);
     res.json({ "message": message });
+});
+
+app.post('/upload', upload.single('image'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json('No file uploaded.');
+    }
+
+    const imagePath = req.file.path;
+
+    try {
+        const message = await calorie.getCalorie(imagePath);
+
+        // Delete the image after processing
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error('Error deleting the file:', err);
+            } else {
+                console.log('File deleted successfully');
+            }
+        });
+
+        res.json({ message: message });
+    } catch (error) {
+        console.error('Error processing image:', error);
+        res.status(500).json({ error: 'Failed to process the image' });
+    }
 });
 
 app.listen(PORT, () => {

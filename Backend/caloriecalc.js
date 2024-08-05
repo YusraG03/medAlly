@@ -8,9 +8,9 @@ class caloriecalc{
     constructor(){
         this.openai = new OpenAI({ apiKey: process.env.openaikey });
     }
-    async getCalorie(imagePath, userThreadID){ //if need question just ask me
+    async getCalorie(imagePath){ //if need question just ask me
         this.assistant = await this.openai.beta.assistants.retrieve("asst_I3bTUlZj5EKfWqv0gW44dOtH");
-        this.thread = await this.openai.beta.threads.retrieve(userThreadID);
+        this.thread = await this.openai.beta.threads.create();
         this.file = this.openai.files.create({
             file: fs.createReadStream(imagePath),
             purpose: "vision"
