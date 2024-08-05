@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, Image, ScrollView, TouchableOpacity, LayoutAnimation, UIManager, Platform } from 'react-native';
-import colors from '../../_assets/colors';
+import colors from '../../_assets/colors.js';
 import textStyles from '../../_assets/textStyles.js';
 
 // Enable LayoutAnimation on Android

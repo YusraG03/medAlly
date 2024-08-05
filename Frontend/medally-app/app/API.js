@@ -312,19 +312,23 @@ class APIEndpoint
             console.error('Error getting daily medical fact:', error);
         }
     }
-    async getArticles()
-    {
-        try 
-        {
-            const response = await fetch(`${this.url}/getDailyArticles`);
-            const data = await response.json();
-            console.log(data);
+    async getArticles() {
+        try {
+          const response = await fetch('http://localhost:3000/getDailyArticles');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          console.log('API response data:', data); // Log the data to understand its structure
+    
+          // Assuming the JSON structure is { articles: [...] }
+          const articles = data || []; // Adjust this line based on your actual JSON structure
+          return Array.isArray(articles) ? articles : []; // Ensure it's an array
+        } catch (error) {
+          console.error('API fetch error:', error);
+          return []; // Return an empty array if there's an error
         }
-        catch (error) 
-        {
-            console.error('Error getting articles:', error);
-        }
-    }
+      }
     async chatWithGPT(chat, userCreds)
     {
         try 

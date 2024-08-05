@@ -8,6 +8,7 @@ import {getMedicalFact, getArticles} from './medicalFacts.js';
 import getThread from './generateThreadID.js';
 import multer from 'multer';
 import caloriecalc from './caloriecalc.js';
+import cors from 'cors';
 
 const openchat = new openaichat();
 const newThread = new getThread();
@@ -27,6 +28,10 @@ const upload = multer({
 });
 
 app.use(bodyParser.json());
+
+app.use(cors({
+    origin: 'http://localhost:8081' // Replace with your frontend URL
+  }));
 
 app.get('/', (req, res) => 
 {
