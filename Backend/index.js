@@ -195,7 +195,14 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         res.status(500).json({ error: 'Failed to process the image' });
     }
 });
-
+app.post('/addUserDiagnosis', async (req, res) => {
+    const message = await db.addUserDiagnosis(req.body.diagnosis, req.body.userID);
+    res.json({"message": message});
+});
+app.post('/getUserDiagnosis', async (req, res) => {
+    const message = await db.getUserDiagnosis(req.body.userID);
+    res.json(message);
+});
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });

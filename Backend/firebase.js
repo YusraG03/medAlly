@@ -373,6 +373,32 @@ class firebase
             console.error('Error retrieving threadID:', error);
         }
     }
+    async addUserDiagnosis(diagnosis, userID)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userID).collection('medicalHistory').doc('diagnosis');
+            await ref.set(diagnosis);
+            return("Diagnosis added successfully!");
+        }
+        catch(error)    
+        {
+            console.error('Error adding diagnosis:', error);
+        }
+    }
+    async getUserDiagnosis(userID)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userID).collection('medicalHistory').doc('diagnosis');
+            const document = await ref.get();
+            return document.data();
+        }
+        catch(error)
+        {
+            console.error('Error retrieving diagnosis:', error);
+        }
+    }
 }
 
 export default firebase;
