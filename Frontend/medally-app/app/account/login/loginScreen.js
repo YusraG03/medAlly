@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import colors from '../../_assets/colors';
-
+import APIEndpoint from '../../API';
 
 const eyeOpenIcon = require('../../_assets/eye-open.png');
 const eyeClosedIcon = require('../../_assets/eye-closed.png');
@@ -100,7 +100,23 @@ export default function Login() {
        
         <Pressable 
           style={[styles.button, !isValid && styles.disabledButton]} 
-          onPress={() => router.push('../../NavigationBar/Home')}
+          onPress={async () => {
+                const userCreds = 
+                {
+                  email: email,
+                  password: password,
+                }
+                const response = await APIEndpoint.login(userCreds);
+                if(response == "Wrong Credentials!")
+                {
+                  alert("Wrong Credentials! Please try again.");
+                }
+                else
+                {
+                  router.push('../../NavigationBar/Home');
+                }
+              }
+            }
           disabled={!isValid}
         >
           <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Login</Text>
