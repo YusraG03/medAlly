@@ -1,18 +1,25 @@
-import fs from 'fs/promises';
-import { existsSync } from 'fs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const userFilePath = './user_id.txt';
+const userFilePath = 'user_id';
 
 class UserStorage {
     async saveUserId(userId) {
-        await fs.writeFile(userFilePath, userId, 'utf8');
-    }
+        try {
+            await AsyncStorage.setItem(userFilePath, userId);
+            console.log(`User ID ${userId} saved successfully.`);
+        } catch (error) {
+            console.error('Error saving user ID:', error);
+        }
+    }   
     
     async getUserId() {
-        if (existsSync(userFilePath)) {
-            return await fs.readFile(userFilePath, 'utf8');
+        try {
+            const userId = await AsyncStorage.getItem(userFilePath);
+            return userId !== null ? userId : null;
+        } catch (error) {
+            console.error('Error retrieving user ID:', error);
+            return null;
         }
-        return null;
     }
 }
 

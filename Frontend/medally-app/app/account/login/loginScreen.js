@@ -110,13 +110,14 @@ export default function Login() {
                   password: password,
                 }
                 const response = await API.loginUser(userCreds);
-                if(response == "Wrong Credentials!")
+                console.log(response);
+                if(response.message.message == "Wrong Credentials!")
                 {
                   alert("Wrong Credentials! Please try again.");
                 }
                 else
                 {
-                  userSave.saveUserId(response.userID)
+                  userSave.saveUserId(response.message.userID)
                   router.push('../../NavigationBar/Home');
                 }
               }
