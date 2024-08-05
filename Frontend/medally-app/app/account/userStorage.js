@@ -1,7 +1,6 @@
 import fs from 'fs';
-import path from 'path';
 
-const userFilePath = path.join(__dirname, 'user_id.txt');
+const userFilePath = "./user-id.txt";
 
 function saveUserId(userId) {
     fs.writeFileSync(userFilePath, userId, 'utf8');
