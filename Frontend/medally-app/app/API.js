@@ -314,7 +314,7 @@ class APIEndpoint
     }
     async getArticles() {
         try {
-          const response = await fetch('http://localhost:3000/getDailyArticles');
+          const response = await fetch(`${this.url}/getDailyArticles`);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
