@@ -7,14 +7,14 @@ import Markdown from 'react-native-markdown-display';
 import textStyles from '../../_assets/textStyles';
 import { router, Link } from 'expo-router';
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API';
+import { useRouter } from 'expo-router';
+
 
 // Import local images
 import aiAvatar from '../../_assets/Avatar.png'; // Path to AI avatar
 import userAvatar from '../../_assets/user-profile-03.png'; // Path to User avatar
 
-//loading API KEY (please link to backend later)
-const OPENAI_API_KEY = 'sk-proj-4wy3Le0Xo5ClbgpoJWwxT3BlbkFJTxNM15c8cqR3XAm7ktOh'; // Update with your API key
-const openai = new OpenAI({ apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
 export function ChatScreen({ navigation }) {
   const [messages, setMessages] = useState([]);
@@ -33,29 +33,33 @@ export function ChatScreen({ navigation }) {
     setMessages([initialMessage]);
   }, []);
 
+  const API = new APIEndpoint()
   const fetchAIResponse = async (userMessage) => {
     try {
       setIsTyping(true);
-      const response = await openai.chat.completions.create({
-        messages: [
-          { role: 'system', content: 'You are a chatbot within a Medical Mobile Application whose task is to help the user diagnose their disease upon any symptom they provide. You are allowed to ask the user short but related questions as to properly come to a conclusion as to what sickness the user has.' },
-          { role: 'user', content: userMessage },
-        ],
-        model: 'gpt-3.5-turbo',
-      });
-
-      const aiMessage = response.choices[0].message.content;
-      const newMessage = {
-        _id: uuid.v4(),
-        text: aiMessage,
-        user: {
-          _id: 2,
-          name: 'AI Assistant',
-          avatar: aiAvatar,
-        },
-      };
-
+      const response = await API.chatWithGPT(userMessage, '1yqpFppDMfYgevo7isXH')
+      if(response.message.likelihood){
+        console.log(response)
+        // Pass the response data as params
+        router.push({
+          pathname: './SymptomChecker/results',
+          params: response.message
+        });
+      }
+      else{
+        const aiMessage = response.message;
+        console.log(response)
+        const newMessage = {
+          _id: uuid.v4(),
+          text: aiMessage,
+          user: {
+            _id: 2,
+            name: 'AI Assistant',
+            avatar: aiAvatar,
+          }
+      }
       setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMessage]));
+      };
     } catch (error) {
       console.error('Error fetching AI response:', error);
     } finally {
