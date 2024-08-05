@@ -85,11 +85,11 @@ class firebase
         }
         return false;
     }
-    async addMedication(medicationDetails, userCreds)
+    async addMedication(medicationDetails, userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medications').doc(medicationDetails.medicationName);
+            const ref = this.db.collection('users').doc(userID).collection('medications').doc(medicationDetails.medicationName);
             await ref.set(medicationDetails);
             return("Medication added successfully!");
         }
@@ -98,11 +98,11 @@ class firebase
             console.error('Error adding medication:', error);
         }
     }
-    async getAllMedication(userCreds)
+    async getAllMedication(userID)
     {
         try 
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medications');
+            const ref = this.db.collection('users').doc(userID).collection('medications');
             const snapshot = await ref.get();
         
             if (snapshot.empty) 
@@ -124,11 +124,11 @@ class firebase
             return [];
         }
     }
-    async modifyMedication(medicationDetails, userCreds)
+    async modifyMedication(medicationDetails, userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medications').doc(medicationDetails.medicationName);
+            const ref = this.db.collection('users').doc(userID).collection('medications').doc(medicationDetails.medicationName);
             // delete medication by setting freq to "delete"
             if(medicationDetails.freq === "delete")
             {
@@ -143,11 +143,11 @@ class firebase
             console.error('Error modifying medication:', error);
         }
     }
-    async addUserBasicInfo(userBasicInfo, userCreds)
+    async addUserBasicInfo(userBasicInfo, userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('basicInfo');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('basicInfo');
             await ref.set(userBasicInfo);
             return("Basic info added successfully!");
         }
@@ -156,11 +156,11 @@ class firebase
             console.error('Error adding user basic info:', error);
         }
     }
-    async getUserBasicInfo(userCreds)
+    async getUserBasicInfo(userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('basicInfo');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('basicInfo');
             const document = await ref.get();
             return document.data();
         }
@@ -169,11 +169,11 @@ class firebase
             console.error('Error retrieving user basic info:', error);
         }
     }
-    async modifyUserBasicInfo(userBasicInfo, userCreds)
+    async modifyUserBasicInfo(userBasicInfo, userID)
     {   
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('basicInfo');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('basicInfo');
             await ref.update(userBasicInfo);
             return("Basic info modified successfully!");
         }
@@ -182,11 +182,11 @@ class firebase
             console.error('Error modifying user basic info:', error);
         }
     }
-    async addUserMedicalHistory(userMedicalHistory, userCreds)
+    async addUserMedicalHistory(userMedicalHistory, userID)
     {   
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('medicalHistory');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('medicalHistory');
             await ref.set(userMedicalHistory);
             return ("Medical history added successfully!");
         }
@@ -195,11 +195,11 @@ class firebase
             console.error('Error adding user medical history:', error);
         }
     }
-    async getUserMedicalHistory(userCreds)
+    async getUserMedicalHistory(userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('medicalHistory');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('medicalHistory');
             const document = await ref.get();
             return document.data();
         }
@@ -209,11 +209,11 @@ class firebase
         }
 
     }
-    async modifyUserMedicalHistory(userMedicalHistory, userCreds)
+    async modifyUserMedicalHistory(userMedicalHistory, userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('medicalHistory');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('medicalHistory');
             await ref.update(userMedicalHistory);
             return("Medical history modified successfully!");
         }
@@ -222,11 +222,11 @@ class firebase
             console.error('Error modifying user medical history:', error);
         }
     }
-    async addUserNutrition(userNutrition, userCreds)
+    async addUserNutrition(userNutrition, userID)
     {
         try 
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('nutrition');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('nutrition');
             await ref.set(userNutrition);
             return("Nutrition added successfully!");
         } 
@@ -235,11 +235,11 @@ class firebase
             console.error('Error adding user nutrition:', error);
         }
     }
-    async getUserNutrition(userCreds)
+    async getUserNutrition(userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('nutrition');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('nutrition');
             const document = await ref.get();
             return document.data();
         }
@@ -248,11 +248,11 @@ class firebase
             console.error('Error retrieving user nutrition:', error);
         }
     }
-    async modifyUserNutrition(userNutrition, userCreds)
+    async modifyUserNutrition(userNutrition,userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('nutrition');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('nutrition');
             await ref.update(userNutrition);
             return("Nutrition modified successfully!");
         }
@@ -261,11 +261,11 @@ class firebase
             console.error('Error modifying user nutrition:', error);
         }
     }
-    async addUserPhysicalHabbits(userPhysicalHabbits, userCreds)
+    async addUserPhysicalHabbits(userPhysicalHabbits, userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('physicalHabbits');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('physicalHabbits');
             await ref.set(userPhysicalHabbits);
             return("Physical habbits added successfully!");
         }
@@ -274,11 +274,11 @@ class firebase
             console.error('Error adding user physical habbits:', error);
         }
     }
-    async getUserPhysicalHabbits(userCreds)
+    async getUserPhysicalHabbits(userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('physicalHabbits');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('physicalHabbits');
             const document = await ref.get();
             return document.data();
         }
@@ -287,11 +287,11 @@ class firebase
             console.error('Error retrieving user physical habbits:', error);
         }
     }
-    async modifyUserPhysicalHabbits(userPhysicalHabbits, userCreds)
+    async modifyUserPhysicalHabbits(userPhysicalHabbits, userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalInfo').doc('physicalHabbits');
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('physicalHabbits');
             await ref.update(userPhysicalHabbits);
             return("Physical habbits modified successfully!");
         }
@@ -300,12 +300,12 @@ class firebase
             console.error('Error modifying user physical habbits:', error);
         }
     }
-    async addUserChatConsultation(chatConsultation, userCreds)
+    async addUserChatConsultation(chatConsultation, userID)
     {
         try
         {
             const dateOfConsultation = new Date().toISOString();
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalHistory').doc(dateOfConsultation);
+            const ref = this.db.collection('users').doc(userID).collection('medicalHistory').doc(dateOfConsultation);
             await ref.set(chatConsultation);
             return("Chat consultation added successfully!");
         }
@@ -314,11 +314,11 @@ class firebase
             console.error('Error adding chat consultation:', error);
         }
     }
-    async getUserChatConsultation(userCreds)
+    async getUserChatConsultation(userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('medicalHistory');
+            const ref = this.db.collection('users').doc(userID).collection('medicalHistory');
             const snapshot = await ref.get();
         
             if (snapshot.empty) 
@@ -339,12 +339,12 @@ class firebase
             console.error('Error retrieving chat consultations:', error);
         }
     }
-    async addUserDailyFoodIntake(dailyFoodIntake, userCreds)
+    async addUserDailyFoodIntake(dailyFoodIntake, userID)
     {
         try
         {
             const dateOfIntake = new Date().toLocaleDateString();
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('nutrition').doc(dateOfIntake);
+            const ref = this.db.collection('users').doc(userID.collection('nutrition').doc(dateOfIntake));
             await ref.set(dailyFoodIntake);
             return("Daily food intake added successfully!");
         }
@@ -353,11 +353,11 @@ class firebase
             console.error('Error adding daily food intake:', error);
         }
     }
-    async getUserDailyFoodIntake(dateOfIntake,userCreds)
+    async getUserDailyFoodIntake(dateOfIntake,userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID).collection('nutrition').doc(dateOfIntake);
+            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(dateOfIntake);
             const document = await ref.get();
             return document.data();
         }
@@ -366,11 +366,11 @@ class firebase
             console.error('Error retrieving daily food intake:', error);
         }
     }
-    async getUserThreadID(userCreds)
+    async getUserThreadID(userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userCreds.userID);
+            const ref = this.db.collection('users').doc(userID);
             const document = await ref.get();
             return document.data().threadID;
         }

@@ -9,7 +9,7 @@ import getThread from './generateThreadID.js';
 import multer from 'multer';
 import caloriecalc from './caloriecalc.js';
 import cors from 'cors';
-
+//prod
 const openchat = new openaichat();
 const newThread = new getThread();
 const app = express();
@@ -41,13 +41,13 @@ app.get('/', (req, res) =>
 
 app.post('/login', async (req, res) =>
 {
-    const message = await db.signIn(req.body.userCreds);
+    const message = await db.signIn(req.body.userCredsd);
     res.json({"message": message});
 });
 
 app.post('/register', async (req, res) => 
 {
-    var jsonObject = (req.body.userCreds);
+    var jsonObject = (req.body.userCredsd);
     const threadID = await newThread.getThreadID();
     jsonObject["threadID"] = threadID;
     const message = await db.signUp(jsonObject);
@@ -56,91 +56,91 @@ app.post('/register', async (req, res) =>
 
 app.post('/addMedication', async (req, res) =>
 {
-    const message = await db.addMedication(req.body.medication, req.body.userCreds);
+    const message = await db.addMedication(req.body.medication, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/getAllMedication', async (req, res) =>
 {
-    const message = await db.getAllMedication(req.body.userCreds);
+    const message = await db.getAllMedication(req.body.userID);
     res.json(message);
 });
 
 app.post('/modifyMedication', async (req, res) =>
 {
-    const message = await db.modifyMedication(req.body.medication, req.body.userCreds);
+    const message = await db.modifyMedication(req.body.medication, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/addUserBasicInfo', async (req, res) =>
 {
-    const message = await db.addUserBasicInfo(req.body.basicInfo, req.body.userCreds);
+    const message = await db.addUserBasicInfo(req.body.basicInfo, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/getUserBasicInfo', async (req, res) =>
 {
-    const message = await db.getUserBasicInfo(req.body.userCreds);
+    const message = await db.getUserBasicInfo(req.body.userID);
     res.json(message);
 });
 
 app.post('/modifyUserBasicInfo', async (req, res) =>
 {
-    const message = await db.modifyUserBasicInfo(req.body.basicInfo, req.body.userCreds);
+    const message = await db.modifyUserBasicInfo(req.body.basicInfo, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/addUserMedicalHistory', async (req, res) =>
 {
-    const message = await db.addUserMedicalHistory(req.body.medicalHistory, req.body.userCreds);
+    const message = await db.addUserMedicalHistory(req.body.medicalHistory, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/getUserMedicalHistory', async (req, res) =>
 {
-    const message = await db.getUserMedicalHistory(req.body.userCreds);
+    const message = await db.getUserMedicalHistory(req.body.userID);
     res.json(message);
 });
 
 app.post('/modifyUserMedicalHistory', async (req, res) =>
 {
-    const message = await db.modifyUserMedicalHistory(req.body.medicalHistory, req.body.userCreds);
+    const message = await db.modifyUserMedicalHistory(req.body.medicalHistory, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/addUserNutrition', async (req, res) =>
 {
-    const message = await db.addUserNutrition(req.body.nutrition, req.body.userCreds);
+    const message = await db.addUserNutrition(req.body.nutrition, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/getUserNutrition', async (req, res) =>
 {
-    const message = await db.getUserNutrition(req.body.userCreds);
+    const message = await db.getUserNutrition(req.body.userID);
     res.json(message);
 });
 
 app.post('/modifyUserNutrition', async (req, res) =>
 {
-    const message = await db.modifyUserNutrition(req.body.nutrition, req.body.userCreds);
+    const message = await db.modifyUserNutrition(req.body.nutrition, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/addUserPhysicalHabits', async (req, res) =>
 {
-    const message = await db.addUserPhysicalHabbits(req.body.physicalHabits, req.body.userCreds);
+    const message = await db.addUserPhysicalHabbits(req.body.physicalHabits, req.body.userID);
     res.json({"message": message});
 });
 
 app.post('/getUserPhysicalHabits', async (req, res) =>
 {
-    const message = await db.getUserPhysicalHabbits(req.body.userCreds);
+    const message = await db.getUserPhysicalHabbits(req.body.userID);
     res.json(message);
 });
 
 app.post('/modifyUserPhysicalHabits', async (req, res) =>
 {
-    const message = await db.modifyUserPhysicalHabbits(req.body.physicalHabits, req.body.userCreds);
+    const message = await db.modifyUserPhysicalHabbits(req.body.physicalHabits, req.body.userID);
     res.json({"message": message});
 });
 app.get('/getDailyMedicalFact', async (req, res) =>
@@ -150,12 +150,12 @@ app.get('/getDailyMedicalFact', async (req, res) =>
 });
 app.post('/addUserDailyFoodIntake', async (req, res) =>
 {
-    const message = await db.addUserDailyFoodIntake(req.body.dailyFoodIntake, req.body.userCreds);
+    const message = await db.addUserDailyFoodIntake(req.body.dailyFoodIntake, req.body.userID);
     res.json({"message": message});
 });
 app.post('/getUserDailyFoodIntake', async (req, res) =>
 {
-    const message = await db.getUserDailyFoodIntake(req.body.dateOfIntake, req.body.userCreds);
+    const message = await db.getUserDailyFoodIntake(req.body.dateOfIntake, req.body.userID);
     res.json(message);
 });
 app.get('/getDailyArticles', async (req, res) =>
@@ -167,7 +167,7 @@ app.get('/getDailyArticles', async (req, res) =>
 app.post('/chat', async(req, res) => 
 {
     const { chat } = req.body
-    const threadID = await db.getUserThreadID(req.body.userCreds);
+    const threadID = await db.getUserThreadID(req.body.userID);
     const message = await openchat.getChatCompletion(chat,threadID);
     res.json({ "message": message });
 });
@@ -196,7 +196,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });
 
