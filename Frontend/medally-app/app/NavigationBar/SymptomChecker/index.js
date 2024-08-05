@@ -38,12 +38,15 @@ export function ChatScreen({ navigation }) {
     try {
       setIsTyping(true);
       const response = await API.chatWithGPT(userMessage, '1yqpFppDMfYgevo7isXH')
-      if(response.message.likelihood){
+      if(response.message && response.message.likelihood){
         console.log(response)
         // Pass the response data as params
         router.push({
           pathname: './SymptomChecker/results',
-          params: response.message
+          params: {
+            ...response.message,
+            treatments: JSON.stringify(response.message.treatments)
+          }
         });
       }
       else{

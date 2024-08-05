@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, Image, Text, View, TextInput, Button, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import colors from '../../_assets/colors';
 
@@ -158,6 +158,7 @@ export default function SignUp() {
         >
           <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Next</Text>
         </Pressable>
+        <Button title="Go to Meal Breakdown" onPress={() => router.push('./Nutrition/results')} />
       </View>
     </ScrollView>
   );
