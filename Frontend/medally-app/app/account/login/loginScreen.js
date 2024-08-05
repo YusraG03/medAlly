@@ -5,6 +5,7 @@ import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
 import userStore from '../userStorage';
 
+const userSave = new userStore();
 const API = new APIEndpoint()
 const eyeOpenIcon = require('../../_assets/eye-open.png');
 const eyeClosedIcon = require('../../_assets/eye-closed.png');
@@ -115,7 +116,7 @@ export default function Login() {
                 }
                 else
                 {
-                  userStore.saveUserId(response.userID)
+                  userSave.saveUserId(response.userID)
                   router.push('../../NavigationBar/Home');
                 }
               }
