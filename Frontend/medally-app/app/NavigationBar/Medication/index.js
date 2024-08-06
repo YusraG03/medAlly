@@ -117,7 +117,7 @@ export default function MedicationScreen() {
       {medications.length > 0 ? (
         <FlatList
           data={medications}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.medicationName}
           renderItem={renderItem}
         />
       ) : (
