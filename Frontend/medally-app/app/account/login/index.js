@@ -5,7 +5,7 @@ import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
 import { storeUserId, getUserId, removeUserId } from '../userStorage';
 
-const userSave = new userStore();
+//const userSave = new userStore();
 const API = new APIEndpoint()
 const eyeOpenIcon = require('../../_assets/eye-open.png');
 const eyeClosedIcon = require('../../_assets/eye-closed.png');
@@ -110,9 +110,9 @@ export default function Login() {
                   password: password,
                 }
                 const response = await API.loginUser(userCreds);
-                await storeUserId(response.message.id);
-                const getID = getUserId();
-                alert(getID)
+                await storeUserId(response.message.userID);
+                const getID = await getUserId();
+                //alert(getID)
                 console.log(getID)
                 console.log(response);
                 if(response.message.message == "Wrong Credentials!")
@@ -121,7 +121,7 @@ export default function Login() {
                 }
                 else
                 {
-                  userSave.saveUserId(response.message.userID)
+                  //userSave.saveUserId(response.message.userID)
                   router.push('../../NavigationBar/Home');
                 }
               }

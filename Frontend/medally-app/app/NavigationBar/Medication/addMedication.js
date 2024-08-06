@@ -6,7 +6,7 @@ import { Link, useRouter } from 'expo-router';
 import APIEndpoint from '../../API';
 import getuserID from '../../account/userStorage.js'
 
-const getuser = new getuserID()
+//const getuser = new getuserID()
 const api= new APIEndpoint()
 
 export default function Addmedication() {
@@ -74,7 +74,7 @@ export default function Addmedication() {
       reminder,
     };
 
-    const userID = getuser.getUserId; // replace with actual user ID
+    //const userID = getuser.getUserId; // replace with actual user ID
 
     try {
       const response = await api.addMedication(newMedication, 'KcLR8zOoexJp8N2Qrvz2');

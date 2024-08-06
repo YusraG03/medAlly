@@ -9,7 +9,7 @@ import APIEndpoint from '../../API'
 import getID from '../userStorage'
 
 
-const userID = new getID()
+//const userID = new getID()
 const API = new APIEndpoint()
 
 export default function GeneralInformation() {

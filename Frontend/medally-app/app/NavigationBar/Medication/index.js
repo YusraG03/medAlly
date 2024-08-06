@@ -9,7 +9,7 @@ import APIEndpoint from '../../API';
 import getuserID from '../../account/userStorage.js'
 import colors from '../../_assets/colors';
 
-const getdata = new getuserID();
+//const getdata = new getuserID();
 const api = new APIEndpoint();
 
 // Weeklycalendar Component
