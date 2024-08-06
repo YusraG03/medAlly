@@ -21,9 +21,10 @@ export function ResultScreen() {
   const addDiagnosis = async () => {
     try {
       const API = new APIEndpoint();
-      const response = await API.addUserDiagnosis(data, '1yqpFppDMfYgevo7isXH');
+      const response = await API.addUserDiagnosis(params, 'KcLR8zOoexJp8N2Qrvz2');
       
       // Log the response to check if the object was successfully pushed
+      console.log(params)
       console.log('Diagnosis added successfully:', response);
     } catch (error) {
       console.error('Failed to add diagnosis:', error);

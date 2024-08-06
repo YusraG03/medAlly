@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   dayContainer: {
     flex: 1,
     alignItems: 'center',
-    marginHorizontal: 5,
+    marginHorizontal: 15,
   },
   dayOfWeek: {
     fontSize: 14,
