@@ -5,6 +5,9 @@ import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API'
+
+const API = new APIEndpoint()
 
 export default function GeneralInformation() {
   const { control, handleSubmit, setValue, formState: { errors } } = useForm();
@@ -26,6 +29,12 @@ export default function GeneralInformation() {
 
   const showDatepicker = () => {
     setShow(true);
+  };
+  const onSubmit = () => {
+    if (isValid) {
+      
+      router.push('./physical-habits');
+    }
   };
 
   const onSubmit = (data) => {
