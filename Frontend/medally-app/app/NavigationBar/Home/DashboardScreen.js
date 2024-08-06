@@ -78,10 +78,27 @@ export default function DashboardScreen() {
 
     const subscription = Pedometer.watchStepCount(result => setStepCount(result.steps));
 
+    const interval = setInterval(() => {
+      const stepsGoal = 10000;
+      const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
+      const caloriesBurned = (stepCount * 0.04).toFixed(2);
+      const distanceTraveled = (stepCount * 0.762 / 1000).toFixed(2);
+
+      API.sendStepData({
+        stepCount,
+        progress,
+        caloriesBurned,
+        distanceTraveled,
+      })
+        .then(response => console.log('Data sent to backend:', response))
+        .catch(error => console.error('Error sending data:', error));
+    }, 300000); // 300000ms = 5 minutes
+
     return () => {
       subscription && subscription.remove();
+      clearInterval(interval);
     };
-  }, []);
+  }, [stepCount]);
 
   const timeDifferenceInMinutes = Math.round((medicationInfo.time - new Date()) / 60000);
   const stepsGoal = 10000;
@@ -408,3 +425,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+
