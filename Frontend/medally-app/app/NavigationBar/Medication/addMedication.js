@@ -4,6 +4,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
 import APIEndpoint from '../../API';
+import getuserID from '../../account/userStorage.js'
+
+const getuser = new getuserID()
+const api= new APIEndpoint()
 
 export default function Addmedication() {
   const navigation = useNavigation();
@@ -12,7 +16,6 @@ export default function Addmedication() {
 
   const [name, setName] = useState('');
   const [dosage, setDosage] = useState('');
-  const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [cause, setCause] = useState('');
@@ -70,10 +73,11 @@ export default function Addmedication() {
       reminder,
     };
 
-    const userID = '12345'; // replace with actual user ID
+    const userID = getuser.getUserId; // replace with actual user ID
 
     try {
       const response = await api.addMedication(newMedication, userID);
+      
       Alert.alert('Success', 'Medication added successfully');
       // Optionally clear the input fields after successful submission
       setName('');
