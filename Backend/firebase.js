@@ -90,6 +90,7 @@ class firebase
         catch(error)
         {
             console.error('Error adding medication:', error);
+            return "An error occurred during adding medication.";
         }
     }
     async getAllMedication(userID)
@@ -135,6 +136,7 @@ class firebase
         catch(error)
         {
             console.error('Error modifying medication:', error);
+            return "An error occurred during modifying medication.";
         }
     }
     async addUserBasicInfo(userBasicInfo, userID)
@@ -148,6 +150,7 @@ class firebase
         catch(error)
         {
             console.error('Error adding user basic info:', error);
+            return "An error occurred during adding basic info.";
         }
     }
     async getUserBasicInfo(userID)
@@ -161,6 +164,7 @@ class firebase
         catch(error)
         {
             console.error('Error retrieving user basic info:', error);
+            return "An error occurred during retrieving basic info.";
         }
     }
     async modifyUserBasicInfo(userBasicInfo, userID)
@@ -174,6 +178,7 @@ class firebase
         catch(error)
         {
             console.error('Error modifying user basic info:', error);
+            return "An error occurred during modifying basic info.";
         }
     }
     async addUserMedicalHistory(userMedicalHistory, userID)
@@ -187,6 +192,7 @@ class firebase
         catch(error)
         {
             console.error('Error adding user medical history:', error);
+            return "An error occurred during adding medical history.";
         }
     }
     async getUserMedicalHistory(userID)
@@ -200,6 +206,7 @@ class firebase
         catch(error)
         {
             console.error('Error retrieving user medical history:', error);
+            return "An error occurred during retrieving medical history.";
         }
 
     }
@@ -214,6 +221,7 @@ class firebase
         catch(error)
         {
             console.error('Error modifying user medical history:', error);
+            return "An error occurred during modifying medical history.";
         }
     }
     async addUserNutrition(userNutrition, userID)
@@ -227,6 +235,7 @@ class firebase
         catch (error) 
         {
             console.error('Error adding user nutrition:', error);
+            return "An error occurred during adding nutrition.";
         }
     }
     async getUserNutrition(userID)
@@ -240,6 +249,7 @@ class firebase
         catch(error)
         {
             console.error('Error retrieving user nutrition:', error);
+            return "An error occurred during retrieving nutrition.";
         }
     }
     async modifyUserNutrition(userNutrition,userID)
@@ -253,6 +263,7 @@ class firebase
         catch(error)
         {
             console.error('Error modifying user nutrition:', error);
+            return "An error occurred during modifying nutrition.";
         }
     }
     async addUserPhysicalHabbits(userPhysicalHabbits, userID)
@@ -266,6 +277,7 @@ class firebase
         catch(error)
         {
             console.error('Error adding user physical habbits:', error);
+            return "An error occurred during adding physical habbits.";
         }
     }
     async getUserPhysicalHabbits(userID)
@@ -279,6 +291,7 @@ class firebase
         catch(error)
         {
             console.error('Error retrieving user physical habbits:', error);
+            return "An error occurred during retrieving physical habbits.";
         }
     }
     async modifyUserPhysicalHabbits(userPhysicalHabbits, userID)
@@ -292,6 +305,7 @@ class firebase
         catch(error)    
         {
             console.error('Error modifying user physical habbits:', error);
+            return "An error occurred during modifying physical habbits.";
         }
     }
     async addUserChatConsultation(chatConsultation, userID)
@@ -306,6 +320,7 @@ class firebase
         catch(error)
         {
             console.error('Error adding chat consultation:', error);
+            return "An error occurred during adding chat consultation.";
         }
     }
     async getUserChatConsultation(userID)
@@ -331,6 +346,7 @@ class firebase
         catch(error)
         {
             console.error('Error retrieving chat consultations:', error);
+            return "An error occurred during retrieving chat consultations.";
         }
     }
     async addUserDailyFoodIntake(dailyFoodIntake, userID)
@@ -345,6 +361,7 @@ class firebase
         catch(error)
         {
             console.error('Error adding daily food intake:', error);
+            return "An error occurred during adding daily food intake.";
         }
     }
     async getUserDailyFoodIntake(dateOfIntake,userID)
@@ -358,6 +375,7 @@ class firebase
         catch(error)
         {
             console.error('Error retrieving daily food intake:', error);
+            return "An error occurred during retrieving daily food intake.";
         }
     }
     async getUserThreadID(userID)
@@ -371,6 +389,7 @@ class firebase
         catch(error)
         {
             console.error('Error retrieving threadID:', error);
+            return "An error occurred during retrieving threadID.";
         }
     }
     async addUserDiagnosis(diagnosis, userID)
@@ -384,6 +403,7 @@ class firebase
         catch(error)    
         {
             console.error('Error adding diagnosis:', error);
+            return "An error occurred during adding diagnosis.";
         }
     }
     async getUserDiagnosis(userID)
@@ -397,6 +417,53 @@ class firebase
         catch(error)
         {
             console.error('Error retrieving diagnosis:', error);
+            return "An error occurred during retrieving diagnosis.";
+        }
+    }
+    async getUserBMI(userID)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('basicInfo');
+            const document = await ref.get();
+            const basicInfo = document.data();
+            const height = basicInfo.height/100;
+            return (basicInfo.weight / (height * height));
+        }
+        catch(error)
+        {
+            console.error('Error retrieving BMI:', error);
+            return "An error occurred during retrieving BMI.";
+        }
+
+    }
+    async addUserFitness(userFitness, userID) 
+    {
+        try 
+        {
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('fitness');
+            //merge = true to overwrite the existing data
+            await ref.set(userFitness, { merge: true });
+            return("Fitness added successfully!");
+        } 
+        catch (error)
+        {
+            console.error('Error adding fitness:', error);
+            return "An error occurred during adding fitness.";
+        }
+    }
+    async getUserFitness(userID)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('fitness');
+            const document = await ref.get();
+            return document.data();
+        }
+        catch(error)
+        {
+            console.error('Error retrieving fitness:', error);
+            return "An error occurred during retrieving fitness.";
         }
     }
 }

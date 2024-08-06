@@ -63,6 +63,7 @@ app.post('/addMedication', async (req, res) =>
 app.post('/getAllMedication', async (req, res) =>
 {
     const message = await db.getAllMedication(req.body.userID);
+    console.log(message[0].medicineName);
     res.json(message);
 });
 
@@ -203,7 +204,20 @@ app.post('/getUserDiagnosis', async (req, res) => {
     const message = await db.getUserDiagnosis(req.body.userID);
     res.json(message);
 });
+app.post('/getUserBMI', async(req, res) => {
+    const message = await db.getUserBMI(req.body.userID);
+    res.json(message);
+});
+app.post('/addUserFitness', async (req, res) => {
+    const message = await db.addUserFitness(req.body.fitness, req.body.userID);
+    res.json({"message": message});
+});
+app.post('/getUserFitness', async (req, res) => {
+    const message = await db.getUserFitness(req.body.userID);
+    res.json(message);
+});
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });
 
+    

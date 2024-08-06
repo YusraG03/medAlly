@@ -1,8 +1,9 @@
 // APIEndpoint.js
 class APIEndpoint 
-{
+{   
     constructor()
     {
+        //this.url = "http://localhost:3000";
         this.url = "http://medally.ddns.net:3000";
     }
     async testConnection() 
@@ -17,7 +18,7 @@ class APIEndpoint
         {
             console.error('Error connecting to API:', error);
         }
-    }
+    }   
     async registerUser(userCreds) 
     {
         try 
@@ -447,6 +448,66 @@ class APIEndpoint
         catch (error) 
         {
             console.error('Error getting diagnosis:', error);
+        }
+    }
+    async getUserBMI(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getBMI`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting BMI:', error)
+        }
+    }
+    async addUserFitness(fitness, userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserFitness`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ fitness, userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error storing fitness:', error);
+        }
+    }
+    async getUserFitness(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserFitness`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting fitness:', error);
         }
     }
 }

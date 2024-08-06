@@ -172,12 +172,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  formItem: {
-    flex: 1,
-    half: {
-      flex: 0.45,
-      marginBottom: 20,
-    },
+  formItemHalf: {
+    flex: 0.45,
+    marginBottom: 20,
   },
   formHeader: {
     fontSize: 16,

@@ -206,14 +206,13 @@ export default function SignUp() {
             }
             const response = await API.registerUser(userCreds);
             
-            router.push('/general-information')
+            router.push('./general-information')
           }
           }
           disabled={!isValid}
         >
           <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Next</Text>
         </Pressable>
-        <Button title="Go to Meal Breakdown" onPress={() => router.push('/Nutrition/results')} />
       </View>
     </ScrollView>
   );
@@ -282,7 +281,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: '10%',
     marginHorizontal: '5%',
-    gap: '2%',
+    marginBottom: 10, // Added margin to space out form items
   },
   formItem: {
     full: {
@@ -294,7 +293,7 @@ const styles = StyleSheet.create({
   },
   names: {
     flexDirection: 'row',
-    gap: '2%',
+    justifyContent: 'space-between', // Adjusted spacing between name fields
     width: '100%',
   },
   errorText: {
@@ -361,12 +360,11 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    gap: 0,
   },
   headertext: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    marginBottom: 6, // Added margin for spacing
   },
   logo: {
     width: 72,
