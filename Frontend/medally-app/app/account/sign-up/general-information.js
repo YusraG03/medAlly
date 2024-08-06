@@ -6,7 +6,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API'
+import getID from '../userStorage'
 
+
+const userID = new getID()
 const API = new APIEndpoint()
 
 export default function GeneralInformation() {
@@ -31,8 +34,15 @@ export default function GeneralInformation() {
     setShow(true);
   };
   const onSubmit = () => {
+    
     if (isValid) {
-      
+      const userCreds = {
+        DOB: date.toLocaleDateString('en-GB'),
+        gender: gender,
+        height: height,
+        weight: weight
+      };
+      const response = API.addUserBasicInfo(userCreds, userID.getUserId)
       router.push('./physical-habits');
     }
   };
