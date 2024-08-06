@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
 import APIEndpoint from '../../API';
 import getuserID from '../../account/userStorage.js'
-import { v4 as uuidv4 } from 'uuid';
 
 const getuser = new getuserID()
 const api= new APIEndpoint()
@@ -66,7 +65,6 @@ export default function Addmedication() {
 
   const handleAddMedicine = async () => {
     const newMedication = {
-      id: uuidv4(),
       medicationName,
       dosage,
       startDate: startDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
