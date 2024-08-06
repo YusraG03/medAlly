@@ -571,5 +571,25 @@ class APIEndpoint
             console.error('Error storing step data:', error);
         }
     }
+    async getStepData(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getStepData`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting step data:', error);
+        }
+    }
 }
 export default APIEndpoint;   

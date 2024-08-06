@@ -425,7 +425,7 @@ class firebase
             console.error('Error adding diagnosis:', error);
             return "An error occurred during adding diagnosis.";
         }
-    }
+    }   
     async getUserDiagnosis(userID)
     {
         try
@@ -563,6 +563,51 @@ class firebase
         {
             console.error('Error retrieving total calories:', error);
             return "An error occurred during retrieving total calories.";
+        }
+    }
+    async addStepData(stepData, userID)
+    {
+        try
+        {
+            const date = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const ref = this.db.collection('users').doc(userID).collection('fitness').doc(date);
+            await ref.set(stepData);
+            return("Step data added successfully!");
+        }
+        catch(error)
+        {
+            console.error('Error adding step data:', error);
+            return "An error occurred during adding step data.";
+        }
+    }
+    async getStepData(userID)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userID).collection('fitness');
+            const snapshot = await ref.get();
+        
+            if (snapshot.empty) 
+            {
+                return('No step data found.');
+            }
+        
+            const stepData = [];
+    
+            snapshot.forEach(doc => {
+                stepData.push(doc.data());
+            });
+    
+            return stepData;
+        }
+        catch(error)
+        {
+            console.error('Error retrieving step data:', error);
+            return "An error occurred during retrieving step data.";
         }
     }
 }

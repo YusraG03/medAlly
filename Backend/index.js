@@ -223,6 +223,14 @@ app.post('/getTotalCaloriesNutrition', async (req, res) => {
     const message = await db.getTotalCaloriesNutrition(req.body.userID);
     res.json(message);
 });
+app.post('/addStepData', async (req, res) => {
+    const message = await db.addStepData(req.body.stepData, req.body.userID);
+    res.json({"message": message});
+});
+app.post('/getStepData', async (req, res) => {
+    const message = await db.getStepData(req.body.userID);
+    res.json(message);
+});
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });
