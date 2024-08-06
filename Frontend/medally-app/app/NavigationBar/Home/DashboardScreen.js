@@ -83,13 +83,14 @@ export default function DashboardScreen() {
       const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
       const caloriesBurned = (stepCount * 0.04).toFixed(2);
       const distanceTraveled = (stepCount * 0.762 / 1000).toFixed(2);
-
-      API.addStepData({
-        stepCount,
-        progress,
-        caloriesBurned,
-        distanceTraveled,
-      })
+      const stepData =
+      {
+        stepCount: stepCount,
+        progress: progress,
+        caloriesBurned: caloriesBurned,
+        distanceTraveled: distanceTraveled,
+      }
+      API.addStepData(stepData,'1yqpFppDMfYgevo7isXH')
         .then(response => console.log('Data sent to backend:', response))
         .catch(error => console.error('Error sending data:', error));
     }, 300000); // 300000ms = 5 minutes
