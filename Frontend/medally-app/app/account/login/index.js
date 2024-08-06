@@ -137,9 +137,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.defaultwhite,
     justifyContent: 'center',
     alignContent: 'center',
+    paddingHorizontal: 20,
   },
   screenTitle: {
-    alignSelf: "stretch",
     fontSize: 24,
     letterSpacing: -0.7,
     lineHeight: 24,
@@ -147,9 +147,9 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-ExtraBold",
     color: "#121419",
     textAlign: "center",
+    marginBottom: 10,
   },
   contentText: {
-    alignSelf: "stretch",
     fontSize: 14,
     letterSpacing: -0.6,
     lineHeight: 16,
@@ -182,7 +182,6 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   formHeader: {
-    alignSelf: "stretch",
     fontSize: 14,
     letterSpacing: -0.1,
     lineHeight: 20,
@@ -190,20 +189,13 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-SemiBold",
     color: "#121419",
     textAlign: "left",
+    marginBottom: 5,
   },
   form: {
-    flexDirection: 'column',
     marginTop: '10%',
-    marginHorizontal: '5%',
-    gap: '2%',
   },
   formItem: {
-    full: {
-      width: '100%',
-    },
-    half: {
-      width: '49%',
-    },
+    marginBottom: 20,
   },
   errorText: {
     fontSize: 12,
@@ -212,6 +204,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontFamily: "Inter-SemiBold",
     color: colors.errorred,
+    marginTop: 5,
   },
   input: {
     height: 40,
@@ -230,56 +223,43 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 6,
     backgroundColor: "#121419",
-    borderStyle: "solid",
     borderColor: "#282f41",
     borderWidth: 1,
-    flex: 1,
-    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
     paddingVertical: 20,
+    marginTop: 10,
   },
-  disabledButton:{
+  disabledButton: {
     borderRadius: 6,
-    borderWidth : 0,
     backgroundColor: "#cecece",
-    flex: 1,
-    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingVertical:20
+    paddingVertical: 20,
+    marginTop: 10,
   },
   buttonText: {
     fontSize: 18,
-    letterSpacing: 0,
-    lineHeight: 18,
     fontWeight: "600",
     fontFamily: "Inter-SemiBold",
-    color: colors.defaultwhite
+    color: colors.defaultwhite,
   },
-  disabledButtonText:{
+  disabledButtonText: {
     fontSize: 18,
-    letterSpacing: 0,
-    lineHeight: 18,
     fontWeight: "600",
     fontFamily: "Inter-SemiBold",
-    color: colors.defaultblack
+    color: colors.defaultblack,
   },
-
   header: {
     alignItems: 'center',
-    gap: 0,
+    marginBottom: 30,
   },
   headertext: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
   },
-
   logo: {
     width: 72,
     height: 50,

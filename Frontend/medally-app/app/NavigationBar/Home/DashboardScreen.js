@@ -7,9 +7,13 @@ import APIEndpoint from '../../API';
 
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 
+const API = new APIEndpoint();
+
 const userCredentials = {
   email: 'user@example.com', // Replace with actual user email or credentials
 };
+
+
 
 const calculateBMI = (height, weight) => {
   return (weight / (height * height)).toFixed(1);
@@ -52,7 +56,6 @@ export default function DashboardScreen() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    const API = new APIEndpoint();
     const fetchArticles = async () => {
       try {
         const fetchedArticles = await API.getArticles();
