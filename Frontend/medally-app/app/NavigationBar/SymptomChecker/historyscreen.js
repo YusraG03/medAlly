@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.defaultwhite,
     padding: 16,
     marginTop: '2%',
-    gap: '2%',
   },
   title: {
     fontSize: 24,
@@ -172,11 +171,11 @@ const styles = StyleSheet.create({
   },
   section: {
     flexDirection: 'column',
-    gap: 10,
+    marginBottom: 10,
   },
-  cards:{
-    flexDirection : 'column',
-    gap: 10
+  cards: {
+    flexDirection: 'column',
+    marginBottom: 10,
   },
   placeholder: {
     fontSize: 16,
@@ -185,11 +184,12 @@ const styles = StyleSheet.create({
   },
   treatmentSection: {
     flexDirection: 'column',
-    gap: 10,
+    marginBottom: 10,
   },
   upperInfoFlexBox: {
     alignItems: 'center',
     flexDirection: 'row',
+    marginBottom: 10,
   },
   treatmentsTypo: {
     color: '#4b4b4b',
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
   },
   expandedInformation: {
     width: '100%',
-    gap: 10,
+    marginBottom: 10,
   },
   Card: {
     borderRadius: 10,
@@ -306,9 +306,9 @@ const styles = StyleSheet.create({
     },
     shadowColor: 'rgba(0, 0, 0, 0.13)',
     flexDirection: 'column',
-    gap: 10,
-    marginBottom : 10
+    marginBottom: 10,
   },
 });
+
 
 export default HistoryScreen;
