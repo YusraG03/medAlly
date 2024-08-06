@@ -11,13 +11,13 @@ export default function MedicalHistoryTwo() {
   const { control, handleSubmit } = useForm();
   const navigation = useNavigation();
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (isValid) {
       const userMedicalHistory = {
         conditionsInjuries: data.conditionsInjuries,
         drugAllergies: data.drugAllergies,
       };
-      const response = API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
+      const response = await API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
       navigation.navigate('NutritionHabits'); // Ensure this matches your navigator
     }
   };

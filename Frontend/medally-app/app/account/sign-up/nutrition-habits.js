@@ -9,14 +9,14 @@ const API = new APIEndpoint();
 
 export default function NutritionHabits() {
   const { control, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (isValid) {
       const userMedicalHistory = {
         dietaryPreference: data.dietaryPreference,
         foodAllergies: data.foodAllergies,
         foodAvoidance: data.foodAvoidance
       };
-      const response = API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
+      const response = await API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
       //navigation.navigate('NutritionHabits'); geter KOT TO ENAN PU ALER DEPI ICI
     }
   };
