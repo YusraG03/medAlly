@@ -3,6 +3,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API';
+
+const API = new APIEndpoint();
 
 export default function NutritionHabits() {
   const { control, handleSubmit, formState: { errors } } = useForm();
