@@ -42,7 +42,7 @@ export default function SignUp() {
 
   // Password validation regex
   const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/;
     return regex.test(password);
   };
 
