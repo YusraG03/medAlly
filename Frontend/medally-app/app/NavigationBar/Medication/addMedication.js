@@ -16,7 +16,8 @@ export default function Addmedication() {
 
   const [name, setName] = useState('');
   const [dosage, setDosage] = useState('');
-  const [toDate, setToDate] = useState(new Date());
+  const [endDate, setToDate] = useState(new Date());
+  const [startDate, setFromDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [cause, setCause] = useState('');
   const [reminder, setReminder] = useState('10 minutes before');
@@ -118,7 +119,7 @@ export default function Addmedication() {
         placeholderTextColor="#7d7d7d"
       />
 
-      <Text style={styles.label}>From Date</Text>
+      <Text style={styles.label}>Start Date</Text>
       <TouchableOpacity onPress={() => setShowFromDatePicker(true)} style={styles.dateInput}>
         <Text style={styles.dateText}>
           {isFromDateSelected ? startDate.toDateString() : 'Select from date'}
@@ -128,7 +129,7 @@ export default function Addmedication() {
         <DateTimePicker value={startDate} mode="date" display="default" onChange={onChangeFromDate} />
       )}
 
-      <Text style={styles.label}>To Date</Text>
+      <Text style={styles.label}>End Date</Text>
       <TouchableOpacity onPress={() => setShowToDatePicker(true)} style={styles.dateInput}>
         <Text style={styles.dateText}>{isToDateSelected ? endDate.toDateString() : 'Select to date'}</Text>
       </TouchableOpacity>
