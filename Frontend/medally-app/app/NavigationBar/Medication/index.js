@@ -61,7 +61,7 @@ export default function MedicationScreen() {
   useEffect(() => {
     const loadMedications = async () => {
       try {
-        const response= await api.getAllMedication('1yqpFppDMfYgevo7isXH')
+        const response= await api.getAllMedication('KcLR8zOoexJp8N2Qrvz2')
         console.log(response)
         setMedications(response)
 

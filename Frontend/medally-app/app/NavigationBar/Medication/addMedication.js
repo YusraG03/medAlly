@@ -65,7 +65,7 @@ export default function Addmedication() {
 
   const handleAddMedicine = async () => {
     const newMedication = {
-      name,
+      medicationName,
       dosage,
       startDate: startDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
       endDate: endDate.toISOString().split('T')[0],
@@ -77,7 +77,7 @@ export default function Addmedication() {
     const userID = getuser.getUserId; // replace with actual user ID
 
     try {
-      const response = await api.addMedication(newMedication, userID);
+      const response = await api.addMedication(newMedication, 'KcLR8zOoexJp8N2Qrvz2');
       
       Alert.alert('Success', 'Medication added successfully');
       // Optionally clear the input fields after successful submission
