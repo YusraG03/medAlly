@@ -203,7 +203,12 @@ app.post('/getUserDiagnosis', async (req, res) => {
     const message = await db.getUserDiagnosis(req.body.userID);
     res.json(message);
 });
+app.post('/getUserBMI', async(req, res) => {
+    const message = await db.getUserBMI(req.body.userID);
+    res.json(message);
+});
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });
 
+    

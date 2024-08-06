@@ -399,6 +399,22 @@ class firebase
             console.error('Error retrieving diagnosis:', error);
         }
     }
+    async getUserBMI(userID)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('basicInfo');
+            const document = await ref.get();
+            const basicInfo = document.data();
+            const height = basicInfo.height/100;
+            return (basicInfo.weight / (height * height));
+        }
+        catch(error)
+        {
+            console.error('Error retrieving BMI:', error);
+        }
+
+    }
 }
 
 export default firebase;
