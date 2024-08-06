@@ -100,7 +100,7 @@ export default function MedicationScreen() {
   const renderItem = ({ item }) => (
     <View style={styles.medicationItem}>
       <Text style={styles.medicationName}>{item.medicationName}</Text>
-      <Text style={styles.medicationDetails}> {`${item.dosage}, ${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}</Text>
+      <Text style={styles.medicationDetails}> {`${item.time}, ${item.dosage}, ${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}</Text>
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={() => handleMenuPress(item)}>
           <Ionicons name="ellipsis-vertical" size={24} color="black" />
