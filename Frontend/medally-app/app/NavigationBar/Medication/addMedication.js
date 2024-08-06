@@ -69,7 +69,7 @@ export default function Addmedication() {
       dosage,
       startDate: startDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
       endDate: endDate.toISOString().split('T')[0],
-      time: time.toTimeString().split(' ')[0], // Format time to HH:MM:SS
+      time: time.toTimeString().split(' ')[0].substring(0,5), // Format time to HH:MM
       cause,
       reminder,
     };
