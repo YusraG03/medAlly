@@ -10,7 +10,8 @@ import getuserID from '../../account/userStorage.js'
 
 const getdata= new getuserID()
 const api = new APIEndpoint()
-const userID = await getdata.getUserId()
+
+//const userID = await getdata.getUserId()
 
 // Weeklycalendar Component
 const Weeklycalendar = ({ onDatePress }) => {
