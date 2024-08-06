@@ -13,7 +13,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const date = 'Today';
 
-// ... (keep mealData and dailyIntake as they are)
+
 
 const MealPage = () => {
   const [expandedMeals, setExpandedMeals] = useState({});

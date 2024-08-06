@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { ScrollView, StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API';
 
-export default function physicalHabits() {
-  const { control, handleSubmit, formState: { errors } } = useForm();
+const API = new APIEndpoint();
+
+export default function PhysicalHabits() {
+  const { control, handleSubmit, formState: { errors, isValid } } = useForm();
   const router = useRouter();
 
-  const onSubmit = data => {
+  const [exerciseFrequency, setExerciseFrequency] = useState('');
+  const [alcoholFrequency, setAlcoholFrequency] = useState('');
+  const [smokeFrequency, setSmokeFrequency] = useState('');
+  const [coffeeFrequency, setCoffeeFrequency] = useState('');
+  const [otherSubstances, setOtherSubstances] = useState('');
+  const [sleepProblems, setSleepProblems] = useState('');
+  const [pregnancyStatus, setPregnancyStatus] = useState('');
+
+ /**  const onSubmit = data => {
     console.log(data);
-    // Navigate to the next page upon successful form submission
     router.push('./medical-history-one');
-  };
+  };**/
 
   return (
     <View style={styles.container}>
@@ -37,7 +47,10 @@ export default function physicalHabits() {
               render={({ field: { onChange, value } }) => (
                 <Picker
                   selectedValue={value}
-                  onValueChange={onChange}
+                  onValueChange={(itemValue) => {
+                    setExerciseFrequency(itemValue);
+                    onChange(itemValue);
+                  }}
                   style={styles.input}
                 >
                   <Picker.Item label="None (0 Times per week)" value="None (0 Times per week)" />
@@ -57,7 +70,10 @@ export default function physicalHabits() {
               render={({ field: { onChange, value } }) => (
                 <Picker
                   selectedValue={value}
-                  onValueChange={onChange}
+                  onValueChange={(itemValue) => {
+                    setAlcoholFrequency(itemValue);
+                    onChange(itemValue);
+                  }}
                   style={styles.input}
                 >
                   <Picker.Item label="None (0 Times per week)" value="None (0 Times per week)" />
@@ -77,7 +93,10 @@ export default function physicalHabits() {
               render={({ field: { onChange, value } }) => (
                 <Picker
                   selectedValue={value}
-                  onValueChange={onChange}
+                  onValueChange={(itemValue) => {
+                    setSmokeFrequency(itemValue);
+                    onChange(itemValue);
+                  }}
                   style={styles.input}
                 >
                   <Picker.Item label="None (0 Times per week)" value="None (0 Times per week)" />
@@ -98,7 +117,10 @@ export default function physicalHabits() {
               render={({ field: { onChange, value } }) => (
                 <Picker
                   selectedValue={value}
-                  onValueChange={onChange}
+                  onValueChange={(itemValue) => {
+                    setCoffeeFrequency(itemValue);
+                    onChange(itemValue);
+                  }}
                   style={styles.input}
                 >
                   <Picker.Item label="None (0 Times per week)" value="None (0 Times per week)" />
@@ -121,7 +143,10 @@ export default function physicalHabits() {
                   style={styles.input}
                   placeholder="Type.."
                   onBlur={onBlur}
-                  onChangeText={onChange}
+                  onChangeText={(text) => {
+                    setOtherSubstances(text);
+                    onChange(text);
+                  }}
                   value={value}
                 />
               )}
@@ -137,7 +162,10 @@ export default function physicalHabits() {
               render={({ field: { onChange, value } }) => (
                 <Picker
                   selectedValue={value}
-                  onValueChange={onChange}
+                  onValueChange={(itemValue) => {
+                    setSleepProblems(itemValue);
+                    onChange(itemValue);
+                  }}
                   style={styles.input}
                 >
                   <Picker.Item label="Yes" value="Yes" />
@@ -157,7 +185,10 @@ export default function physicalHabits() {
               render={({ field: { onChange, value } }) => (
                 <Picker
                   selectedValue={value}
-                  onValueChange={onChange}
+                  onValueChange={(itemValue) => {
+                    setPregnancyStatus(itemValue);
+                    onChange(itemValue);
+                  }}
                   style={styles.input}
                 >
                   <Picker.Item label="Yes" value="Yes" />
@@ -168,7 +199,24 @@ export default function physicalHabits() {
             {errors.pregnancyStatus && <Text style={styles.errorText}>This field is required.</Text>}
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+          <TouchableOpacity
+            onPress={handleSubmit((data) => {
+              if (isValid) {
+                const userMedicalHistory = {
+                  exerciseFrequency,
+                  alcoholFrequency,
+                  smokeFrequency,
+                  coffeeFrequency,
+                  otherSubstances,
+                  sleepProblems,
+                  pregnancyStatus,
+                };
+                const response = API.addUserMedicalHistory(userMedicalHistory,'KcLR8zOoexJp8N2Qrvz2')
+                router.push('./medical-history-one');
+              }
+            })}
+            style={styles.button}
+          >
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
         </View>
