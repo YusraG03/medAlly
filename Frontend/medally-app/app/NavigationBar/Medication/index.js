@@ -60,7 +60,7 @@ export default function MedicationScreen() {
     const loadMedications = async () => {
       try {
         const response= await api.getAllMedication('1yqpFppDMfYgevo7isXH')
-        setMedications= response
+        setMedications(response)
 
       } catch (error) {
         console.error('Failed to load medications.', error);
