@@ -29,7 +29,19 @@ export default function GeneralInformation() {
     setDate(currentDate);
     setValue('DateOfBirth', currentDate.toLocaleDateString('en-GB'));
   };
+  const onSubmit = async () => {
+    if (isValid) {
+      const userMedicalHistory = {
+        gender: gender,
+        height: height,
+        weight: weight
+      };
 
+      // Replace 'userID.getUserId' with actual user ID retrieval logic
+      const userId = "userID.getUserId"; // Example, replace with actual user ID retrieval
+      const response = await API.addUserBasicInfo(userMedicalHistory, userId);
+      router.push('./medical-history-two');
+    }};
   const showDatepicker = () => {
     setShow(true);
   };
@@ -149,20 +161,7 @@ export default function GeneralInformation() {
           </View>
         </View>
       </View>
-      <TouchableOpacity onPress={() =>
-      {
-      if (isValid) {
-        const userCreds = 
-        {
-          DOB: date.toLocaleDateString('en-GB'),
-          gender: gender,
-          height: height,
-          weight: weight
-        };
-        const response = API.addUserBasicInfo(userCreds, userID.getUserId)
-        router.push('./physical-habits');
-      }
-      }} style={styles.button}>
+      <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>

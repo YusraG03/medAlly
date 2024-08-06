@@ -32,18 +32,18 @@ export default function MedicalHistoryOne() {
     setIsValid(isBloodPressureValid && isCardiovascularValid && isCholesterolValid && isDiabetesValid);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (isValid) {
       //console.log({ bloodPressure, cardiovascular, cholesterol, diabetes, injuries, surgeries });
         const userMedicalHistory = {
-          bloodPressure,
-          cardiovascular,
-          cholesterol,
-          diabetes,
-          injuries,
-          surgeries
+          bloodPressure: bloodPressure,
+          cardiovascular : cardiovascular,
+          cholesterol: cholesterol,
+          diabetes: diabetes,
+          injuries: injuries,
+          surgeries: surgeries,
         };
-        const response = API.addUserBasicInfo(userMedicalHistory);
+        const response = await API.addUserBasicInfo(userMedicalHistory);
         router.push('./medical-history-two');
       }
     };
