@@ -84,7 +84,7 @@ export default function DashboardScreen() {
       const caloriesBurned = (stepCount * 0.04).toFixed(2);
       const distanceTraveled = (stepCount * 0.762 / 1000).toFixed(2);
 
-      API.sendStepData({
+      API.addStepData({
         stepCount,
         progress,
         caloriesBurned,

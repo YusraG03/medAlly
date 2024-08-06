@@ -551,5 +551,9 @@ class APIEndpoint
             console.error('Error getting total calories:', error);
         }
     }
+    async addStepData(stepData, userID)
+    {
+        
+    }
 }
 export default APIEndpoint;   
