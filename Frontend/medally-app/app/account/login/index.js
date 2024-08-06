@@ -3,7 +3,7 @@ import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView,
 import { router } from 'expo-router';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
-import userStore from '../userStorage';
+import { storeUserId, getUserId, removeUserId } from '../userStorage';
 
 const userSave = new userStore();
 const API = new APIEndpoint()
@@ -110,6 +110,10 @@ export default function Login() {
                   password: password,
                 }
                 const response = await API.loginUser(userCreds);
+                await storeUserId(response.message.id);
+                const getID = getUserId();
+                alert(getID)
+                console.log(getID)
                 console.log(response);
                 if(response.message.message == "Wrong Credentials!")
                 {

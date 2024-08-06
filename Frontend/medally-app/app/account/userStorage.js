@@ -1,37 +1,26 @@
-import { Platform } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store'; // For SecureStore
 
-const userFilePath = 'user_id';
-
-class UserStorage {
-    async saveUserId(userId) {
-        try {
-            if (Platform.OS === 'web') {
-                localStorage.setItem(userFilePath, userId);
-                console.log(`User ID ${userId} saved successfully in localStorage.`);
-            } else {
-                await AsyncStorage.setItem(userFilePath, userId);
-                console.log(`User ID ${userId} saved successfully in AsyncStorage.`);
-            }
-        } catch (error) {
-            console.error('Error saving user ID:', error);
-        }
+export const storeUserId = async (userId) => {
+    try {
+      await SecureStore.setItemAsync('user_id', userId);
+    } catch (e) {
+      console.error('Failed to save user ID:', e);
     }
-
-    async getUserId() {
-        try {
-            if (Platform.OS === 'web') {
-                const userId = localStorage.getItem(userFilePath);
-                return userId !== null ? userId : null;
-            } else {
-                const userId = await AsyncStorage.getItem(userFilePath);
-                return userId !== null ? userId : null;
-            }
-        } catch (error) {
-            console.error('Error retrieving user ID:', error);
-            return null;
-        }
+  };
+  
+  export const getUserId = async () => {
+    try {
+      const userId = await SecureStore.getItemAsync('user_id');
+      return userId;
+    } catch (e) {
+      console.error('Failed to retrieve user ID:', e);
     }
-}
-
-export default UserStorage;
+  };
+  
+  export const removeUserId = async () => {
+    try {
+      await SecureStore.deleteItemAsync('user_id');
+    } catch (e) {
+      console.error('Failed to remove user ID:', e);
+    }
+  };
