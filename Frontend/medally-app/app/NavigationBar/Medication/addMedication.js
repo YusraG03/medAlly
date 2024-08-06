@@ -7,6 +7,7 @@ import APIEndpoint from '../../API';
 import getuserID from '../../account/userStorage.js'
 
 const getuser = new getuserID()
+const api= new APIEndpoint()
 
 export default function Addmedication() {
   const navigation = useNavigation();
@@ -72,10 +73,11 @@ export default function Addmedication() {
       reminder,
     };
 
-    const userID = '12345'; // replace with actual user ID
+    const userID = getuser.getUserId; // replace with actual user ID
 
     try {
-      const response = await api.addMedication(newMedication, getuser.getUserId);
+      const response = await api.addMedication(newMedication, userID);
+      
       Alert.alert('Success', 'Medication added successfully');
       // Optionally clear the input fields after successful submission
       setName('');
