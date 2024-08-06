@@ -63,7 +63,6 @@ app.post('/addMedication', async (req, res) =>
 app.post('/getAllMedication', async (req, res) =>
 {
     const message = await db.getAllMedication(req.body.userID);
-    console.log(message[0].medicineName);
     res.json(message);
 });
 
