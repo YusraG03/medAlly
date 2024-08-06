@@ -6,6 +6,11 @@ import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
 import APIEndpoint from '../../API';
+import getuserID from '../../account/userStorage.js'
+
+const getdata= new getuserID()
+const api = new APIEndpoint()
+const userID = await getdata.getUserId()
 
 // Weeklycalendar Component
 const Weeklycalendar = ({ onDatePress }) => {
@@ -53,10 +58,9 @@ export default function MedicationScreen() {
   useEffect(() => {
     const loadMedications = async () => {
       try {
-        const storedMedications = await AsyncStorage.getItem('medications');
-        if (storedMedications) {
-          setMedications(JSON.parse(storedMedications));
-        }
+        const response= await api.getAllMedication('1yqpFppDMfYgevo7isXH')
+        setMedications= response
+
       } catch (error) {
         console.error('Failed to load medications.', error);
       }
