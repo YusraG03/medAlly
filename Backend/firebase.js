@@ -355,23 +355,31 @@ class firebase
             return "An error occurred during retrieving chat consultations.";
         }
     }
-    async addUserDailyFoodIntake(dailyFoodIntake, userID)
-    {
-        try
-        {
+    async addUserDailyFoodIntake(dailyFoodIntake, userID) {
+        try {
             const dateOfIntake = new Date().toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             });
-            const ref = this.db.collection('users').doc(userID.collection('nutrition').doc(dateOfIntake));
-            await ref.set(dailyFoodIntake);
-            return("Daily food intake added successfully!");
-        }
-        catch(error)
-        {
-            console.error('Error adding daily food intake:', error);
-            return "An error occurred during adding daily food intake.";
+            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(dateOfIntake);
+            await ref.update(dailyFoodIntake);
+            return "Daily food intake added successfully!";
+        } catch (error) {
+            if (error.code === 'not-found') {
+                // If the document does not exist, create it
+                const dateOfIntake = new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(dateOfIntake);
+                await ref.set(dailyFoodIntake);
+                return "Daily food intake added successfully!";
+            } else {
+                console.error('Error adding daily food intake:', error);
+                return "An error occurred during adding daily food intake.";
+            }
         }
     }
     async getUserDailyFoodIntake(dateOfIntake,userID)
