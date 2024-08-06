@@ -5,24 +5,46 @@ import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API'
+import getID from '../userStorage'
 
-export default function generalInformation() {
-  const { control, handleSubmit, formState: { errors } } = useForm();
+
+const userID = new getID()
+const API = new APIEndpoint()
+
+export default function GeneralInformation() {
+  const { control, handleSubmit, setValue, formState: { errors } } = useForm();
   const router = useRouter();
 
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
+  const [gender, setGender] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-
+    setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    // Manually update the form value with the selected date
-    control.setValue('DateOfBirth', currentDate.toLocaleDateString('en-GB'));
+    setValue('DateOfBirth', currentDate.toLocaleDateString('en-GB'));
   };
 
   const showDatepicker = () => {
     setShow(true);
+  };
+  const onSubmit = () => {
+    
+    if (isValid) {
+      const userCreds = {
+        DOB: date.toLocaleDateString('en-GB'),
+        gender: gender,
+        height: height,
+        weight: weight
+      };
+      const response = API.addUserBasicInfo(userCreds, userID.getUserId)
+      router.push('./physical-habits');
+    }
   };
 
   return (
@@ -39,22 +61,30 @@ export default function generalInformation() {
       </View>
       <View style={styles.form}>
         <View style={styles.GenderAndDOB}>
-          <View style={styles.formItem.half}>
+          <View style={styles.formItemHalf}>
             <Text style={styles.formHeader}>Gender:</Text>
             <Controller
               name="Gender"
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
-                <Picker selectedValue={value} onValueChange={onChange} style={styles.picker}>
+                <Picker
+                  selectedValue={value}
+                  onValueChange={(itemValue) => {
+                    setGender(itemValue);
+                    onChange(itemValue);
+                  }}
+                  style={styles.picker}
+                >
                   <Picker.Item label="Male" value="male" />
                   <Picker.Item label="Female" value="female" />
                   <Picker.Item label="Other" value="other" />
                 </Picker>
               )}
             />
+            {errors.Gender && <Text style={styles.errorText}>Gender is required.</Text>}
           </View>
-          <View style={styles.formItem.half}>
+          <View style={styles.formItemHalf}>
             <Text style={styles.formHeader}>Date of Birth:</Text>
             <Controller
               name="DateOfBirth"
@@ -82,10 +112,11 @@ export default function generalInformation() {
                 </>
               )}
             />
+            {errors.DateOfBirth && <Text style={styles.errorText}>Date of Birth is required.</Text>}
           </View>
         </View>
         <View style={styles.HeightAndWeight}>
-          <View style={styles.formItem.half}>
+          <View style={styles.formItemHalf}>
             <Text style={styles.formHeader}>Height (in cm):</Text>
             <Controller
               name="Height"
@@ -95,7 +126,10 @@ export default function generalInformation() {
                 <TextInput
                   style={styles.input}
                   onBlur={onBlur}
-                  onChangeText={onChange}
+                  onChangeText={(text) => {
+                    setHeight(text);
+                    onChange(text);
+                  }}
                   value={value}
                   keyboardType="numeric"
                   placeholder="Height"
@@ -104,7 +138,7 @@ export default function generalInformation() {
             />
             {errors.Height && <Text style={styles.errorText}>Height is required and should be a number.</Text>}
           </View>
-          <View style={styles.formItem.half}>
+          <View style={styles.formItemHalf}>
             <Text style={styles.formHeader}>Weight (in kg):</Text>
             <Controller
               name="Weight"
@@ -114,7 +148,10 @@ export default function generalInformation() {
                 <TextInput
                   style={styles.input}
                   onBlur={onBlur}
-                  onChangeText={onChange}
+                  onChangeText={(text) => {
+                    setWeight(text);
+                    onChange(text);
+                  }}
                   value={value}
                   keyboardType="numeric"
                   placeholder="Weight"
