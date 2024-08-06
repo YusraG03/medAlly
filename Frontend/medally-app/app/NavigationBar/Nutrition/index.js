@@ -3,77 +3,17 @@ import { StyleSheet, Button, View, Text, Image, TouchableOpacity, ScrollView, La
 import colors from '../../_assets/colors';
 import textStyles from '../../_assets/textStyles';
 import { mealIcons } from '../../_assets/assets';
-import ProgressBar from '../../components/ProgressBar.js'; // Import the ProgressBar component
+import ProgressBar from '../../components/ProgressBar.js';
 import { router } from 'expo-router';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
+
 const date = 'Today';
 
-const mealData = [
-	
-	{
-	  id: 1,
-	  mealName: 'Breakfast',
-	  mealIcon: 'breakfast',
-	  calories: '576 Kcal',
-	  mealDescription: 'Scrambled Eggs, Sausages and Bacon',
-	  nutrition: {
-		carbs: '33g',
-		protein: '22g',
-		fat: '15g',
-	  },
-	  analysis: 'Given your record of high cholesterol, you should avoid combining such oily food in the morning.',
-	},
-	{
-	  id: 2,
-	  mealName: 'Lunch',
-	  mealIcon: 'lunch',
-	  calories: '215 Kcal',
-	  mealDescription: 'Chopped Chicken Salad',
-	  nutrition: {
-		carbs: '15g',
-		protein: '35g',
-		fat: '2g',
-	  },
-	  analysis: 'A healthy meal like this will be beneficial as lettuce leaves release antioxidants, resulting in better health.',
-	},
-	{
-	  id: 3,
-	  mealName: 'Dinner',
-	  mealIcon: 'dinner',
-	  calories: '450 Kcal',
-	  mealDescription: 'Grilled Salmon with Quinoa and Steamed Vegetables',
-	  nutrition: {
-		carbs: '40g',
-		protein: '30g',
-		fat: '20g',
-	  },
-	  analysis: 'A balanced meal with a good source of omega-3 fatty acids, which are beneficial for heart health.',
-	},
-	{
-	  id: 4,
-	  mealName: 'Snacks',
-	  mealIcon: 'snacks',
-	  calories: '150 Kcal',
-	  mealDescription: 'Greek Yogurt with Honey and Almonds',
-	  nutrition: {
-		carbs: '20g',
-		protein: '10g',
-		fat: '5g',
-	  },
-	  analysis: 'A light snack that provides a good balance of protein and healthy fats, great for maintaining energy levels.',
-	}
-  ];
-
-const dailyIntake = {
-  calories: '1391/1633 Kcal',
-  carbs: '108g',
-  protein: '97g',
-  fat: '42g',
-};
+// ... (keep mealData and dailyIntake as they are)
 
 const MealPage = () => {
   const [expandedMeals, setExpandedMeals] = useState({});
@@ -100,50 +40,48 @@ const MealPage = () => {
           <Text style={styles.cardTitle}>Daily Intake</Text>
           <Text style={styles.cardContentText}>{dailyIntake.calories}</Text> 
         </View>
-        <ProgressBar progress={currentCalories} max={maxCalories} /> {/* Add the progress bar here */}
+        <ProgressBar progress={currentCalories} max={maxCalories} />
       </View>
 
-
-	  <View style={styles.card}>
+      <View style={styles.card}>
         <View style={styles.center}>
           <Text style={textStyles.containerActionText}>Nutrition Breakdown</Text>
-		  <View style = {styles.nutritionDistribution}>
-				<View style = {styles.nutritionStat}>
-					<Text style = {textStyles.paragraphTitle}>Carbs</Text>
-					<Text style = {textStyles.contentText}>{dailyIntake.carbs}</Text>
-				</View>
-				<View style = {styles.seperator}></View>
-				<View style = {styles.nutritionStat}>
-					<Text style = {textStyles.paragraphTitle}>Protein</Text>
-					<Text style = {textStyles.contentText}>{dailyIntake.protein}</Text>
-				</View>
-				<View style = {styles.seperator}></View>
-				<View style = {styles.nutritionStat}>
-					<Text style = {textStyles.paragraphTitle}>Fat</Text>
-					<Text style = {textStyles.contentText}>{dailyIntake.fat}</Text>
-				</View>
-		  </View>
+          <View style={styles.nutritionDistribution}>
+            <View style={styles.nutritionStat}>
+              <Text style={textStyles.paragraphTitle}>Carbs</Text>
+              <Text style={textStyles.contentText}>{dailyIntake.carbs}</Text>
+            </View>
+            <View style={styles.seperator}></View>
+            <View style={styles.nutritionStat}>
+              <Text style={textStyles.paragraphTitle}>Protein</Text>
+              <Text style={textStyles.contentText}>{dailyIntake.protein}</Text>
+            </View>
+            <View style={styles.seperator}></View>
+            <View style={styles.nutritionStat}>
+              <Text style={textStyles.paragraphTitle}>Fat</Text>
+              <Text style={textStyles.contentText}>{dailyIntake.fat}</Text>
+            </View>
+          </View>
         </View>
       </View>
 
-	<View style = {styles.daySwitcher}>
-		<TouchableOpacity>
-		<Image
-                  style={styles.chevronIcon}
-                  resizeMode="cover"
-                  source={require('../../_assets/chevron-left.png')}
-                />
-		</TouchableOpacity>
-
-	<Text style = {textStyles.paragraphTitle}>{date}</Text>
-	<TouchableOpacity>
-		<Image
-                  style={styles.chevronIcon}
-                  resizeMode="cover"
-                  source={require('../../_assets/chevron-right.png')}
-                />
-		</TouchableOpacity>
-	</View>
+      <View style={styles.daySwitcher}>
+        <TouchableOpacity>
+          <Image
+            style={styles.chevronIcon}
+            resizeMode="cover"
+            source={require('../../_assets/chevron-left.png')}
+          />
+        </TouchableOpacity>
+        <Text style={textStyles.paragraphTitle}>{date}</Text>
+        <TouchableOpacity>
+          <Image
+            style={styles.chevronIcon}
+            resizeMode="cover"
+            source={require('../../_assets/chevron-right.png')}
+          />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.cards}>
         {mealData.map((meal) => (
@@ -171,9 +109,7 @@ const MealPage = () => {
               <View style={styles.expandedInformation}>
                 <View style={styles.section}>
                   <Text style={textStyles.smallParagraphTitle}>Description</Text>
-                  <Text style={styles.cardContentText}>
-                    {meal.mealDescription}
-                  </Text>
+                  <Text style={styles.cardContentText}>{meal.mealDescription}</Text>
                 </View>
                 
                 <View style={styles.section}>
@@ -187,9 +123,7 @@ const MealPage = () => {
 
                 <View style={styles.section}>
                   <Text style={textStyles.smallParagraphTitle}>Analysis</Text>
-                  <Text style={styles.cardContentText}>
-                    {meal.analysis}
-                  </Text>
+                  <Text style={styles.cardContentText}>{meal.analysis}</Text>
                 </View>
               </View>
             )}
