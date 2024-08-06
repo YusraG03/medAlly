@@ -77,13 +77,13 @@ const ResultScreen = () => {
 
 const styles = StyleSheet.create({
 	container: {
-	  flex: 1,
-	  flexDirection: 'column',
-	  backgroundColor: colors.defaultwhite,
-	  padding: 16,
-	  marginTop: '2%',
-	  gap: '10%',
-	},
+		flex: 1,
+		flexDirection: 'column',
+		backgroundColor: colors.defaultwhite,
+		padding: 16,
+		marginTop: '2%',
+	  },
+	  
 	content: {
 	  flexDirection: 'column',
 	},
@@ -94,26 +94,28 @@ const styles = StyleSheet.create({
 	  marginVertical: 10
 	},
 	header: {
-	  flexDirection: "row",
-	  alignItems: "center",
-	  justifyContent: "space-between",
-	  gap: 15,
-	  width: '82%',
-	},
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		marginHorizontal: 15, // Horizontal spacing between header items
+		width: '82%',
+	  },
+	  
 	foodPicture: {
-	  width: 200,
-	  height: 200,
-	  borderRadius: '50%',
-	  borderColor: colors.defaultblack, 
-	  borderWidth: 3,
-	  alignSelf: 'center',
-	  overflow: 'hidden',
-	},
-	section: {
-	  flexDirection: 'column',
-	  gap: 4,
-	  marginBottom: '5%',
-	},
+		width: 200,
+		height: 200,
+		borderRadius: 100, // Half of width/height to make it circular
+		borderColor: colors.defaultblack,
+		borderWidth: 3,
+		alignSelf: 'center',
+		overflow: 'hidden',
+	  },
+	  
+	  section: {
+		flexDirection: 'column',
+		marginBottom: 20, // Vertical spacing between sections
+	  },
+	  
 	diseaseName: {
 	  fontSize: 24,
 	  letterSpacing: -0.7,
@@ -202,31 +204,32 @@ const styles = StyleSheet.create({
 	  flexDirection: 'column',
 	},
 	center: {
-	  flex: 1,
-	  alignItems: 'center',
-	  gap: 20
-	},
-	card: {
-	  borderRadius: 10,
-	  overflow: 'hidden',
-	  paddingHorizontal: 20,
-	  paddingVertical: 20,
-	  borderWidth: 1,
-	  borderColor: '#cecece',
-	  borderStyle: 'solid',
-	  backgroundColor: '#fff',
-	  shadowOpacity: 1,
-	  elevation: 20,
-	  shadowRadius: 15,
-	  shadowOffset: {
-		width: 5,
-		height: 4,
+		flex: 1,
+		alignItems: 'center',
+		marginVertical: 20, // Vertical spacing between centered items
 	  },
-	  shadowColor: 'rgba(0, 0, 0, 0.13)',
-	  gap: 10,
-	  marginBottom: 10,
-	  width : '90%'
-	},
+	  
+	  card: {
+		borderRadius: 10,
+		overflow: 'hidden',
+		paddingHorizontal: 20,
+		paddingVertical: 20,
+		borderWidth: 1,
+		borderColor: '#cecece',
+		borderStyle: 'solid',
+		backgroundColor: '#fff',
+		shadowOpacity: 1,
+		elevation: 20,
+		shadowRadius: 15,
+		shadowOffset: {
+		  width: 5,
+		  height: 4,
+		},
+		shadowColor: 'rgba(0, 0, 0, 0.13)',
+		marginBottom: 10,
+		width : '90%',
+	  },
+	  
 	upperInfoFlexBox: {
 	  alignItems: 'center',
 	  flexDirection: 'row',
@@ -244,11 +247,12 @@ const styles = StyleSheet.create({
 	  justifyContent: 'center'  
 	},
 	nutritionDistribution: {
-	  flexDirection: 'row',
-	  gap: '15%',
-	  justifyContent: 'center',
-	  alignItems: 'center'
-	},
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginHorizontal: 15, // Horizontal spacing between nutrition stats
+	  },
+	  
 	nutritionStat: {
 	  alignItems: 'center'
 	},
@@ -267,13 +271,15 @@ const styles = StyleSheet.create({
 	  height: 24,
 	},
 	expandedInformation: {
-	  width: '100%',
-	  gap: 10,
-	},
-	nutritionDetails: {
-	  flexDirection: 'column',
-	  gap: 2,
-	},
+		width: '100%',
+		marginVertical: 10, // Vertical spacing between expanded information items
+	  },
+	  
+	  nutritionDetails: {
+		flexDirection: 'column',
+		marginVertical: 5, // Vertical spacing between nutrition details
+	  },
+	  
 	cardContentText: {
 	  color: '#262626',
 	  fontWeight: '500',

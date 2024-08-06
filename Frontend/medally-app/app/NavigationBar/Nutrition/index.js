@@ -13,8 +13,6 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const date = 'Today';
 
-
-
 const MealPage = () => {
   const [expandedMeals, setExpandedMeals] = useState({});
 
@@ -25,6 +23,55 @@ const MealPage = () => {
       [id]: !prevState[id]
     }));
   };
+
+  const dailyIntake = {
+    calories: 1391,
+    carbs: '150g',
+    protein: '60g',
+    fat: '50g'
+  };
+
+  const mealData = [
+    {
+      id: 1,
+      mealIcon: 'breakfast',
+      mealName: 'Breakfast',
+      calories: '350 kcal',
+      mealDescription: 'Scrambled eggs with toast and avocado.',
+      nutrition: {
+        carbs: '30g',
+        protein: '20g',
+        fat: '15g',
+      },
+      analysis: 'A balanced meal to start your day with good carbs and protein.',
+    },
+    {
+      id: 2,
+      mealIcon: 'lunch',
+      mealName: 'Lunch',
+      calories: '500 kcal',
+      mealDescription: 'Grilled chicken salad with quinoa.',
+      nutrition: {
+        carbs: '40g',
+        protein: '35g',
+        fat: '20g',
+      },
+      analysis: 'A protein-rich lunch to keep you energized through the afternoon.',
+    },
+    {
+      id: 3,
+      mealIcon: 'dinner',
+      mealName: 'Dinner',
+      calories: '450 kcal',
+      mealDescription: 'Salmon with steamed vegetables and brown rice.',
+      nutrition: {
+        carbs: '50g',
+        protein: '30g',
+        fat: '25g',
+      },
+      analysis: 'A healthy dinner with omega-3 fatty acids and complex carbs.',
+    },
+  ];
 
   // Calculate progress for the progress bar
   const currentCalories = 1391;
@@ -51,12 +98,12 @@ const MealPage = () => {
               <Text style={textStyles.paragraphTitle}>Carbs</Text>
               <Text style={textStyles.contentText}>{dailyIntake.carbs}</Text>
             </View>
-            <View style={styles.seperator}></View>
+            <View style={styles.separator}></View>
             <View style={styles.nutritionStat}>
               <Text style={textStyles.paragraphTitle}>Protein</Text>
               <Text style={textStyles.contentText}>{dailyIntake.protein}</Text>
             </View>
-            <View style={styles.seperator}></View>
+            <View style={styles.separator}></View>
             <View style={styles.nutritionStat}>
               <Text style={textStyles.paragraphTitle}>Fat</Text>
               <Text style={textStyles.contentText}>{dailyIntake.fat}</Text>
@@ -153,10 +200,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 15,
+    marginRight: 15, // Replaced gap with margin
     width: '82%',
   },
-  seperator:{
+  separator:{
 	height : '80%',
 	width: 0.5,
 	backgroundColor: colors.tertiarytext
@@ -167,7 +214,7 @@ const styles = StyleSheet.create({
   center:{
 	flex: 1,
 	alignItems : 'center',
-	gap: 20
+    marginBottom: 20, // Replaced gap with marginBottom
   },
   card: {
     borderRadius: 10,
@@ -186,7 +233,6 @@ const styles = StyleSheet.create({
       height: 4,
     },
     shadowColor: 'rgba(0, 0, 0, 0.13)',
-    gap: 10,
     marginBottom: 10,
   },
   upperInfoFlexBox: {
@@ -217,12 +263,12 @@ const styles = StyleSheet.create({
   },
   nutritionDistribution:{
 	flexDirection : 'row',
-	gap : '15%',
 	justifyContent : 'center',
 	alignItems: 'center'
   },
   nutritionStat:{
-	alignItems : 'center'
+	alignItems : 'center',
+    marginHorizontal: 10, // Replaced gap with marginHorizontal
   },
   calories: {
     color: '#7d7d7d',
@@ -240,15 +286,15 @@ const styles = StyleSheet.create({
   },
   expandedInformation: {
     width: '100%',
-    gap: 10,
+    marginTop: 10, // Replaced gap with marginTop
   },
   section: {
     flexDirection: 'column',
-    gap: 4,
+    marginBottom: 4, // Replaced gap with marginBottom
   },
   nutritionDetails: {
     flexDirection: 'column',
-    gap: 2,
+    marginTop: 2, // Replaced gap with marginTop
   },
   cardContentText: {
     color: '#262626',
