@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, Modal, ScrollView, CheckBox } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { useRouter, Link } from 'expo-router';
+import CheckBox from '@react-native-community/checkbox';
 
 const ProfileScreen = () => {
   const [isTermsVisible, setIsTermsVisible] = useState(false);
@@ -218,7 +219,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    
   },
   closeButtonText: {
     color: '#fff',
