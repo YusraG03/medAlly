@@ -565,7 +565,25 @@ class firebase
             return "An error occurred during retrieving total calories.";
         }
     }
-    async addStepData(stepData, userID)
+    async addStepData(stepData, userID) {
+        try {
+            const date = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const ref = this.db.collection('users').doc(userID).collection('fitness').doc(date);
+            
+            // Use set with { merge: false } to overwrite the document
+            await ref.set(stepData, { merge: false });
+            
+            return "Step data added successfully!";
+        } catch (error) {
+            console.error('Error adding step data:', error);
+            return "An error occurred during adding step data.";
+        }
+    }
+    async getStepData(userID)
     {
         try
         {
@@ -575,34 +593,8 @@ class firebase
                 day: 'numeric'
             });
             const ref = this.db.collection('users').doc(userID).collection('fitness').doc(date);
-            await ref.set(stepData);
-            return("Step data added successfully!");
-        }
-        catch(error)
-        {
-            console.error('Error adding step data:', error);
-            return "An error occurred during adding step data.";
-        }
-    }
-    async getStepData(userID)
-    {
-        try
-        {
-            const ref = this.db.collection('users').doc(userID).collection('fitness');
-            const snapshot = await ref.get();
-        
-            if (snapshot.empty) 
-            {
-                return('No step data found.');
-            }
-        
-            const stepData = [];
-    
-            snapshot.forEach(doc => {
-                stepData.push(doc.data());
-            });
-    
-            return stepData;
+            const document = await ref.get();
+            return document.data();
         }
         catch(error)
         {
