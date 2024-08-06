@@ -531,5 +531,25 @@ class APIEndpoint
             console.error('Error getting next medication:', error);
         }
     }
+    async getTotalCaloriesNutrition(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getTotalCaloriesNutrition`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting total calories:', error);
+        }
+    }
 }
 export default APIEndpoint;   
