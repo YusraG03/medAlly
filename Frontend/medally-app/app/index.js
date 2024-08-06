@@ -44,7 +44,7 @@ export default function App() {
       </View>
       <Link style={styles.button} href="./NavigationBar">Enter</Link>
       <Link style={styles.button} href="./account/sign-up">Sign Up</Link>
-      <Link style={styles.button} href="./account/login/loginScreen">Log In</Link>
+      <Link style={styles.button} href="./account/login/">Log In</Link>
       <StatusBar style="auto" />
     </View>
   );
