@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
-import { useRouter, Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import CheckBox from '@react-native-community/checkbox';
 
 const ProfileScreen = () => {
   const [isTermsVisible, setIsTermsVisible] = useState(false);
+  const [isMedicalRecordVisible, setIsMedicalRecordVisible] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
 
   const handleTermsPress = () => {
     setIsTermsVisible(true);
   };
-  const router = useRouter();
+
+  const handleMedicalRecordPress = () => {
+    setIsMedicalRecordVisible(true);
+  };
+
   const handleCloseTermsModal = () => {
     setIsTermsVisible(false);
   };
+
+  const handleCloseMedicalRecordModal = () => {
+    setIsMedicalRecordVisible(false);
+  };
+
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -24,10 +35,7 @@ const ProfileScreen = () => {
         <Button title="Edit Profile" onPress={() => router.push('./Profile/editprofile')} />
       </View>
       <View style={styles.menu}>
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>Account Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity style={styles.menuItem} onPress={handleMedicalRecordPress}>
           <Text style={styles.menuText}>Medical Record</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem} onPress={handleTermsPress}>
@@ -93,6 +101,32 @@ const ProfileScreen = () => {
           </View>
         </View>
       </Modal>
+
+      {/* Medical Record Modal */}
+      <Modal
+        transparent={true}
+        visible={isMedicalRecordVisible}
+        animationType="slide"
+        onRequestClose={handleCloseMedicalRecordModal}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalHeader}>Medical Record</Text>
+            <ScrollView style={styles.modalScrollView}>
+              <Text style={styles.modalText}>
+                {/* User's medical record information will be displayed here */}
+                This is where the user's medical record information will be shown.
+              </Text>
+            </ScrollView>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={handleCloseMedicalRecordModal}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -131,16 +165,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#777',
     marginBottom: 15,
-  },
-  editProfileButton: {
-    backgroundColor: '#000',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  editProfileText: {
-    color: '#fff',
-    fontWeight: 'bold',
   },
   menu: {
     marginBottom: 20,
@@ -216,9 +240,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   closeButton: {
+    backgroundColor: '#000',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
+    alignItems: 'center',
   },
   closeButtonText: {
     color: '#fff',
