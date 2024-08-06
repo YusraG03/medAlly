@@ -103,8 +103,8 @@ export default function Addmedication() {
       <Text style={styles.screenTitle}>Add a medication</Text>
       <Text style={styles.label}>Name</Text>
       <TextInput
-        style={[styles.input, { color: name ? 'black' : '#7d7d7d' }]}
-        value={name}
+        style={[styles.input, { color: medicationName ? 'black' : '#7d7d7d' }]}
+        value={medicationName}
         onChangeText={setName}
         placeholder="Enter medication name..."
         placeholderTextColor="#7d7d7d"
