@@ -63,7 +63,7 @@ export default function MedicationScreen() {
       try {
         const response= await api.getAllMedication('1yqpFppDMfYgevo7isXH')
         console.log(response)
-        setMedications(response)
+        setMedications(response[0])
 
 
       } catch (error) {
