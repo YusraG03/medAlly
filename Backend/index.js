@@ -216,6 +216,10 @@ app.post('/getUserFitness', async (req, res) => {
     const message = await db.getUserFitness(req.body.userID);
     res.json(message);
 });
+app.post('/getUserNextMedication', async (req, res) => {
+    const message = await db.getUserNextMedication(req.body.userID);
+    res.json(message);
+});
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });

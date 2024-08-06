@@ -510,5 +510,26 @@ class APIEndpoint
             console.error('Error getting fitness:', error);
         }
     }
+    //most likely pou ggn problem ek sa nek fer moi conner :)
+    async getUserNextMedication(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserNextMedication`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting next medication:', error);
+        }
+    }
 }
 export default APIEndpoint;   
