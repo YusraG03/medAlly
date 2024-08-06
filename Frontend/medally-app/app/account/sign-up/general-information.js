@@ -23,7 +23,7 @@ export default function GeneralInformation() {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
 
-  const onChange = (event, selectedDate) => {
+  const dateUpdate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -93,7 +93,7 @@ export default function GeneralInformation() {
                       value={date}
                       mode="date"
                       display="default"
-                      onChange={onChange}
+                      onChange={dateUpdate}
                     />
                   )}
                 </>
