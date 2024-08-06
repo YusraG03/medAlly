@@ -7,7 +7,7 @@ import APIEndpoint from '../../API';
 
 export function ResultScreen() {
   const params = useLocalSearchParams();
-  
+
   // Parse the received data
   const data = {
     likelihood: params.likelihood || "0",
@@ -17,14 +17,24 @@ export function ResultScreen() {
     additional_advice: params.additional_advice || ""
   };
 
+  // Convert treatments to the desired format
+  const formattedTreatments = data.treatments.map(treatment => ({
+    title: treatment.treatment,
+    description: treatment.treat_description
+  }));
+
   // Function to add user diagnosis
   const addDiagnosis = async () => {
     try {
       const API = new APIEndpoint();
-      const response = await API.addUserDiagnosis(params, 'KcLR8zOoexJp8N2Qrvz2');
-      
+      const payload = {
+        ...data,
+        treatments: formattedTreatments
+      };
+      const response = await API.addUserDiagnosis(payload, 'KcLR8zOoexJp8N2Qrvz2');
+
       // Log the response to check if the object was successfully pushed
-      console.log(params)
+      console.log('Payload to API:', payload);
       console.log('Diagnosis added successfully:', response);
     } catch (error) {
       console.error('Failed to add diagnosis:', error);
@@ -59,10 +69,10 @@ export function ResultScreen() {
         
         <View style={styles.section}>
           <Text style={textStyles.smallParagraphTitle}>Treatments</Text>
-          {data.treatments.map((treatment, index) => (
+          {formattedTreatments.map((treatment, index) => (
             <View key={index} style={styles.treatmentCard}>
-              <Text style={styles.treatmentTitle}>{treatment.treatment}</Text>
-              <Text style={styles.treatmentDescription}>{treatment.treat_description}</Text>
+              <Text style={styles.treatmentTitle}>{treatment.title}</Text>
+              <Text style={styles.treatmentDescription}>{treatment.description}</Text>
             </View>
           ))}
         </View>

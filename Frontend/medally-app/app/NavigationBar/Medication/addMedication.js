@@ -92,7 +92,8 @@ export default function Addmedication() {
       setIsToDateSelected(false);
       setIsTimeSelected(false);
       router.replace();
-    } catch (error) {
+    } 
+    catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to add medication');
     }
