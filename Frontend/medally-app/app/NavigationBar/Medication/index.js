@@ -62,7 +62,9 @@ export default function MedicationScreen() {
     const loadMedications = async () => {
       try {
         const response= await api.getAllMedication('1yqpFppDMfYgevo7isXH')
+        console.log(response)
         setMedications(response)
+
 
       } catch (error) {
         console.error('Failed to load medications.', error);
@@ -105,12 +107,12 @@ export default function MedicationScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.screenTitle}>Medications</Text>
-      <Weeklycalendar onDatePress={(date) => console.log(date)} />
+      <Weeklycalendar onDatePress={(date) => console.log(datgiyCe)} />
       
       {medications.length > 0 ? (
         <FlatList
           data={medications}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item[0].medicationName}
           renderItem={renderItem}
         />
       ) : (
