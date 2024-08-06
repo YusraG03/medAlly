@@ -14,7 +14,7 @@ export default function Addmedication() {
   const router = useRouter();
   const api = new APIEndpoint(); // Instantiate the APIEndpoint class
 
-  const [name, setName] = useState('');
+  const [medicationName, setName] = useState('');
   const [dosage, setDosage] = useState('');
   const [endDate, setToDate] = useState(new Date());
   const [startDate, setFromDate] = useState(new Date());
