@@ -48,6 +48,7 @@ export default function GeneralInformation() {
 
   return (
     <View style={styles.container}>
+      
       <View style={styles.header}>
         <Image 
           source={require('../../_assets/logo.png')} 
@@ -58,6 +59,7 @@ export default function GeneralInformation() {
           <Text style={styles.contentText}>Enter basic details about yourself to get started.</Text>
         </View>
       </View>
+
       <View style={styles.form}>
         <View style={styles.GenderAndDOB}>
           <View style={styles.formItemHalf}>
