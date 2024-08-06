@@ -39,17 +39,17 @@ export default function Addmedication() {
   ];
 
   const onChangeFromDate = (event, selectedDate) => {
-    const currentDate = selectedDate || fromDate;
+    const currentDate = selectedDate || startDate;
     setShowFromDatePicker(false);
     setFromDate(currentDate);
     setIsFromDateSelected(true);
-    if (toDate < currentDate) {
+    if (endDate < currentDate) {
       setToDate(currentDate);
     }
   };
 
   const onChangeToDate = (event, selectedDate) => {
-    const currentDate = selectedDate || toDate;
+    const currentDate = selectedDate || endDate;
     setShowToDatePicker(false);
     setToDate(currentDate);
     setIsToDateSelected(true);
@@ -121,19 +121,19 @@ export default function Addmedication() {
       <Text style={styles.label}>From Date</Text>
       <TouchableOpacity onPress={() => setShowFromDatePicker(true)} style={styles.dateInput}>
         <Text style={styles.dateText}>
-          {isFromDateSelected ? fromDate.toDateString() : 'Select from date'}
+          {isFromDateSelected ? startDate.toDateString() : 'Select from date'}
         </Text>
       </TouchableOpacity>
       {showFromDatePicker && (
-        <DateTimePicker value={fromDate} mode="date" display="default" onChange={onChangeFromDate} />
+        <DateTimePicker value={startDate} mode="date" display="default" onChange={onChangeFromDate} />
       )}
 
       <Text style={styles.label}>To Date</Text>
       <TouchableOpacity onPress={() => setShowToDatePicker(true)} style={styles.dateInput}>
-        <Text style={styles.dateText}>{isToDateSelected ? toDate.toDateString() : 'Select to date'}</Text>
+        <Text style={styles.dateText}>{isToDateSelected ? endDate.toDateString() : 'Select to date'}</Text>
       </TouchableOpacity>
       {showToDatePicker && (
-        <DateTimePicker value={toDate} mode="date" display="default" onChange={onChangeToDate} />
+        <DateTimePicker value={endDate} mode="date" display="default" onChange={onChangeToDate} />
       )}
 
       <Text style={styles.label}>Time</Text>
