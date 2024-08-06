@@ -3,14 +3,23 @@ import { useForm, Controller } from 'react-hook-form';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API';
+
+const API = new APIEndpoint();
 
 export default function MedicalHistoryTwo() {
   const { control, handleSubmit } = useForm();
   const navigation = useNavigation();
 
   const onSubmit = data => {
-    console.log('Form Data:', data);
-    navigation.navigate('NutritionHabits'); // Ensure this matches your navigator
+    if (isValid) {
+      const userMedicalHistory = {
+        conditionsInjuries: data.conditionsInjuries,
+        drugAllergies: data.drugAllergies,
+      };
+      const response = API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
+      navigation.navigate('NutritionHabits'); // Ensure this matches your navigator
+    }
   };
 
   return (
