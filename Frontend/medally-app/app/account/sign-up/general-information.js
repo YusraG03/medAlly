@@ -15,7 +15,7 @@ export default function generalInformation() {
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
+
     setDate(currentDate);
     // Manually update the form value with the selected date
     control.setValue('DateOfBirth', currentDate.toLocaleDateString('en-GB'));
