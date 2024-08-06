@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import colors from '../../_assets/colors';
 import textStyles from '../../_assets/textStyles';
 import { useLocalSearchParams } from 'expo-router';
+import APIEndpoint from '../../API';
 
 export function ResultScreen() {
   const params = useLocalSearchParams();
@@ -15,6 +16,25 @@ export function ResultScreen() {
     treatments: params.treatments ? JSON.parse(params.treatments) : [],
     additional_advice: params.additional_advice || ""
   };
+
+  // Function to add user diagnosis
+  const addDiagnosis = async () => {
+    try {
+      const API = new APIEndpoint();
+      const response = await API.addUserDiagnosis(params, 'KcLR8zOoexJp8N2Qrvz2');
+      
+      // Log the response to check if the object was successfully pushed
+      console.log(params)
+      console.log('Diagnosis added successfully:', response);
+    } catch (error) {
+      console.error('Failed to add diagnosis:', error);
+    }
+  };
+
+  // Call the API function when the component mounts
+  useEffect(() => {
+    addDiagnosis();
+  }, []);
 
   return (
     <View style={styles.container}>

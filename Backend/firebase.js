@@ -1,6 +1,7 @@
 import admin from 'firebase-admin'
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import { response } from 'express';
 
 dotenv.config();
 
@@ -355,23 +356,31 @@ class firebase
             return "An error occurred during retrieving chat consultations.";
         }
     }
-    async addUserDailyFoodIntake(dailyFoodIntake, userID)
-    {
-        try
-        {
+    async addUserDailyFoodIntake(dailyFoodIntake, userID) {
+        try {
             const dateOfIntake = new Date().toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             });
-            const ref = this.db.collection('users').doc(userID.collection('nutrition').doc(dateOfIntake));
-            await ref.set(dailyFoodIntake);
-            return("Daily food intake added successfully!");
-        }
-        catch(error)
-        {
-            console.error('Error adding daily food intake:', error);
-            return "An error occurred during adding daily food intake.";
+            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(dateOfIntake);
+            await ref.update(dailyFoodIntake);
+            return "Daily food intake added successfully!";
+        } catch (error) {
+            if (error.code === 'not-found') {
+                // If the document does not exist, create it
+                const dateOfIntake = new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(dateOfIntake);
+                await ref.set(dailyFoodIntake);
+                return "Daily food intake added successfully!";
+            } else {
+                console.error('Error adding daily food intake:', error);
+                return "An error occurred during adding daily food intake.";
+            }
         }
     }
     async getUserDailyFoodIntake(dateOfIntake,userID)
@@ -508,6 +517,51 @@ class firebase
         } catch (error) {
             console.error('Error getting next medication:', error);
             throw error;
+        }
+    }
+    async getTotalCaloriesNutrition(userID)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userID).collection('nutrition');
+            const snapshot = await ref.get();
+        
+            if (snapshot.empty) 
+            {
+                return('No nutrition data found.');
+            }       
+            
+            let totalCalories = 0;
+            let totalCarbs = 0;
+            let totalProtein = 0;
+            let totalFat = 0;
+            
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const item = data[key];
+                        totalCalories += item.calories || 0;
+                        totalCarbs += item.carbs || 0;
+                        totalProtein += item.protein || 0;
+                        totalFat += item.fat || 0;
+                    }
+                }
+            });
+    
+            const response = {
+                totalCalories: totalCalories,
+                totalCarbs: totalCarbs,
+                totalProtein: totalProtein,
+                totalFat: totalFat
+            };
+    
+            return response;
+        }
+        catch(error)
+        {
+            console.error('Error retrieving total calories:', error);
+            return "An error occurred during retrieving total calories.";
         }
     }
 }
