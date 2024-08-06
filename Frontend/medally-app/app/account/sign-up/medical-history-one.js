@@ -43,7 +43,7 @@ export default function MedicalHistoryOne() {
           injuries: injuries,
           surgeries: surgeries,
         };
-        const response = await API.addUserBasicInfo(userMedicalHistory);
+        const response = await API.addUserBasicInfo(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2');
         router.push('./medical-history-two');
       }
     };

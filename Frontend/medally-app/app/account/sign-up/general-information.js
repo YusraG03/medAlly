@@ -38,7 +38,7 @@ export default function GeneralInformation() {
       };
 
       // Replace 'userID.getUserId' with actual user ID retrieval logic
-      const userId = "userID.getUserId"; // Example, replace with actual user ID retrieval
+      const userId = 'KcLR8zOoexJp8N2Qrvz2'; // Example, replace with actual user ID retrieval
       const response = await API.addUserBasicInfo(userMedicalHistory, userId);
       router.push('./medical-history-two');
     }};
