@@ -69,7 +69,7 @@ export default function Addmedication() {
       dosage,
       startDate: startDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
       endDate: endDate.toISOString().split('T')[0],
-      time: time.toTimeString().split(' ')[0], // Format time to HH:MM:SS
+      time: time.toTimeString().split(' ')[0].substring(0,5), // Format time to HH:MM
       cause,
       reminder,
     };
@@ -91,7 +91,7 @@ export default function Addmedication() {
       setIsFromDateSelected(false);
       setIsToDateSelected(false);
       setIsTimeSelected(false);
-      router.back();
+      router.replace();
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to add medication');
