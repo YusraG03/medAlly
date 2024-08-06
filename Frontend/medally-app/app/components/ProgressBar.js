@@ -15,6 +15,7 @@ const ProgressBar = ({ progress, max }) => {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop : 5,
     alignSelf: 'stretch',
     flex: 1,
     height: 6,

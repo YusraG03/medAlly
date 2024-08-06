@@ -8,6 +8,8 @@ import textStyles from '../../_assets/textStyles';
 import colors from '../../_assets/colors';
 
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
+import bellIcon from '../../_assets/bell.png';
+
 
 const API = new APIEndpoint();
 
@@ -135,44 +137,45 @@ export default function DashboardScreen() {
         <Text style={textStyles.contentText}>How do you feel today?</Text>
         </View>
         <TouchableOpacity style={styles.notificationIcon} onPress={handleNotificationPress}>
-          <Ionicons name="notifications-outline" size={30} color="#121419" />
+          <Image source={bellIcon} style={styles.bellIcon} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.stepsContainer}>
         <AnimatedCircularProgress
           size={220}
-          width={15}
+          width={18}
           fill={parseFloat(progress)}
-          tintColor={getTintColor(progress)}
+          tintColor= "#FF0E82"
           onAnimationComplete={() => console.log('onAnimationComplete')}
-          backgroundColor="#3d5875"
-          rotation={0}
-          lineCap="round"
+          backgroundColor= {colors.defaultblack}
+          rotation={-135}
+          arcSweepAngle = {270}
+          lineCap="square"
         >
           {() => (
             <View style={styles.progressTextContainer}>
-              <Text style={styles.stepCount}>{stepCount}</Text>
-              <Text style={styles.stepsLabel}>/10000 steps</Text>
               <Image source={manIcon} style={styles.manIcon} resizeMode="contain" />
+              <Text style={styles.stepCount}>{stepCount}</Text>
+              <Text style={textStyles.contentText}>/10000 steps</Text>
             </View>
           )}
         </AnimatedCircularProgress>
       </View>
       <View style={styles.metricsContainer}>
         <View style={styles.metricBox}>
-          <Text style={styles.metricTitle}>Calories</Text>
-          <Text style={styles.metricValue}>{(stepCount * 0.04).toFixed(2)} Kcal</Text>
+          <Text style={textStyles.paragraphTitle}>Calories</Text>
+          <Text style={textStyles.contentText}>{(stepCount * 0.04).toFixed(2)} Kcal</Text>
         </View>
         <View style={styles.verticalBar} />
         <View style={styles.metricBox}>
-          <Text style={styles.metricTitle}>Distance</Text>
-          <Text style={styles.metricValue}>{(stepCount * 0.762 / 1000).toFixed(2)} km</Text>
+          <Text style={textStyles.paragraphTitle}>Distance</Text>
+          <Text style={textStyles.contentText}>{(stepCount * 0.762 / 1000).toFixed(2)} km</Text>
         </View>
         <View style={styles.verticalBar} />
         <View style={styles.metricBox}>
-          <Text style={styles.metricTitle}>Progress</Text>
-          <Text style={styles.metricValue}>{progress}%</Text>
+          <Text style={textStyles.paragraphTitle}>Progress</Text>
+          <Text style={textStyles.contentText}>{progress}%</Text>
         </View>
       </View>
       <View style={styles.infoContainer}>
@@ -249,10 +252,13 @@ const styles = StyleSheet.create({
   notificationIcon: {
     padding: 10,
   },
+  articleList:{
+    marginTop: 20
+  },
   verticalBar: {
-    width: 2,
-    height: 60,
-    backgroundColor: '#7D7D7D',
+    width: 0.5,
+    height: '50%',
+    backgroundColor: colors.tertiarytext,
     marginHorizontal: 10,
   },
   subText: {
@@ -267,18 +273,16 @@ const styles = StyleSheet.create({
   },
   manIcon: {
     width: 30,
-    height: 95,
-    position: 'absolute',
-    top: -70,
-    zIndex: 1,
+    height: 45,
   },
   titlePost:{
     gap: 2
   },
   progressTextContainer: {
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    top: 10,
+    top: -10,
+    height : 130
   },
   stepCount: {
     alignSelf: "stretch",
@@ -298,6 +302,7 @@ const styles = StyleSheet.create({
   metricsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems : 'center',
     marginVertical: 20,
   },
   metricBox: {
@@ -320,6 +325,7 @@ const styles = StyleSheet.create({
   infoBox: {
     backgroundColor: '#fff',
     borderRadius: 10,
+    borderColor : colors.tertiarytext,
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -420,6 +426,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignItems: 'center',
+  },
+  bellIcon:{
+    width: 32,
+    height: 32
   },
   closeButtonText: {
     color: '#fff',

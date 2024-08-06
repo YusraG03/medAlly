@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import APIEndpoint from '../../API';
-import getuserID from '../../account/userStorage.js'
+import getuserID from '../../account/userStorage.js';
 import colors from '../../_assets/colors';
 
-//const getdata = new getuserID();
 const api = new APIEndpoint();
 
 // Weeklycalendar Component
@@ -40,7 +39,7 @@ const Weeklycalendar = ({ onDatePress }) => {
       renderItem={renderItem}
       keyExtractor={(item) => item.toString()}
       horizontal
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.calendarContainer}
     />
   );
 };
@@ -105,25 +104,17 @@ export default function MedicationScreen() {
         <Text style={[styles.medicationName, item.status && styles.crossedOut]}>
           {item.medicationName}
         </Text>
-        <Text style={[styles.medicationTime, item.status && styles.crossedOut]}>
-          {item.time}
-        </Text>
-        <Text style={[styles.medicationDosage, item.status && styles.crossedOut]}>
-          {item.dosage}
-        </Text>
-        <Text style={[styles.medicationDetails, item.status && styles.crossedOut]}>
-          {`${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}
-        </Text>
-      </View>
-      <View style={styles.menuContainer}>
-        <TouchableOpacity onPress={() => handleMenuPress(item)}>
-          <Ionicons name="ellipsis-vertical" size={24} color="black" />
-        </TouchableOpacity>
+        <View style={styles.timeAction}>
+          <Text style={[styles.medicationTime, item.status && styles.crossedOut]}>
+            {item.time}
+          </Text>
+          <TouchableOpacity onPress={() => handleMenuPress(item)}>
+            <Ionicons name="ellipsis-vertical" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
-  
-  
 
   return (
     <View style={styles.container}>
@@ -140,10 +131,9 @@ export default function MedicationScreen() {
         <Text style={styles.noMedicationsText}>No medications for now</Text>
       )}
 
-      <Button title="Add Medication" onPress={() => router.push('./Medication/addMedication')} />
-      <Link href="/medication/Addmedication" style={styles.addButton}>
+      <Pressable onPress={() => router.push('./Medication/addMedication')} style={styles.addButton}>
         <Ionicons name="add-circle" size={60} color="black" />
-      </Link>
+      </Pressable>
 
       {/* Menu Modal */}
       <Modal visible={showMenuModal} animationType="slide" transparent>
@@ -187,7 +177,6 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontFamily: "Inter-ExtraBold",
     color: "#121419",
-    textAlign: "center",
     marginVertical: 20,
   },
   medicationItem: {
@@ -197,24 +186,31 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#ddd',
-    flexDirection: 'row', // Change to row to align items side by side
-    alignItems: 'flex-start',
-    justifyContent: 'space-between', // Distributes space between details and menuContainer
   },
   detailsContainer: {
-    flex: 1, // Takes up available space
-    marginRight: 10, // Adds spacing between details and menu dots
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginRight: 0,
+  },
+  timeAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: '2%',
   },
   medicationName: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
+    letterSpacing: -1,
     fontFamily: "Inter-SemiBold",
     color: "#121419",
   },
   medicationTime: {
-    fontSize: 16,
+    fontSize: 32,
     fontFamily: "Inter-Regular",
-    color: "#4f4f4f",
+    letterSpacing: -1.3,
+    color: "#7d7d7d",
     marginVertical: 4,
   },
   medicationDosage: {
@@ -266,7 +262,6 @@ const styles = StyleSheet.create({
     color: "#121419",
     marginBottom: 20,
   },
-
   modalOption: {
     width: '100%',
     padding: 15,
@@ -286,16 +281,19 @@ const styles = StyleSheet.create({
     color: '#007bff',
     fontFamily: "Inter-Regular",
   },
-  dayContainer: {
-    flex: 1,
+  calendarContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 15,
+    flexGrow: 1,
+  },
+  dayContainer: {
+    alignItems: 'center',
+    marginHorizontal: 10,
   },
   dayOfWeek: {
     fontSize: 14,
     color: "#4f4f4f",
     fontFamily: "Inter-Regular",
-    
   },
   dateContainer: {
     marginTop: 5,
@@ -312,7 +310,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#4f4f4f",
     fontFamily: "Inter-Regular",
-    
   },
   todayDate: {
     color: colors.defaultwhite,

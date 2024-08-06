@@ -80,7 +80,8 @@ const MealPage = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={textStyles.screenTitle}>Nutrition Overview</Text>
-      <Button title="Results Test" onPress={() => router.push('./Nutrition/results')} />
+      <Button style = {styles.testButton} title="Camera Test" onPress={() => router.push('./Nutrition/camera')} />
+      <Button style = {styles.testButton} title="Results Test" onPress={() => router.push('./Nutrition/results')} />
 
       <View style={styles.card}>
         <View style={styles.cardHeader}>
@@ -185,7 +186,7 @@ const MealPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-	flexDirection: 'column',
+	  flexDirection: 'column',
     backgroundColor: colors.defaultwhite,
     padding: 16,
     marginTop: '2%',
@@ -213,8 +214,7 @@ const styles = StyleSheet.create({
   },
   center:{
 	flex: 1,
-	alignItems : 'center',
-    marginBottom: 20, // Replaced gap with marginBottom
+	alignItems : 'center'
   },
   card: {
     borderRadius: 10,
@@ -242,6 +242,9 @@ const styles = StyleSheet.create({
   mealTime: {
     width: '95%',
   },
+  testButton:{
+    marginVertical: 20
+  },
   cardHeader: {
     flex: 1,
     flexDirection: "row",
@@ -262,9 +265,11 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   nutritionDistribution:{
-	flexDirection : 'row',
-	justifyContent : 'center',
-	alignItems: 'center'
+    marginTop: 15,
+	  flexDirection : 'row',
+	  justifyContent : 'space-around',
+	  alignItems: 'center',
+    width: '70%'
   },
   nutritionStat:{
 	alignItems : 'center',
@@ -308,6 +313,7 @@ const styles = StyleSheet.create({
   mealIcon: {
     width: 30,
     height: 30,
+    marginRight : 20
   },
   cardTitle: {
     color: '#212121',
