@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, ScrollView,
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API';
+
+const API = new APIEndpoint();
 
 export default function MedicalHistoryOne() {
   const router = useRouter();
@@ -31,10 +34,19 @@ export default function MedicalHistoryOne() {
 
   const onSubmit = () => {
     if (isValid) {
-      console.log({ bloodPressure, cardiovascular, cholesterol, diabetes, injuries, surgeries });
-      router.push('./medical-history-two');
-    }
-  };
+      //console.log({ bloodPressure, cardiovascular, cholesterol, diabetes, injuries, surgeries });
+        const userMedicalHistory = {
+          bloodPressure,
+          cardiovascular,
+          cholesterol,
+          diabetes,
+          injuries,
+          surgeries
+        };
+        const response = API.addUserBasicInfo(userMedicalHistory);
+        router.push('./medical-history-two');
+      }
+    };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
