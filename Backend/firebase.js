@@ -466,6 +466,40 @@ class firebase
             return "An error occurred during retrieving fitness.";
         }
     }
+    async getUserNextMedication(userID) {
+        try {
+            const ref = this.db.collection('users').doc(userID).collection('medications');
+            const snapshot = await ref.get();
+        
+            if (snapshot.empty) {
+                return 'No medications found.';
+            }
+        
+            const medications = [];
+    
+            snapshot.forEach(doc => {
+                medications.push(doc.data());
+            });
+    
+            // Get the current time
+            const now = new Date();
+    
+            // Filter and sort medications by time
+            const nextMedications = medications
+                .filter(med => new Date(med.time) > now)
+                .sort((a, b) => new Date(a.time) - new Date(b.time));
+    
+            if (nextMedications.length === 0) {
+                return 'No upcoming medications found.';
+            }
+    
+            // Return the next medication
+            return nextMedications[0];
+        } catch (error) {
+            console.error('Error getting next medication:', error);
+            throw error;
+        }
+    }
 }
 
 export default firebase;
