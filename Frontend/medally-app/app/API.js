@@ -470,6 +470,45 @@ class APIEndpoint
             console.error('Error getting BMI:', error)
         }
     }
-    
+    async addUserFitness(fitness, userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserFitness`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ fitness, userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error storing fitness:', error);
+        }
+    }
+    async getUserFitness(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserFitness`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting fitness:', error);
+        }
+    }
 }
 export default APIEndpoint;   
