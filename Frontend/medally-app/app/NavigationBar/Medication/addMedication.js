@@ -66,8 +66,8 @@ export default function Addmedication() {
     const newMedication = {
       name,
       dosage,
-      fromDate: fromDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
-      toDate: toDate.toISOString().split('T')[0],
+      startDate: startDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
+      endDate: endDate.toISOString().split('T')[0],
       time: time.toTimeString().split(' ')[0], // Format time to HH:MM:SS
       cause,
       reminder,
