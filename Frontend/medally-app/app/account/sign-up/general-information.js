@@ -33,19 +33,6 @@ export default function GeneralInformation() {
   const showDatepicker = () => {
     setShow(true);
   };
-  const onSubmit = () => {
-    
-    if (isValid) {
-      const userCreds = {
-        DOB: date.toLocaleDateString('en-GB'),
-        gender: gender,
-        height: height,
-        weight: weight
-      };
-      const response = API.addUserBasicInfo(userCreds, userID.getUserId)
-      router.push('./physical-habits');
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -162,7 +149,20 @@ export default function GeneralInformation() {
           </View>
         </View>
       </View>
-      <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button}>
+      <TouchableOpacity onPress={() =>
+      {
+      if (isValid) {
+        const userCreds = 
+        {
+          DOB: date.toLocaleDateString('en-GB'),
+          gender: gender,
+          height: height,
+          weight: weight
+        };
+        const response = API.addUserBasicInfo(userCreds, userID.getUserId)
+        router.push('./physical-habits');
+      }
+      }} style={styles.button}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
