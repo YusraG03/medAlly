@@ -91,9 +91,9 @@ export default function MedicationScreen() {
     console.log(`Medication ${selectedMedication.name} ${action}`);
     setShowMenuModal(false);
   };
-  const formatDate = (timestamp) => {
-    if (!timestamp) return '';
-    const date = timestamp.toDate(); // Convert to Date object
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString); // Convert string to Date object
     return date.toLocaleDateString('en-GB'); // Format date to string
   };
 
