@@ -14,7 +14,7 @@ export default function Addmedication() {
   const router = useRouter();
   const api = new APIEndpoint(); // Instantiate the APIEndpoint class
 
-  const [name, setName] = useState('');
+  const [medicationName, setName] = useState('');
   const [dosage, setDosage] = useState('');
   const [endDate, setToDate] = useState(new Date());
   const [startDate, setFromDate] = useState(new Date());
@@ -65,7 +65,7 @@ export default function Addmedication() {
 
   const handleAddMedicine = async () => {
     const newMedication = {
-      name,
+      medicationName,
       dosage,
       startDate: startDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
       endDate: endDate.toISOString().split('T')[0],
@@ -77,7 +77,7 @@ export default function Addmedication() {
     const userID = getuser.getUserId; // replace with actual user ID
 
     try {
-      const response = await api.addMedication(newMedication, userID);
+      const response = await api.addMedication(newMedication, 'KcLR8zOoexJp8N2Qrvz2');
       
       Alert.alert('Success', 'Medication added successfully');
       // Optionally clear the input fields after successful submission
@@ -103,8 +103,8 @@ export default function Addmedication() {
       <Text style={styles.screenTitle}>Add a medication</Text>
       <Text style={styles.label}>Name</Text>
       <TextInput
-        style={[styles.input, { color: name ? 'black' : '#7d7d7d' }]}
-        value={name}
+        style={[styles.input, { color: medicationName ? 'black' : '#7d7d7d' }]}
+        value={medicationName}
         onChangeText={setName}
         placeholder="Enter medication name..."
         placeholderTextColor="#7d7d7d"
