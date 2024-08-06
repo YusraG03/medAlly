@@ -36,12 +36,12 @@ export default function MedicalHistoryOne() {
     if (isValid) {
       //console.log({ bloodPressure, cardiovascular, cholesterol, diabetes, injuries, surgeries });
         const userMedicalHistory = {
-          bloodPressure,
-          cardiovascular,
-          cholesterol,
-          diabetes,
-          injuries,
-          surgeries
+          bloodPressure: bloodPressure,
+          cardiovascular : cardiovascular,
+          cholesterol: cholesterol,
+          diabetes: diabetes,
+          injuries: injuries,
+          surgeries: surgeries,
         };
         const response = await API.addUserBasicInfo(userMedicalHistory);
         router.push('./medical-history-two');
