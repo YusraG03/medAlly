@@ -37,7 +37,7 @@ const _layout = (props) => {
                 <Tabs.Screen
                     name="Profile"
                     options={{
-                        href: './Profile',
+                        href: './ProfileScreen',
                         headerShown: false,
                     }}
                 />
