@@ -37,12 +37,6 @@ export default function GeneralInformation() {
     }
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // You can navigate to another screen or perform some action with the form data
-    router.push('./nextScreen');
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
