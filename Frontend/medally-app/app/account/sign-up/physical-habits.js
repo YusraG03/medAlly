@@ -200,18 +200,18 @@ export default function PhysicalHabits() {
           </View>
 
           <TouchableOpacity
-            onPress={handleSubmit((data) => {
+            onPress={handleSubmit(async (data) => {
               if (isValid) {
                 const userMedicalHistory = {
-                  exerciseFrequency,
-                  alcoholFrequency,
-                  smokeFrequency,
-                  coffeeFrequency,
-                  otherSubstances,
-                  sleepProblems,
-                  pregnancyStatus,
+                  exerciseFrequency: exerciseFrequency,
+                  alcoholFrequency: alcoholFrequency,
+                  smokeFrequency: smokeFrequency,
+                  coffeeFrequency: coffeeFrequency,
+                  otherSubstances: otherSubstances,
+                  sleepProblems: sleepProblems,
+                  pregnancyStatus: pregnancyStatus,
                 };
-                const response = API.addUserMedicalHistory(userMedicalHistory,'KcLR8zOoexJp8N2Qrvz2')
+                const response = await API.addUserMedicalHistory(userMedicalHistory,'KcLR8zOoexJp8N2Qrvz2')
                 router.push('./medical-history-one');
               }
             })}
