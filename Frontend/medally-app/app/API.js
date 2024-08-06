@@ -454,7 +454,7 @@ class APIEndpoint
     {
         try 
         {
-            const response = await fetch(`${this.url}/getBMI`, 
+            const response = await fetch(`${this.url}/getUserBMI`, 
             {
                 method: 'POST',
                 headers: {
