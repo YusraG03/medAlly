@@ -359,7 +359,11 @@ class firebase
     {
         try
         {
-            const dateOfIntake = new Date().toLocaleDateString();
+            const dateOfIntake = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
             const ref = this.db.collection('users').doc(userID.collection('nutrition').doc(dateOfIntake));
             await ref.set(dailyFoodIntake);
             return("Daily food intake added successfully!");
