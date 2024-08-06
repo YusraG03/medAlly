@@ -91,11 +91,16 @@ export default function MedicationScreen() {
     console.log(`Medication ${selectedMedication.name} ${action}`);
     setShowMenuModal(false);
   };
+  const formatDate = (timestamp) => {
+    if (!timestamp) return '';
+    const date = timestamp.toDate(); // Convert to Date object
+    return date.toLocaleDateString('en-GB'); // Format date to string
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.medicationItem}>
       <Text style={styles.medicationName}>{item.medicationName}</Text>
-      <Text style={styles.medicationDetails}>{`${item.dosage}, ${item.startDate} - ${item.endDate}`}</Text>
+      <Text style={styles.medicationDetails}> {`${item.dosage}, ${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}</Text>
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={() => handleMenuPress(item)}>
           <Ionicons name="ellipsis-vertical" size={24} color="black" />
