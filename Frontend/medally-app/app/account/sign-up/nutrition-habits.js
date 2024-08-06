@@ -6,7 +6,17 @@ import colors from '../../_assets/colors';
 
 export default function NutritionHabits() {
   const { control, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {
+    if (isValid) {
+      const userMedicalHistory = {
+        dietaryPreference: data.dietaryPreference,
+        foodAllergies: data.foodAllergies,
+        foodAvoidance: data.foodAvoidance
+      };
+      const response = API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
+      //navigation.navigate('NutritionHabits'); geter KOT TO ENAN PU ALER DEPI ICI
+    }
+  };
 
   return (
     <View style={styles.container}>
