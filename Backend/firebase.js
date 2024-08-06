@@ -41,7 +41,7 @@ class firebase
             // Initialize ref after email check
             const ref = this.db.collection('users').doc();
             await ref.set(userCreds);
-    
+            
             return {
                 message: "Account created successfully!",
                 userID: ref.id
@@ -58,12 +58,15 @@ class firebase
             const userQuery = await this.db.collection('users').where('email', '==', userCreds.email).get();
             
             if (userQuery.empty) {
-                return "Wrong Credentials!";
+                return {
+                    message:"Wrong Credentials!",
+                    userID: null
+                };
             }
     
             const userDoc = userQuery.docs[0];
             const userData = userDoc.data();
-    
+        
             // Check if the password matches
             if (await bcrypt.compare(userCreds.password, userData.password)) {
                 return {
@@ -71,7 +74,10 @@ class firebase
                     userID: userDoc.id // Return userID for future use
                 };
             } else {
-                return "Wrong Credentials!";
+                return {
+                    message:"Wrong Credentials!",
+                    userID: null
+                };
             }
     
         } catch (error) {
