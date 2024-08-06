@@ -101,12 +101,20 @@ export default function MedicationScreen() {
 
   const renderItem = ({ item }) => (
     <View style={[styles.medicationItem, item.status && styles[item.status]]}>
-      <Text style={[styles.medicationName, item.status && styles.crossedOut]}>
-        {item.medicationName}
-      </Text>
-      <Text style={[styles.medicationDetails, item.status && styles.crossedOut]}>
-        {`${item.time}, ${item.dosage}, ${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}
-      </Text>
+      <View style={styles.detailsContainer}>
+        <Text style={[styles.medicationName, item.status && styles.crossedOut]}>
+          {item.medicationName}
+        </Text>
+        <Text style={[styles.medicationTime, item.status && styles.crossedOut]}>
+          {item.time}
+        </Text>
+        <Text style={[styles.medicationDosage, item.status && styles.crossedOut]}>
+          {item.dosage}
+        </Text>
+        <Text style={[styles.medicationDetails, item.status && styles.crossedOut]}>
+          {`${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}
+        </Text>
+      </View>
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={() => handleMenuPress(item)}>
           <Ionicons name="ellipsis-vertical" size={24} color="black" />
@@ -114,6 +122,8 @@ export default function MedicationScreen() {
       </View>
     </View>
   );
+  
+  
 
   return (
     <View style={styles.container}>
@@ -167,6 +177,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.defaultwhite,
     paddingHorizontal: 20,
+    paddingTop: 50,
+    marginTop: -38,
   },
   screenTitle: {
     fontSize: 24,
@@ -183,11 +195,15 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
     borderRadius: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ddd',
+    flexDirection: 'row', // Change to row to align items side by side
+    alignItems: 'flex-start',
+    justifyContent: 'space-between', // Distributes space between details and menuContainer
+  },
+  detailsContainer: {
+    flex: 1, // Takes up available space
+    marginRight: 10, // Adds spacing between details and menu dots
   },
   medicationName: {
     fontSize: 18,
@@ -195,15 +211,27 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-SemiBold",
     color: "#121419",
   },
+  medicationTime: {
+    fontSize: 16,
+    fontFamily: "Inter-Regular",
+    color: "#4f4f4f",
+    marginVertical: 4,
+  },
+  medicationDosage: {
+    fontSize: 16,
+    fontFamily: "Inter-Regular",
+    color: "#4f4f4f",
+    marginVertical: 4,
+  },
   medicationDetails: {
     fontSize: 14,
     fontFamily: "Inter-Regular",
     color: "#4f4f4f",
-    marginTop: 4,
   },
   menuContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end', // Aligns dots to the right
+    flexShrink: 0, // Ensures container does not shrink and stays at the right
   },
   noMedicationsText: {
     textAlign: 'center',
@@ -238,6 +266,7 @@ const styles = StyleSheet.create({
     color: "#121419",
     marginBottom: 20,
   },
+
   modalOption: {
     width: '100%',
     padding: 15,
@@ -266,10 +295,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#4f4f4f",
     fontFamily: "Inter-Regular",
+    
   },
   dateContainer: {
     marginTop: 5,
-    width: 30,
+    width: 55,
     height: 30,
     borderRadius: 15,
     justifyContent: 'center',
@@ -282,6 +312,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#4f4f4f",
     fontFamily: "Inter-Regular",
+    
   },
   todayDate: {
     color: colors.defaultwhite,
