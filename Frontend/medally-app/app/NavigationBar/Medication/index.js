@@ -9,11 +9,8 @@ import APIEndpoint from '../../API';
 import getuserID from '../../account/userStorage.js'
 import colors from '../../_assets/colors';
 
-
-const getdata= new getuserID()
-const api = new APIEndpoint()
-
-//const userID = await getdata.getUserId()
+const getdata = new getuserID();
+const api = new APIEndpoint();
 
 // Weeklycalendar Component
 const Weeklycalendar = ({ onDatePress }) => {
@@ -61,11 +58,9 @@ export default function MedicationScreen() {
   useEffect(() => {
     const loadMedications = async () => {
       try {
-        const response= await api.getAllMedication('KcLR8zOoexJp8N2Qrvz2')
-        console.log(response)
-        setMedications(response)
-
-
+        const response = await api.getAllMedication('KcLR8zOoexJp8N2Qrvz2');
+        console.log(response);
+        setMedications(response);
       } catch (error) {
         console.error('Failed to load medications.', error);
       }
@@ -86,11 +81,18 @@ export default function MedicationScreen() {
     setShowMenuModal(true);
   };
 
-  const handleAction = (action) => {
-    // Implement action handling (Take or Skip)
-    console.log(`Medication ${selectedMedication.name} ${action}`);
+  const handleAction = async (action) => {
+    // Update medication status
+    const updatedMedication = { ...selectedMedication, status: action };
+    const updatedMedications = medications.map(med =>
+      med.medicationName === selectedMedication.medicationName ? updatedMedication : med
+    );
+    setMedications(updatedMedications);
+    await AsyncStorage.setItem('medications', JSON.stringify(updatedMedications));
+    console.log(`Medication ${selectedMedication.medicationName} ${action}`);
     setShowMenuModal(false);
   };
+
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString); // Convert string to Date object
@@ -98,9 +100,13 @@ export default function MedicationScreen() {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.medicationItem}>
-      <Text style={styles.medicationName}>{item.medicationName}</Text>
-      <Text style={styles.medicationDetails}> {`${item.time}, ${item.dosage}, ${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}</Text>
+    <View style={[styles.medicationItem, item.status && styles[item.status]]}>
+      <Text style={[styles.medicationName, item.status && styles.crossedOut]}>
+        {item.medicationName}
+      </Text>
+      <Text style={[styles.medicationDetails, item.status && styles.crossedOut]}>
+        {`${item.time}, ${item.dosage}, ${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}
+      </Text>
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={() => handleMenuPress(item)}>
           <Ionicons name="ellipsis-vertical" size={24} color="black" />
@@ -112,7 +118,7 @@ export default function MedicationScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.screenTitle}>Medications</Text>
-      <Weeklycalendar onDatePress={(date) => console.log(datgiyCe)} />
+      <Weeklycalendar onDatePress={(date) => console.log(date)} />
       
       {medications.length > 0 ? (
         <FlatList
@@ -136,15 +142,15 @@ export default function MedicationScreen() {
             <Text style={styles.modalTitle}>Select Action</Text>
             <TouchableOpacity
               style={styles.modalOption}
-              onPress={() => handleAction('Take')}
+              onPress={() => handleAction('Taken')}
             >
-              <Text style={styles.modalText}>Take</Text>
+              <Text style={styles.modalText}>Taken</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.modalOption}
-              onPress={() => handleAction('Skip')}
+              onPress={() => handleAction('Skipped')}
             >
-              <Text style={styles.modalText}>Skip</Text>
+              <Text style={styles.modalText}>Skipped</Text>
             </TouchableOpacity>
             <Pressable onPress={() => setShowMenuModal(false)}>
               <Text style={styles.closeModalText}>Close</Text>
@@ -279,5 +285,15 @@ const styles = StyleSheet.create({
   },
   todayDate: {
     color: colors.defaultwhite,
+  },
+  crossedOut: {
+    textDecorationLine: 'line-through',
+    color: '#9e9e9e',
+  },
+  Taken: {
+    backgroundColor: '#e0f7fa',
+  },
+  Skipped: {
+    backgroundColor: '#ffebee',
   },
 });
