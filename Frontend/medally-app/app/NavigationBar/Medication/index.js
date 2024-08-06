@@ -63,7 +63,7 @@ export default function MedicationScreen() {
       try {
         const response= await api.getAllMedication('1yqpFppDMfYgevo7isXH')
         console.log(response)
-        setMedications(response[0])
+        setMedications(response)
 
 
       } catch (error) {
@@ -112,7 +112,7 @@ export default function MedicationScreen() {
       {medications.length > 0 ? (
         <FlatList
           data={medications}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item[0].medicationName}
           renderItem={renderItem}
         />
       ) : (
