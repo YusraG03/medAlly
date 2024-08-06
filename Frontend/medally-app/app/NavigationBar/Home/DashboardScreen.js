@@ -4,26 +4,17 @@ import { Pedometer } from 'expo-sensors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import APIEndpoint from '../../API';
+import textStyles from '../../_assets/textStyles';
+import colors from '../../_assets/colors';
 
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 
 const API = new APIEndpoint();
 
-const userCredentials = {
-  email: 'user@example.com', // Replace with actual user email or credentials
-};
-
-
-
-const calculateBMI = (height, weight) => {
-  return (weight / (height * height)).toFixed(1);
-};
-
 export default function DashboardScreen() {
   const [stepCount, setStepCount] = useState(0);
   const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
   const [userGeneralInfo, setUserGeneralInfo] = useState({ height: 0, weight: 0 });
-  const [bmi, setBmi] = useState('0');
   const [userName, setUserName] = useState('User');
   const [medicationInfo, setMedicationInfo] = useState({ name: 'MedName', dosage: '500mg', time: new Date() });
   const [modalVisible, setModalVisible] = useState(false);
@@ -54,36 +45,38 @@ export default function DashboardScreen() {
     },
   ]);
   const [articles, setArticles] = useState([]);
+  const [bmi, setBmi] = useState(null); // State for storing BMI
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const fetchedArticles = await API.getArticles();
-        if (fetchedArticles.length > 0) {
-          setArticles(fetchedArticles);
-        } else {
-          setArticles([]);
-        }
+        setArticles(fetchedArticles || []);
       } catch (error) {
         console.error('Error fetching articles:', error);
         setArticles([]);
       }
     };
 
+    const fetchUserBMI = async () => {
+      try {
+        const response = await (API.getUserBMI('1yqpFppDMfYgevo7isXH'));
+        setBmi(response); // Adjust according to your API response structure
+      } catch (error) {
+        console.log('Error fetching BMI:', error);
+        setBmi('Error'); // Optionally set a default or error value
+      }
+    };
+
     fetchArticles();
+    fetchUserBMI();
 
     Pedometer.isAvailableAsync().then(
-      result => {
-        setIsPedometerAvailable(String(result));
-      },
-      error => {
-        setIsPedometerAvailable('Could not get isPedometerAvailable: ' + error);
-      }
+      result => setIsPedometerAvailable(String(result)),
+      error => setIsPedometerAvailable('Could not get isPedometerAvailable: ' + error)
     );
 
-    const subscription = Pedometer.watchStepCount(result => {
-      setStepCount(result.steps);
-    });
+    const subscription = Pedometer.watchStepCount(result => setStepCount(result.steps));
 
     return () => {
       subscription && subscription.remove();
@@ -104,9 +97,7 @@ export default function DashboardScreen() {
     }
   };
 
-  const handleNotificationPress = () => {
-    setModalVisible(true);
-  };
+  const handleNotificationPress = () => setModalVisible(true);
 
   const renderNotification = (notification) => (
     <View key={notification.id} style={styles.notificationContainer}>
@@ -121,12 +112,15 @@ export default function DashboardScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.welcomeText}>Welcome, {userName}!</Text>
+        <View style = {styles.titlePost}>
+        <Text style={textStyles.screenTitle}>Welcome, {userName}!</Text>
+        <Text style={textStyles.contentText}>How do you feel today?</Text>
+        </View>
         <TouchableOpacity style={styles.notificationIcon} onPress={handleNotificationPress}>
           <Ionicons name="notifications-outline" size={30} color="#121419" />
         </TouchableOpacity>
       </View>
-      <Text style={styles.subText}>How do you feel today?</Text>
+
       <View style={styles.stepsContainer}>
         <AnimatedCircularProgress
           size={220}
@@ -140,7 +134,7 @@ export default function DashboardScreen() {
         >
           {() => (
             <View style={styles.progressTextContainer}>
-              <Text style={styles.stepsText}>{stepCount}</Text>
+              <Text style={styles.stepCount}>{stepCount}</Text>
               <Text style={styles.stepsLabel}>/10000 steps</Text>
               <Image source={manIcon} style={styles.manIcon} resizeMode="contain" />
             </View>
@@ -170,18 +164,18 @@ export default function DashboardScreen() {
         </View>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>BMI</Text>
-          <Text style={styles.infoSubtitle}>{bmi} kg/m²</Text>
+          <Text style={styles.infoSubtitle}>{bmi ? `${bmi} kg/m²` : 'Loading...'}</Text>
         </View>
       </View>
 
       {/* Articles Section */}
       <View style={styles.articleSection}>
-        <Text style={styles.articleHeader}>Articles</Text>
+        <Text style={textStyles.paragraphTitle}>Articles</Text>
         <ScrollView style={styles.articleList}>
           {articles.map(article => (
             <View key={article.id} style={styles.articleContainer}>
-              <Text style={styles.articleTitle}>{article.title}</Text>
-              <Text style={styles.articleContent}>{article.description}</Text>
+              <Text style={textStyles.paragraphTitle}>{article.title}</Text>
+              <Text style={textStyles.contentText}>{article.description}</Text>
               {article.url ? (
                 <TouchableOpacity onPress={() => Linking.openURL(article.url)}>
                   <Text style={styles.articleLink}>Read More</Text>
@@ -257,18 +251,26 @@ const styles = StyleSheet.create({
     width: 30,
     height: 95,
     position: 'absolute',
-    top: -58,
+    top: -70,
     zIndex: 1,
+  },
+  titlePost:{
+    gap: 2
   },
   progressTextContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    top: 10,
   },
-  stepsText: {
-    fontSize: 50,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
+  stepCount: {
+    alignSelf: "stretch",
+    fontSize: 48,
+    letterSpacing: -1.4,
+    lineHeight: 48,
+    fontWeight: "800",
+    fontFamily: "Inter-ExtraBold",
+    color: '#121419',
+    textAlign: "center"
   },
   stepsLabel: {
     fontSize: 14,
