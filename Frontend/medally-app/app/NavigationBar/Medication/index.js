@@ -7,6 +7,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
 import APIEndpoint from '../../API';
 import getuserID from '../../account/userStorage.js'
+import colors from '../../_assets/colors';
+
 
 const getdata= new getuserID()
 const api = new APIEndpoint()
@@ -150,103 +152,155 @@ export default function MedicationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  dayContainer: {
-    alignItems: 'center',
-    marginHorizontal: 10,
-    justifyContent: 'flex-start',
-  },
-  dayOfWeek: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  dateContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    backgroundColor: colors.defaultwhite,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: 'black',
-  },
-  date: {
-    fontSize: 16,
-  },
-  today: {
-    backgroundColor: 'black',
-  },
-  todayDate: {
-    color: 'white',
+    alignContent: 'center',
   },
   screenTitle: {
+    alignSelf: "stretch",
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
+    letterSpacing: -0.7,
+    lineHeight: 24,
+    fontWeight: "800",
+    fontFamily: "Inter-ExtraBold",
+    color: "#121419",
+    textAlign: "center",
   },
-  addButton: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
+  contentText: {
+    alignSelf: "stretch",
+    fontSize: 14,
+    letterSpacing: -0.6,
+    lineHeight: 16,
+    fontFamily: "Inter-Regular",
+    color: "#4f4f4f",
+    textAlign: "center"
   },
-  medicationItem: {
-    marginVertical: 10,
-    padding: 16,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    borderColor: '#dbdbdb',
+    borderWidth: 1,
+    borderRadius: 4,
+    marginBottom: 10,
   },
-  medicationName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  iconContainer: {
+    paddingHorizontal: 15,
   },
-  medicationDetails: {
-    fontSize: 16,
-    color: '#555',
+  eyeIcon: {
+    width: 24,
+    height: 24,
   },
-  menuContainer: {
-    marginLeft: 'auto',
-  },
-  noMedicationsText: {
-    fontSize: 18,
-    color: '#555',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  modalContainer: {
+  inputSpecial: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    height: 40,
+    fontSize: 16,
+    letterSpacing: -0.2,
+    fontFamily: "Inter-Regular",
+    paddingLeft: 15,
   },
-  modalContent: {
-    width: '80%',
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 20,
-    alignItems: 'center',
+  formHeader: {
+    alignSelf: "stretch",
+    fontSize: 14,
+    letterSpacing: -0.1,
+    lineHeight: 20,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: "#121419",
+    textAlign: "left",
   },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
+  form: {
+    flexDirection: 'column',
+    marginTop: '10%',
+    marginHorizontal: '5%',
+    marginBottom: 10, // Added margin to space out form items
   },
-  modalOption: {
-    paddingVertical: 10,
+  formItem: {
+    full: {
+      width: '100%',
+    },
+    half: {
+      width: '49%',
+    },
+  },
+  names: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', // Adjusted spacing between name fields
     width: '100%',
+  },
+  errorText: {
+    fontSize: 12,
+    letterSpacing: 0,
+    lineHeight: 12,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: colors.errorred,
+  },
+  input: {
+    height: 40,
+    borderColor: '#dbdbdb',
+    fontSize: 16,
+    letterSpacing: -0.2,
+    lineHeight: 17,
+    fontFamily: "Inter-Regular",
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingLeft: 15,
+    marginBottom: 10,
+  },
+  button: {
+    borderRadius: 6,
+    backgroundColor: "#121419",
+    borderStyle: "solid",
+    borderColor: "#282f41",
+    borderWidth: 1,
+    flex: 1,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  disabledButton: {
+    borderRadius: 6,
+    borderWidth: 0,
+    backgroundColor: "#cecece",
+    flex: 1,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  buttonText: {
+    fontSize: 18,
+    letterSpacing: 0,
+    lineHeight: 18,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: colors.defaultwhite,
+  },
+  disabledButtonText: {
+    fontSize: 18,
+    letterSpacing: 0,
+    lineHeight: 18,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: colors.defaultblack,
+  },
+  header: {
     alignItems: 'center',
   },
-  modalText: {
-    fontSize: 16,
+  headertext: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6, // Added margin for spacing
   },
-  closeModalText: {
-    marginTop: 20,
-    fontSize: 16,
-    color: 'blue',
-  }
+  logo: {
+    width: 72,
+    height: 50,
+    resizeMode: 'contain',
+    marginBottom: 20,
+  },
 });
