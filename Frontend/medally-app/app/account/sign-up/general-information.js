@@ -6,7 +6,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API'
-import getID from '../userStorage'
+import { storeUserId, getUserId, removeUserId } from '../userStorage';
+
 
 const API = new APIEndpoint()
 
@@ -62,9 +63,9 @@ export default function GeneralInformation() {
       };
 
       // Replace 'userID.getUserId' with actual user ID retrieval logic
-      const userId = 'KcLR8zOoexJp8N2Qrvz2'; // Example, replace with actual user ID retrieval
+      const userId = getUserId(); // Example, replace with actual user ID retrieval
       const response = await API.addUserBasicInfo(userMedicalHistory, userId);
-      router.push('./medical-history-two');
+      router.push('./physical-habits');
     }
   };
 
@@ -271,6 +272,13 @@ const styles = StyleSheet.create({
   datePickerInput: {
     fontSize: 16,
     color: colors.darkbrown,
+  },
+  disabledButton: {
+    backgroundColor: "#cecece",
+    borderColor: "#cecece",
+  },
+  disabledButtonText: {
+    color: "#7d7d7d",
   },
   errorText: {
     color: 'red',
