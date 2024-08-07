@@ -7,7 +7,7 @@ import ProgressBar from '../../components/ProgressBar.js';
 import { router } from 'expo-router';
 import APIEndpoint from "../../API";
 import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
-const API = new APIEndpoint();
+const API = new APIEndpoint();  
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -19,103 +19,42 @@ const date = 'Today';
 const MealPage = () => {
   const [expandedMeals, setExpandedMeals] = useState({});
   const [mealData, setMealData] = useState([]);
-  const [foodDetails, setFoodDetails] = useState({});
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchFoodDetails = async () => {
       const userID = await getUserId();
       const foodDetails = await API.getUserDailyFoodIntake(userID);
-      console.log(foodDetails);
-      setFoodDetails(foodDetails);
 
-      const breakfastData = foodDetails.breakfast
-        ? {
-            id: 1,
-            mealIcon: 'breakfast',
-            mealName: 'Breakfast',
-            calories: foodDetails.breakfast.calories,
-            mealDescription: foodDetails.breakfast.mealDesc,
-            nutrition: {
-              carbs: foodDetails.breakfast.carbs,
-              protein: foodDetails.breakfast.protein,
-              fat: foodDetails.breakfast.fat,
-            },
-            hasData: true,
-          }
-        : {
-            id: 1,
-            mealIcon: 'breakfast',
-            mealName: 'Breakfast',
-            calories: 'No Data',
-            mealDescription: 'No Data',
-            nutrition: {
-              carbs: 'No Data',
-              protein: 'No Data',
-              fat: 'No Data',
-            },
-            hasData: false,
-          };
+      const mealTypes = ["Breakfast", "Lunch", "Dinner"];
+      const meals = mealTypes.map((type, index) => {
+        const meal = foodDetails.find(m => m.mealType === type) || {
+          calories: 'No Data',
+          mealDesc: 'No Data',
+          carbs: 'No Data',
+          protein: 'No Data',
+          fat: 'No Data',
+          analysis: 'No Data'
+        };
 
-      const lunchData = foodDetails.lunch
-        ? {
-            id: 2,
-            mealIcon: 'lunch',
-            mealName: 'Lunch',
-            calories: foodDetails.lunch.calories,
-            mealDescription: foodDetails.lunch.mealDesc,
-            nutrition: {
-              carbs: foodDetails.lunch.carbs,
-              protein: foodDetails.lunch.protein,
-              fat: foodDetails.lunch.fat,
-            },
-            hasData: true,
-          }
-        : {
-            id: 2,
-            mealIcon: 'lunch',
-            mealName: 'Lunch',
-            calories: 'No Data',
-            mealDescription: 'No Data',
-            nutrition: {
-              carbs: 'No Data',
-              protein: 'No Data',
-              fat: 'No Data',
-            },
-            hasData: false,
-          };
+        return {
+          id: index + 1,
+          mealIcon: type.toLowerCase(),
+          mealName: type,
+          calories: meal.calories,
+          mealDescription: meal.mealDesc,
+          analysis: meal.analysis,
+          nutrition: {
+            carbs: meal.carbs,
+            protein: meal.protein,
+            fat: meal.fat,
+          },
+        };
+      });
 
-      const dinnerData = foodDetails.dinner
-        ? {
-            id: 3,
-            mealIcon: 'dinner',
-            mealName: 'Dinner',
-            calories: foodDetails.dinner.calories,
-            mealDescription: foodDetails.dinner.mealDesc,
-            nutrition: {
-              carbs: foodDetails.dinner.carbs,
-              protein: foodDetails.dinner.protein,
-              fat: foodDetails.dinner.fat,
-            },
-            hasData: true,
-          }
-        : {
-            id: 3,
-            mealIcon: 'dinner',
-            mealName: 'Dinner',
-            calories: 'No Data',
-            mealDescription: 'No Data',
-            nutrition: {
-              carbs: 'No Data',
-              protein: 'No Data',
-              fat: 'No Data',
-            },
-            hasData: false,
-          };
-
-      setMealData([breakfastData, lunchData, dinnerData]);
+      setMealData(meals);
     };
 
-    fetchData();
+    fetchFoodDetails();
   }, []);
 
   const toggleExpand = (id) => {
@@ -125,52 +64,24 @@ const MealPage = () => {
       [id]: !prevState[id]
     }));
   };
+    
 
-  const navigateToCamera = (mealName) => {
-    router.push({
-      pathname: './Nutrition/camera',
-      params: { mealName },
-    });
-  };
 
-  // Calculate daily intake and progress for the progress bar
-  const calculateDailyIntake = (meals) => {
-    let totalCalories = 0;
-    let totalCarbs = 0;
-    let totalProtein = 0;
-    let totalFat = 0;
 
-    meals.forEach((meal) => {
-      if (meal.hasData) {
-        totalCalories += parseFloat(meal.calories) || 0;
-        totalCarbs += parseFloat(meal.nutrition.carbs) || 0;
-        totalProtein += parseFloat(meal.nutrition.protein) || 0;
-        totalFat += parseFloat(meal.nutrition.fat) || 0;
-      }
-    });
-
-    return {
-      calories: totalCalories,
-      carbs: totalCarbs,
-      protein: totalProtein,
-      fat: totalFat,
-    };
-  };
-
-  const dailyIntake = calculateDailyIntake(mealData);
-  const currentCalories = dailyIntake.calories;
+  // Calculate progress for the progress bar
+  const currentCalories = 1391;
   const maxCalories = 1633;
 
   return (
     <ScrollView style={styles.container}>
       <Text style={textStyles.screenTitle}>Nutrition Overview</Text>
-      <Button style={styles.testButton} title="Camera Test" onPress={() => router.push('./Nutrition/camera')} />
-      <Button style={styles.testButton} title="Results Test" onPress={() => router.push('./Nutrition/results')} />
+      <Button style = {styles.testButton} title="Camera Test" onPress={() => router.push('./Nutrition/camera')} />
+      <Button style = {styles.testButton} title="Results Test" onPress={() => router.push('./Nutrition/results')} />
 
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>Daily Intake</Text>
-          <Text style={styles.cardContentText}>{dailyIntake.calories}</Text>
+          <Text style={styles.cardContentText}>x</Text> 
         </View>
         <ProgressBar progress={currentCalories} max={maxCalories} />
       </View>
@@ -181,17 +92,17 @@ const MealPage = () => {
           <View style={styles.nutritionDistribution}>
             <View style={styles.nutritionStat}>
               <Text style={textStyles.paragraphTitle}>Carbs</Text>
-              <Text style={textStyles.contentText}>{dailyIntake.carbs}</Text>
+              <Text style={textStyles.contentText}>x</Text>
             </View>
             <View style={styles.separator}></View>
             <View style={styles.nutritionStat}>
               <Text style={textStyles.paragraphTitle}>Protein</Text>
-              <Text style={textStyles.contentText}>{dailyIntake.protein}</Text>
+              <Text style={textStyles.contentText}>x</Text>
             </View>
             <View style={styles.separator}></View>
             <View style={styles.nutritionStat}>
               <Text style={textStyles.paragraphTitle}>Fat</Text>
-              <Text style={textStyles.contentText}>{dailyIntake.fat}</Text>
+              <Text style={textStyles.contentText}>x</Text>
             </View>
           </View>
         </View>
@@ -218,53 +129,32 @@ const MealPage = () => {
       <View style={styles.cards}>
         {mealData.map((meal) => (
           <View key={meal.id} style={styles.card}>
-            {meal.hasData ? (
-              <TouchableOpacity onPress={() => toggleExpand(meal.id)} style={[styles.upperInfo, styles.upperInfoFlexBox]}>
-                <View style={styles.header}>
-                  <Image
-                    style={styles.mealIcon}
-                    resizeMode="cover"
-                    source={mealIcons[meal.mealIcon]}
-                  />
-                  <View style={styles.mealTime}>
-                    <Text style={styles.mealName}>{meal.mealName}</Text>
-                    <Text style={styles.calories}>{meal.calories}</Text>
-                  </View>
-                  <Image
-                    style={styles.chevronIcon}
-                    resizeMode="cover"
-                    source={expandedMeals[meal.id] ? require('../../_assets/chevron-up.png') : require('../../_assets/chevron-down.png')}
-                  />
+            <TouchableOpacity onPress={() => toggleExpand(meal.id)} style={[styles.upperInfo, styles.upperInfoFlexBox]}>
+              <View style={styles.header}>
+                <Image
+                  style={styles.mealIcon}
+                  resizeMode="cover"
+                  source={mealIcons[meal.mealIcon]}
+                />
+                <View style={styles.mealTime}>
+                  <Text style={styles.mealName}>{meal.mealName}</Text>
+                  <Text style={styles.calories}>{meal.calories}</Text>
                 </View>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => navigateToCamera(meal.mealName)} style={[styles.upperInfo, styles.upperInfoFlexBox]}>
-                <View style={styles.header}>
-                  <Image
-                    style={styles.mealIcon}
-                    resizeMode="cover"
-                    source={mealIcons[meal.mealIcon]}
-                  />
-                  <View style={styles.mealTime}>
-                    <Text style={styles.mealName}>{meal.mealName}</Text>
-                    <Text style={styles.calories}>{meal.calories}</Text>
-                  </View>
-                  <Image
-                    style={styles.chevronIcon}
-                    resizeMode="cover"
-                    source={require('../../_assets/plus.png')}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
-
-            {meal.hasData && expandedMeals[meal.id] && (
+                <Image
+                  style={styles.chevronIcon}
+                  resizeMode="cover"
+                  source={expandedMeals[meal.id] ? require('../../_assets/chevron-up.png') : require('../../_assets/chevron-down.png')}
+                />
+              </View>
+            </TouchableOpacity>
+            
+            {expandedMeals[meal.id] && (
               <View style={styles.expandedInformation}>
                 <View style={styles.section}>
                   <Text style={textStyles.smallParagraphTitle}>Description</Text>
                   <Text style={styles.cardContentText}>{meal.mealDescription}</Text>
                 </View>
-
+                
                 <View style={styles.section}>
                   <Text style={textStyles.smallParagraphTitle}>Nutrition</Text>
                   <View style={styles.nutritionDetails}>
@@ -287,19 +177,20 @@ const MealPage = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
+	  flexDirection: 'column',
     backgroundColor: colors.defaultwhite,
     padding: 16,
     marginTop: '2%',
   },
   daySwitcher: {
-    flexDirection: 'row',
-    alignItems: "center",
+	flexDirection : 'row',
+	alignItems: "center",
     justifyContent: "space-between",
-    marginVertical: 10
+	marginVertical: 10
   },
   header: {
     flexDirection: "row",
@@ -308,17 +199,17 @@ const styles = StyleSheet.create({
     marginRight: 15, // Replaced gap with margin
     width: '82%',
   },
-  separator: {
-    height: '80%',
-    width: 0.5,
-    backgroundColor: colors.tertiarytext
+  separator:{
+	height : '80%',
+	width: 0.5,
+	backgroundColor: colors.tertiarytext
   },
   cards: {
     flexDirection: 'column',
   },
-  center: {
-    flex: 1,
-    alignItems: 'center'
+  center:{
+	flex: 1,
+	alignItems : 'center'
   },
   card: {
     borderRadius: 10,
@@ -346,7 +237,7 @@ const styles = StyleSheet.create({
   mealTime: {
     width: '95%',
   },
-  testButton: {
+  testButton:{
     marginVertical: 20
   },
   cardHeader: {
@@ -354,9 +245,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    middle: {
-      justifyContent: 'center'
-    }
+	middle:{
+		justifyContent: 'center'	
+	}
   },
   mealName: {
     color: '#212121',
@@ -368,15 +259,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     alignSelf: 'stretch',
   },
-  nutritionDistribution: {
+  nutritionDistribution:{
     marginTop: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+	  flexDirection : 'row',
+	  justifyContent : 'space-around',
+	  alignItems: 'center',
     width: '70%'
   },
-  nutritionStat: {
-    alignItems: 'center',
+  nutritionStat:{
+	alignItems : 'center',
     marginHorizontal: 10, // Replaced gap with marginHorizontal
   },
   calories: {
@@ -417,7 +308,7 @@ const styles = StyleSheet.create({
   mealIcon: {
     width: 30,
     height: 30,
-    marginRight: 20
+    marginRight : 20
   },
   cardTitle: {
     color: '#212121',
