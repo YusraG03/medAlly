@@ -428,18 +428,6 @@ class APIEndpoint
             console.error('Error calculating calories:', error);
         }
     }
-    async calculateCaloriesFromImage(formData) {
-    try {
-        const response = await fetch(`${this.url}/upload`, {
-            method: 'POST',
-            body: formData,
-        });
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error calculating calories:', error);
-    }
-}
     async addUserDailyFoodIntake(foodIntake, userID)
     {
         try 

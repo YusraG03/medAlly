@@ -5,7 +5,6 @@ import textStyles from '../../_assets/textStyles';
 import { useLocalSearchParams } from 'expo-router';
 import APIEndpoint from '../../API';
 import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export function ResultScreen() {
   const params = useLocalSearchParams();
