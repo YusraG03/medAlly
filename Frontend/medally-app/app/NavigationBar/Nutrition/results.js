@@ -1,77 +1,53 @@
-import * as React from "react";
-import {StyleSheet, View, ScrollView, Text, Image} from "react-native";
+import React from "react";
+import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
 import colors from '../../_assets/colors';
 import textStyles from '../../_assets/textStyles';
-
-
-const data = {
-  mealBreakdown: "Meal Breakdown",
-  confirmButton: "Confirm",
-  editButton: "Edit",
-  mealDescription: "Meal Description",
-  mealDetails: "Scrambled Eggs, Sausages and Bacon",
-  nutritionBreakdown: "Nutrition Breakdown",
-  carbs: {
-    label: "Carbs",
-    value: "33g"
-  },
-  protein: {
-    label: "Protein",
-    value: "22g"
-  },
-  fat: {
-    label: "Fat",
-    value: "14g"
-  },
-  analysis: {
-    label: "Analysis",
-    content: "Given your record of high cholesterol, you should avoid combining such oily food in the morning."
-  }
-};
+import { useRoute } from '@react-navigation/native';
 
 const ResultScreen = () => {
+  const route = useRoute();
+  const { calories, carbs, protein, fat, mealDesc, analysis, image } = route.params;
 
   return (
-	<ScrollView style={styles.container}>
-		<Text style={textStyles.screenTitle}>Meal Breakdown</Text>
-		<Image 
-            source={require('../../_assets/sampleFood.jpg')} 
-            style={styles.foodPicture}
-          />
+    <ScrollView style={styles.container}>
+      <Text style={textStyles.screenTitle}>Meal Breakdown</Text>
+      <Image 
+        source={{ uri: image }} 
+        style={styles.foodPicture}
+      />
 
-		<View style = {styles.mealDescription}>
-		<Text style = {textStyles.smallParagraphTitle}>Meal Description</Text>
-		<Text style = {styles.mealName}>{data.mealDetails}</Text>
-		</View>
+      <View style={styles.mealDescription}>
+        <Text style={textStyles.smallParagraphTitle}>Meal Description</Text>
+        <Text style={styles.mealName}>{mealDesc}</Text>
+      </View>
 
-		<View style={styles.card}>
-
+      <View style={styles.card}>
         <View style={styles.center}>
           <Text style={textStyles.containerActionText}>Nutrition Breakdown</Text>
-		  <View style = {styles.nutritionDistribution}>
-				<View style = {styles.nutritionStat}>
-					<Text style = {textStyles.paragraphTitle}>Carbs</Text>
-					<Text style = {textStyles.contentText}>{data.carbs.value}</Text>
-				</View>
-				<View style = {styles.seperator}></View>
-				<View style = {styles.nutritionStat}>
-					<Text style = {textStyles.paragraphTitle}>Protein</Text>
-					<Text style = {textStyles.contentText}>{data.protein.value}</Text>
-				</View>
-				<View style = {styles.seperator}></View>
-				<View style = {styles.nutritionStat}>
-					<Text style = {textStyles.paragraphTitle}>Fat</Text>
-					<Text style = {textStyles.contentText}>{data.fat.value}</Text>
-				</View>
-		  </View>
-	    </View>
-	  </View>
+          <View style={styles.nutritionDistribution}>
+            <View style={styles.nutritionStat}>
+              <Text style={textStyles.paragraphTitle}>Carbs</Text>
+              <Text style={textStyles.contentText}>{carbs}g</Text>
+            </View>
+            <View style={styles.seperator}></View>
+            <View style={styles.nutritionStat}>
+              <Text style={textStyles.paragraphTitle}>Protein</Text>
+              <Text style={textStyles.contentText}>{protein}g</Text>
+            </View>
+            <View style={styles.seperator}></View>
+            <View style={styles.nutritionStat}>
+              <Text style={textStyles.paragraphTitle}>Fat</Text>
+              <Text style={textStyles.contentText}>{fat}g</Text>
+            </View>
+          </View>
+        </View>
+      </View>
 
-		<View style = {styles.container}>
-		<Text style = {textStyles.smallParagraphTitle}>Analysis</Text>
-		<Text style = {textStyles.contentText}>{data.mealDetails}</Text>
-		</View>
-	</ScrollView>
+      <View style={styles.container}>
+        <Text style={textStyles.smallParagraphTitle}>Analysis</Text>
+        <Text style={textStyles.contentText}>{analysis}</Text>
+      </View>
+    </ScrollView>
   );
 };
 
