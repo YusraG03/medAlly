@@ -103,8 +103,8 @@ export function ChatScreen({ navigation }) {
         {...props}
         wrapperStyle={{
           //can this be removed? please check :p
-          right: { backgroundColor: '#FFFFFF' },
-          left: { backgroundColor: '#FFFFFF' },
+          right: { backgroundColor: colors.defaultwhite },
+          left: { backgroundColor: colors.defaultwhite },
         }}
         containerStyle={{
           right: {

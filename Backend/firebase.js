@@ -315,34 +315,6 @@ class firebase
             return "An error occurred during modifying physical habbits.";
         }
     }
-    async addUserInjuryDrugs(userInjuryDrugs, userID)
-    {
-        try
-        {
-            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('injuryDrugs');
-            await ref.set(userInjuryDrugs);
-            return("Injury drugs added successfully!");
-        }
-        catch(error)
-        {
-            console.error('Error adding user injury drugs:', error);
-            return "An error occurred during adding injury drugs.";
-        }
-    }
-    async getUserInjuryDrugs(userID)
-    {
-        try
-        {
-            const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('injuryDrugs');
-            const document = await ref.get();
-            return document.data();
-        }
-        catch(error)
-        {
-            console.error('Error retrieving user injury drugs:', error);
-            return "An error occurred during retrieving injury drugs.";
-        }
-    }
     async addUserChatConsultation(chatConsultation, userID)
     {
         try
