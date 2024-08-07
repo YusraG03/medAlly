@@ -183,7 +183,6 @@ export default function MedicationScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: colors.defaultwhite,
     paddingHorizontal: 20,
     paddingTop: 50,
@@ -256,10 +255,8 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Regular",
   },
   addButton: {
-    position: 'absolute',
-    bottom: 30,
-    right: 20,
-    alignItems: 'center',
+
+    alignItems : 'center'
   },
   modalContainer: {
     flex: 1,

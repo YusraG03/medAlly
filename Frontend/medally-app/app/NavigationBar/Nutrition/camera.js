@@ -39,45 +39,44 @@ export default function App() {
   };
 
   const savePicture = async () => {
-    if (image) {
-      try {
-        const asset = await MediaLibrary.createAssetAsync(image);
-        const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
-  
-        // Ensure the file extension is .jpg
-        const fileName = asset.filename.toLowerCase().endsWith('.jpeg')
-          ? asset.filename
-          : asset.filename.replace(/\.JPG$/, '.jpeg');
-  
-        const formData = new FormData();
-        formData.append('image', {
-          uri: assetInfo.localUri || assetInfo.uri,
-          type: 'image/jpeg',
-          name: fileName,
-        });
-  
-        console.log(formData);
-  
-        const results = await API.calculateCaloriesFromImage(formData); // Adjusted to pass formData
-        alert('Picture saved! 🎉');
-        setImage(null);
-        console.log('saved successfully');
-        console.log(formdata)
-        console.log(results);
-  
-        router.push({
-          pathname: './results',
-          params: {
-            ...results,
-            image,
-          },
-        });
-      } catch (error) {
-        console.log(error);
-      }
+  if (image) {
+    try {
+      const asset = await MediaLibrary.createAssetAsync(image);
+      const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
+
+      // Ensure the file extension is .jpg
+      const fileName = asset.filename.toLowerCase().endsWith('.jpg')
+        ? asset.filename
+        : asset.filename.replace(/\.JPG$/, '.jpg');
+
+      const formData = new FormData();
+      formData.append('image', {
+        uri: assetInfo.localUri || assetInfo.uri,
+        type: 'image/jpeg',
+        name: fileName,
+      });
+
+      console.log(formData);
+
+      const results = await API.calculateCaloriesFromImage(formData); // Adjusted to pass formData
+      alert('Picture saved! 🎉');
+      setImage(null);
+      console.log('saved successfully');
+      console.log(results);
+
+      router.push({
+        pathname: './results',
+        params: {
+          ...results,
+          image,
+        },
+      });
+    } catch (error) {
+      console.log(error);
     }
-  };
-  
+  }
+};
+
 
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;

@@ -71,7 +71,7 @@ export default function NutritionHabits() {
                   setDietaryPreference(itemValue);
                   onChange(itemValue);
                 }}
-                style={styles.input}
+                style={styles.input.dropdown}
               >
                 <Picker.Item label="Non Veg" value="Non Veg" />
                 <Picker.Item label="Veg" value="Veg" />
@@ -205,7 +205,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     paddingLeft: 15,
-    marginBottom: 10
+    marginBottom: 10,
+    dropdown:{
+      height: 'auto'
+    }
   },
   button: {
     borderRadius: 6,
