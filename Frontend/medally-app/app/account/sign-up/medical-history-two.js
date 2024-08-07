@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
+import { getUserId } from '../userStorage';
 
 const API = new APIEndpoint();
 
 export default function MedicalHistoryTwo() {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, watch } = useForm();
   const navigation = useNavigation();
+  const [isValid, setIsValid] = useState(false);
+
+  const conditionsInjuries = watch('conditionsInjuries');
+  const drugAllergies = watch('drugAllergies');
+
+  useEffect(() => {
+    validateForm();
+  }, [conditionsInjuries, drugAllergies]);
+
+  const validateForm = () => {
+    // Form is valid if at least one field is filled
+    setIsValid(!!conditionsInjuries || !!drugAllergies);
+  };
 
   const onSubmit = async data => {
     if (isValid) {
@@ -17,8 +31,9 @@ export default function MedicalHistoryTwo() {
         conditionsInjuries: data.conditionsInjuries,
         drugAllergies: data.drugAllergies,
       };
-      const response = await API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
-      navigation.navigate('NutritionHabits'); // Ensure this matches your navigator
+      const userId = await getUserId();
+      const response = await API.addUserMedicalHistory(userMedicalHistory, userId);
+      navigation.navigate('NutritionHabits');
     }
   };
 
@@ -69,8 +84,12 @@ export default function MedicalHistoryTwo() {
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonText}>Submit</Text>
+        <TouchableOpacity 
+          style={[styles.button, !isValid && styles.disabledButton]}
+          onPress={handleSubmit(onSubmit)}
+          disabled={!isValid}
+        >
+          <Text style={[styles.buttonText, !isValid && styles.disabledButtonText]}>Submit</Text>
         </TouchableOpacity>
       </View>
     </View>

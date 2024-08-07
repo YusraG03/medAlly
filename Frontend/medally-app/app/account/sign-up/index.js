@@ -3,6 +3,7 @@ import { StyleSheet, Image, Text, View, TextInput, Button, TouchableOpacity, Scr
 import { useRouter } from 'expo-router'; // Updated import
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API.js';
+import { storeUserId, getUserId, removeUserId } from '../userStorage';
 
 // Import eye icons
 const eyeOpenIcon = require('../../_assets/eye-open.png');
@@ -70,6 +71,8 @@ export default function SignUp() {
 
     setIsValid(valid);
   };
+
+
 
   // Handle touch events to set touched state
   const handleTouch = (field) => {

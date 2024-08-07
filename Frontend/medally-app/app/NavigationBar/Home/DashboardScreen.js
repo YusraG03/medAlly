@@ -83,7 +83,7 @@ export default function DashboardScreen() {
     fetchArticles();
     fetchUserBMI();
     fetchStepData();
-  
+    Pedometer.getPermissionsAsync()
     Pedometer.isAvailableAsync().then(
       result => setIsPedometerAvailable(String(result)),
       error => setIsPedometerAvailable('Could not get isPedometerAvailable: ' + error)

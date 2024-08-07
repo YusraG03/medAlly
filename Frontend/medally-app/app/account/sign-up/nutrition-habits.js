@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'reac
 import { Picker } from '@react-native-picker/picker';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
+import { storeUserId, getUserId, removeUserId } from '../userStorage';
 
 const API = new APIEndpoint();
 
