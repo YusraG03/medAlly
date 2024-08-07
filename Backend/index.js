@@ -155,7 +155,7 @@ app.post('/addUserDailyFoodIntake', async (req, res) =>
 });
 app.post('/getUserDailyFoodIntake', async (req, res) =>
 {
-    const message = await db.getUserDailyFoodIntake(req.body.dateOfIntake, req.body.userID);
+    const message = await db.getUserDailyFoodIntake(req.body.userID);
     res.json(message);
 });
 app.get('/getDailyArticles', async (req, res) =>

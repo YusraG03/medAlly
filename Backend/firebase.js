@@ -356,38 +356,25 @@ class firebase
             return "An error occurred during retrieving chat consultations.";
         }
     }
-    async addUserDailyFoodIntake(dailyFoodIntake, userID) {
-        try {
-            const dateOfIntake = new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(dateOfIntake);
-            await ref.update(dailyFoodIntake);
+    async addUserDailyFoodIntake(dailyFoodIntake, userID) 
+    {
+        try 
+        {
+            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc('food'); 
+            await ref.set(dailyFoodIntake);
             return "Daily food intake added successfully!";
-        } catch (error) {
-            if (error.code === 'not-found') {
-                // If the document does not exist, create it
-                const dateOfIntake = new Date().toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(dateOfIntake);
-                await ref.set(dailyFoodIntake);
-                return "Daily food intake added successfully!";
-            } else {
-                console.error('Error adding daily food intake:', error);
-                return "An error occurred during adding daily food intake.";
-            }
+        } 
+        catch (error) 
+        {
+            console.error('Error adding daily food intake:', error);
+            return "An error occurred during adding daily food intake.";
         }
     }
-    async getUserDailyFoodIntake(dateOfIntake,userID)
+    async getUserDailyFoodIntake(userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(dateOfIntake);
+            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc('food');
             const document = await ref.get();
             return document.data();
         }
