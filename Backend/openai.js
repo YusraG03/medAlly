@@ -1,41 +1,15 @@
 import OpenAI from "openai";
 import dotenv from 'dotenv';
-import { getUserInfo } from './userinfo.js';
 //import fs from 'fs';
 
 dotenv.config();
 
 class openaichat{
     constructor(apiKey) {
-        this.openai = new OpenAI({ apiKey: process.env.openaikey });
-        this.userInfo = null;
-        this.initialized = false; // Flag to check if initial data has been sent
-    }
-
-    async getUserInfoOnce(userID) {
-        if (!this.initialized) {
-            // Fetch and compile user data
-            this.userInfo = await compileData(userID);
-
-            // Create or retrieve the thread
-            this.thread = await this.openai.beta.threads.retrieve(userThreadID);
-
-            // Send initial medical record data to the assistant
-            this.message = await this.openai.beta.threads.messages.create(
-                this.thread.id,
-                {
-                    role: "system", // Using "system" role to provide initial context
-                    content: JSON.stringify(this.userInfo)
-                }
-            );
-
-            this.initialized = true; // Mark as initialized
-        }
+        this.openai = new OpenAI({ apiKey: process.env.openaikey})
     }
     
-    async getChatCompletion(chat, userThreadID, userID) { //call this function within the created object with the user's message and their thread_id (use: "thread_DlQO7yZt4PvJOmMbz8D5zLhj" for testing)
-        this.userID = userID;
-        this.userThreadID = userThreadID;
+    async getChatCompletion(chat, userThreadID) { //call this function within the created object with the user's message and their thread_id (use: "thread_DlQO7yZt4PvJOmMbz8D5zLhj" for testing)
         this.assistant = await this.openai.beta.assistants.retrieve("asst_vhKUyzAvbJVVETPj1J5tVoai");
         this.thread = await this.openai.beta.threads.retrieve(userThreadID);
         this.message = await this.openai.beta.threads.messages.create(
