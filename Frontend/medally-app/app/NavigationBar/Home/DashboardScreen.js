@@ -69,7 +69,16 @@ export default function DashboardScreen() {
         setBmi('Error'); // Optionally set a default or error value
       }
     };
-  
+    const fetchUserNextMedication = async () => {
+      try {
+        const response = await API.getUserNextMedication('KcLR8zOoexJp8N2Qrvz2');
+        setMedicationInfo(response); // Adjust according to your API response structure
+      } catch (error) {
+        console.log('Error fetching next medication:', error);
+        setMedicationInfo({ name: 'Error', dosage: 'Error', time: new Date() }); // Optionally set a default or error value
+      }
+    }
+
     const fetchStepData = async () => {
       try {
         const stepData = await API.getStepData('KcLR8zOoexJp8N2Qrvz2');
@@ -82,7 +91,8 @@ export default function DashboardScreen() {
         console.error('Error fetching step data:', error);
       }
     };
-  
+    
+    fetchUserNextMedication();
     fetchArticles();
     fetchUserBMI();
     fetchStepData();
