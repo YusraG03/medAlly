@@ -448,7 +448,9 @@ class firebase
             const document = await ref.get();
             const basicInfo = document.data();
             const height = basicInfo.height/100;
-            return (basicInfo.weight / (height * height)).toFixed(1);
+            const BMI = basicInfo.weight / (height * height).toFixed(1); 
+            console.log(BMI);
+            return (BMI);
         }
         catch(error)
         {
