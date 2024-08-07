@@ -428,7 +428,7 @@ class APIEndpoint
             console.error('Error calculating calories:', error);
         }
     }
-    async addUserDailyFoodIntake(foodIntake, userID)
+    async addUserDailyFoodIntake(mealType ,foodIntake, userID)
     {
         try 
         {
@@ -438,7 +438,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ foodIntake, userID }),
+                body: JSON.stringify({mealType ,foodIntake, userID }),
             });
             const data = await response.json();
             return(data);
