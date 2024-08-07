@@ -108,7 +108,7 @@ export default function DashboardScreen() {
       API.addStepData(stepData, 'KcLR8zOoexJp8N2Qrvz2')
         .then(response => console.log('Data sen t to backend:', response))
         .catch(error => console.error('Error sending data:', error));
-    }, 300000); // 300000ms = 5 minutes
+    }, 60000); // 60000ms = 1 minutes
   
     return () => {
       subscription && subscription.remove();
@@ -198,7 +198,7 @@ export default function DashboardScreen() {
         </View>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>BMI</Text>
-          <Text style={styles.infoSubtitle}>{bmi ? `${bmi} kg/m²` : 'Loading...'}</Text>
+          <Text style={styles.infoSubtitle}>{bmi ? $:bmi} kg/m² : 'Loading...'</Text>
         </View>
       </View>
 
@@ -449,5 +449,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-
