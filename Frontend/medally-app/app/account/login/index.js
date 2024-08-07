@@ -121,7 +121,9 @@ export default function Login() {
                 }
                 else
                 {
-                  //userSave.saveUserId(response.message.userID)
+                  const getID = await getUserId();
+                  alert(getID)
+                  console.log(getID)
                   router.push('../../NavigationBar/Home');
                 }
               }
