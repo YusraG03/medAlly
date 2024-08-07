@@ -49,7 +49,8 @@ export default function PhysicalHabits() {
         sleepProblems: sleepProblems,
         pregnancyStatus: pregnancyStatus,
       };
-      const response = await API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2');
+      const userId = getUserId(); 
+      const response = await API.addUserPhysicalHabbits(userMedicalHistory, userId);
       router.push('./medical-history-one');
     }
   };
