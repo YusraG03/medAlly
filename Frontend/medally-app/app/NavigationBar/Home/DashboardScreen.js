@@ -87,11 +87,23 @@ export default function DashboardScreen() {
     const fetchUserNextMedication = async () => {
       try {
         const response = await API.getUserNextMedication(userID);
+        
+        if (!response || !response.time || !response.medicationName || !response.dosage) {
+          throw new Error('Invalid response structure');
+        }
+    
         const [hours, minutes] = response.time.split(':').map(Number);
+        if (isNaN(hours) || isNaN(minutes)) {
+          throw new Error('Invalid time format');
+        }
+    
         const medicationTime = new Date();
         medicationTime.setHours(hours, minutes, 0, 0); // Set hours and minutes
+        medicationTime.setMilliseconds(0);
     
         const currentTime = new Date();
+        currentTime.setMilliseconds(0);
+    
         const timeDifference = Math.round((medicationTime - currentTime) / 60000); // Difference in minutes
     
         // Check if timeDifference is valid
@@ -103,12 +115,13 @@ export default function DashboardScreen() {
           name: response.medicationName,
           dosage: response.dosage,
           time: `in next ${timeDifference} minutes`,
-        }); // Adjust according to your API response structure    
+        });
       } catch (error) {
         console.log('Error fetching next medication:', error);
-        setMedicationInfo({ name: 'Error', dosage: 'Error', time: 'Error' }); // Optionally set a default or error value
+        setMedicationInfo({ name: 'Error', dosage: 'Error', time: 'Error' });
       }
     };
+    
 
     const fetchStepData = async () => {
       try {
