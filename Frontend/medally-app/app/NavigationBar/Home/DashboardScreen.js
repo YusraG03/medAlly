@@ -59,44 +59,54 @@ export default function DashboardScreen() {
         setArticles([]);
       }
     };
-
+  
     const fetchUserBMI = async () => {
       try {
-        const response = await (API.getUserBMI('1yqpFppDMfYgevo7isXH'));
+        const response = await API.getUserBMI('1yqpFppDMfYgevo7isXH');
         setBmi(response); // Adjust according to your API response structure
       } catch (error) {
         console.log('Error fetching BMI:', error);
         setBmi('Error'); // Optionally set a default or error value
       }
     };
-
+  
+    const fetchStepData = async () => {
+      try {
+        const stepData = await API.getStepData('1yqpFppDMfYgevo7isXH');
+        setStepCount(stepData.stepCount);
+        // Optionally, set other state values if needed, e.g., progress, caloriesBurned, distanceTraveled
+      } catch (error) {
+        console.error('Error fetching step data:', error);
+      }
+    };
+  
     fetchArticles();
     fetchUserBMI();
-
+    fetchStepData();
+  
     Pedometer.isAvailableAsync().then(
       result => setIsPedometerAvailable(String(result)),
       error => setIsPedometerAvailable('Could not get isPedometerAvailable: ' + error)
     );
-
+  
     const subscription = Pedometer.watchStepCount(result => setStepCount(result.steps));
-
+  
     const interval = setInterval(() => {
       const stepsGoal = 10000;
       const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
       const caloriesBurned = (stepCount * 0.04).toFixed(2);
       const distanceTraveled = (stepCount * 0.762 / 1000).toFixed(2);
-      const stepData =
-      {
+      const stepData = {
         stepCount: stepCount,
         progress: progress,
         caloriesBurned: caloriesBurned,
         distanceTraveled: distanceTraveled,
-      }
-      API.addStepData(stepData,'1yqpFppDMfYgevo7isXH')
+      };
+      API.addStepData(stepData, '1yqpFppDMfYgevo7isXH')
         .then(response => console.log('Data sent to backend:', response))
         .catch(error => console.error('Error sending data:', error));
     }, 300000); // 300000ms = 5 minutes
-
+  
     return () => {
       subscription && subscription.remove();
       clearInterval(interval);
