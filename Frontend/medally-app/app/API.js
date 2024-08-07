@@ -300,6 +300,66 @@ class APIEndpoint
             console.error('Error modifying nutrition:', error);
         }
     }
+    async addUserPhysicalHabbits(physicalHabbits, userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserPhysicalHabits`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ physicalHabbits, userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error storing physical habits:', error);
+        }
+    }
+    async getUserPhysicalHabbits(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserPhysicalHabits`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting physical habits:', error);
+        }
+    }
+    async modifyUserPhysicalHabbits(physicalHabbits, userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/modifyUserPhysicalHabits`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ physicalHabbits, userID }),
+            });
+            const data = await response.json();
+            return(data);
+        }
+        catch (error)
+        {
+            console.error('Error modifying physical habbits', error);
+        }
+    }
     async getDailyMedicalFact()
     {
         try 
