@@ -62,7 +62,7 @@ export default function GeneralInformation() {
         dateOfBirth: date.toISOString()
       };
 
-      const userId = getUserId(); // Example, replace with actual user ID retrieval
+      const userId = await getUserId(); // Example, replace with actual user ID retrieval
       const response = await API.addUserBasicInfo(userMedicalHistory, userId);
       router.push('./physical-habits');
     }

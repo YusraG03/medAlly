@@ -208,7 +208,7 @@ export default function SignUp() {
               password: password
             }
             const response = await API.registerUser(userCreds);
-            await storeUserId(response.message.id)
+            await storeUserId(response.message.userID)
             router.push('./general-information')
           }
           }

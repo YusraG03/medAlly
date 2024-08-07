@@ -49,7 +49,7 @@ export default function PhysicalHabits() {
         sleepProblems: sleepProblems,
         pregnancyStatus: pregnancyStatus,
       };
-      const userId = getUserId(); 
+      const userId = await getUserId(); 
       const response = await API.addUserPhysicalHabbits(userMedicalHistory, userId);
       router.push('./medical-history-one');
     }

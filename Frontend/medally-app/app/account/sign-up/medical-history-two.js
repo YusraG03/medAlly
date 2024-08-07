@@ -32,7 +32,7 @@ export default function MedicalHistoryTwo() {
         conditionsInjuries: data.conditionsInjuries,
         drugAllergies: data.drugAllergies,
       };
-      const userId = getUserId(); 
+      const userId = await getUserId(); 
       const response = await API.addUserMedicalHistory(userMedicalHistory, userId);
       router.push('./nutrition-habits');
     }
