@@ -73,7 +73,10 @@ export default function DashboardScreen() {
     const fetchStepData = async () => {
       try {
         const stepData = await API.getStepData('KcLR8zOoexJp8N2Qrvz2');
-        setStepCount(stepData.stepCount);
+        if(stepData !== "No step data recorded")
+        {
+          setStepCount(stepData.stepCount);
+        }
         // Optionally, set other state values if needed, e.g., progress, caloriesBurned, distanceTraveled
       } catch (error) {
         console.error('Error fetching step data:', error);
