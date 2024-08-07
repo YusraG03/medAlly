@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1050551053204",
+    "project_id": "medally-b3cd0",
+    "storage_bucket": "medally-b3cd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050551053204:android:4718ece1059eb8cd81bd81",
+        "android_client_info": {
+          "package_name": "com.zairrrr.medallyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjRAWhzRACU9gKsPFhgX1h8IPuWKV8dXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

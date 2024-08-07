@@ -1,5 +1,5 @@
 {
-  "expo": {
+  "expo": { "android": { "package": "com.zairrrr.medallyapp", "googleServicesFile": "./google-services.json", 
     "name": "medally-app",
     "slug": "medally-app",
     "version": "1.0.0",
@@ -40,4 +40,4 @@
       }
     }
   }
-}
+  }}

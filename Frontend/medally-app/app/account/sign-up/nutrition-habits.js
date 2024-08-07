@@ -41,6 +41,7 @@ export default function NutritionHabits() {
       };
       const userId = await getUserId(); 
       const response = await API.addUserNutrition(userMedicalHistory, userId);
+      const resp = await API.getUserInfo(userId)
       router.push('./onboarding');
     }
   };
