@@ -6,7 +6,7 @@ import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import APIEndpoint from '../../API';
-import getuserID from '../../account/userStorage.js';
+import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 import colors from '../../_assets/colors';
 
 const api = new APIEndpoint();
@@ -57,7 +57,8 @@ export default function MedicationScreen() {
   useEffect(() => {
     const loadMedications = async () => {
       try {
-        const response = await api.getAllMedication('KcLR8zOoexJp8N2Qrvz2');
+        const userID = await getUserId();
+        const response = await api.getAllMedication(userID);
         console.log(response);
         setMedications(response);
       } catch (error) {
