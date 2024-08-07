@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -8,8 +8,6 @@ import colors from '../../_assets/colors';
 import APIEndpoint from '../../API'
 import getID from '../userStorage'
 
-
-//const userID = new getID()
 const API = new APIEndpoint()
 
 export default function GeneralInformation() {
@@ -22,6 +20,30 @@ export default function GeneralInformation() {
   const [gender, setGender] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    validateForm();
+  }, [gender, height, weight, date]);
+
+  const validateForm = () => {
+    let valid = true;
+
+    if (!gender || !height || !weight || !date) {
+      valid = false;
+    }
+
+    // Add more specific validations if needed
+    if (height && (isNaN(height) || height <= 0)) {
+      valid = false;
+    }
+
+    if (weight && (isNaN(weight) || weight <= 0)) {
+      valid = false;
+    }
+
+    setIsValid(valid);
+  };
 
   const dateUpdate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -29,19 +51,23 @@ export default function GeneralInformation() {
     setDate(currentDate);
     setValue('DateOfBirth', currentDate.toLocaleDateString('en-GB'));
   };
+
   const onSubmit = async () => {
     if (isValid) {
       const userMedicalHistory = {
         gender: gender,
         height: height,
-        weight: weight
+        weight: weight,
+        dateOfBirth: date.toISOString()
       };
 
       // Replace 'userID.getUserId' with actual user ID retrieval logic
       const userId = 'KcLR8zOoexJp8N2Qrvz2'; // Example, replace with actual user ID retrieval
       const response = await API.addUserBasicInfo(userMedicalHistory, userId);
       router.push('./medical-history-two');
-    }};
+    }
+  };
+
   const showDatepicker = () => {
     setShow(true);
   };
@@ -163,8 +189,12 @@ export default function GeneralInformation() {
           </View>
         </View>
       </View>
-      <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button}>
-        <Text style={styles.buttonText}>Next</Text>
+      <TouchableOpacity 
+        onPress={handleSubmit(onSubmit)} 
+        style={[styles.button, !isValid && styles.disabledButton]}
+        disabled={!isValid}
+      >
+        <Text style={[styles.buttonText, !isValid && styles.disabledButtonText]}>Next</Text>
       </TouchableOpacity>
     </View>
   );
