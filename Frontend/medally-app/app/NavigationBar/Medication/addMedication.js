@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, FlatList, Pressable, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
+import * as Notifications from 'expo-notifications';
 import APIEndpoint from '../../API';
 import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 
-//const getuser = new getuserID()
-const api= new APIEndpoint()
+// Instantiate the APIEndpoint class
+const api = new APIEndpoint();
 
 export default function Addmedication() {
   const navigation = useNavigation();
   const router = useRouter();
-  const api = new APIEndpoint(); // Instantiate the APIEndpoint class
 
   const [medicationName, setName] = useState('');
   const [dosage, setDosage] = useState('');
@@ -22,7 +22,7 @@ export default function Addmedication() {
   const [cause, setCause] = useState('');
   const [reminder, setReminder] = useState('10 minutes before');
   const [showReminderModal, setShowReminderModal] = useState(false);
-  
+
   const [showFromDatePicker, setShowFromDatePicker] = useState(false);
   const [showToDatePicker, setShowToDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -30,7 +30,7 @@ export default function Addmedication() {
   const [isFromDateSelected, setIsFromDateSelected] = useState(false);
   const [isToDateSelected, setIsToDateSelected] = useState(false);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
-  
+
   const reminders = [
     { label: 'None', value: 'none' },
     { label: 'At time specified', value: 'at_time' },
@@ -38,6 +38,17 @@ export default function Addmedication() {
     { label: '30 minutes before', value: '30_minutes_before' },
     { label: '10 minutes before', value: '10_minutes_before' },
   ];
+
+  // Request notification permissions
+  useEffect(() => {
+    async function requestPermissions() {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission required', 'You need to enable notifications for this app.');
+      }
+    }
+    requestPermissions();
+  }, []);
 
   const onChangeFromDate = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
@@ -63,24 +74,55 @@ export default function Addmedication() {
     setIsTimeSelected(true);
   };
 
+  const scheduleNotification = async () => {
+    let triggerDate = new Date(time.getTime());
+    if (reminder === '1 hour before') {
+      triggerDate.setHours(triggerDate.getHours() - 1);
+    } else if (reminder === '30 minutes before') {
+      triggerDate.setMinutes(triggerDate.getMinutes() - 30);
+    } else if (reminder === '10 minutes before') {
+      triggerDate.setMinutes(triggerDate.getMinutes() - 10);
+    }
+    
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Medication Reminder',
+        body: `It's time to take your medication: ${medicationName}`,
+        sound: 'default',
+      },
+      trigger: {
+        year: triggerDate.getFullYear(),
+        month: triggerDate.getMonth() + 1,
+        day: triggerDate.getDate(),
+        hour: triggerDate.getHours(),
+        minute: triggerDate.getMinutes(),
+        second: 0,
+      },
+    });
+  };
+
   const handleAddMedicine = async () => {
     const newMedication = {
       medicationName,
       dosage,
       startDate: startDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
       endDate: endDate.toISOString().split('T')[0],
-      time: time.toTimeString().split(' ')[0].substring(0,5), // Format time to HH:MM
+      time: time.toTimeString().split(' ')[0].substring(0, 5), // Format time to HH:MM
       cause,
       reminder,
     };
 
-    //const userID = getuser.getUserId; // replace with actual user ID
-
     try {
       const userID = await getUserId();
-      const response = await api.addMedication(newMedication, userID);
-      
+      await api.addMedication(newMedication, userID);
+
       Alert.alert('Success', 'Medication added successfully');
+      
+      // Schedule notification if reminder is set
+      if (reminder !== 'None') {
+        await scheduleNotification();
+      }
+
       // Optionally clear the input fields after successful submission
       setName('');
       setDosage('');
@@ -93,8 +135,7 @@ export default function Addmedication() {
       setIsToDateSelected(false);
       setIsTimeSelected(false);
       router.back();
-    } 
-    catch (error) {
+    } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to add medication');
     }
