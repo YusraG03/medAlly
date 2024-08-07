@@ -440,24 +440,18 @@ class firebase
             return "An error occurred during retrieving diagnosis.";
         }
     }
-    async getUserBMI(userID)
-    {
-        try
-        {
+    async getUserBMI(userID) {
+        try {
             const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('basicInfo');
             const document = await ref.get();
             const basicInfo = document.data();
-            const height = basicInfo.height/100;
-            const BMI = basicInfo.weight / (height * height).toFixed(1); 
-            console.log(BMI);
-            return (BMI);
-        }
-        catch(error)
-        {
+            const height = basicInfo.height / 100;
+            const BMI = (basicInfo.weight / (height * height)).toFixed(1); // Apply toFixed to the result of the division
+            return parseFloat(BMI); // Ensure the returned value is a number
+        } catch (error) {
             console.error('Error retrieving BMI:', error);
             return "An error occurred during retrieving BMI.";
         }
-
     }
     async addUserFitness(userFitness, userID) 
     {
