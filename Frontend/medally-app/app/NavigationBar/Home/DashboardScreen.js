@@ -20,7 +20,7 @@ export default function DashboardScreen() {
   const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
   const [userGeneralInfo, setUserGeneralInfo] = useState({ height: 0, weight: 0 });
   const [userName, setUserName] = useState('User');
-  const [medicationInfo, setMedicationInfo] = useState({ name: 'MedName', dosage: '500mg', time: new Date() });
+  const [medicationInfo, setMedicationInfo] = useState({ name: 'MedName', dosage: '500mg', time: '0' });
   const [modalVisible, setModalVisible] = useState(false);
   const [notifications, setNotifications] = useState([
     {
@@ -48,7 +48,6 @@ export default function DashboardScreen() {
       date: '2 Days Ago',
     },
   ]);
-
 
   useEffect(() => {
     const initializeUserID = async () => {
@@ -87,34 +86,34 @@ export default function DashboardScreen() {
     const fetchUserNextMedication = async () => {
       try {
         const response = await API.getUserNextMedication(userID);
-        
-        if (!response || !response.time || !response.medicationName || !response.dosage) {
-          throw new Error('Invalid response structure');
-        }
     
         const [hours, minutes] = response.time.split(':').map(Number);
+        
         if (isNaN(hours) || isNaN(minutes)) {
           throw new Error('Invalid time format');
         }
     
         const medicationTime = new Date();
         medicationTime.setHours(hours, minutes, 0, 0); // Set hours and minutes
+        medicationTime.setSeconds(0);
         medicationTime.setMilliseconds(0);
     
         const currentTime = new Date();
+        currentTime.setSeconds(0);
         currentTime.setMilliseconds(0);
     
         const timeDifference = Math.round((medicationTime - currentTime) / 60000); // Difference in minutes
+  
+        console.log('Time Difference:', timeDifference);
     
         // Check if timeDifference is valid
         if (isNaN(timeDifference) || timeDifference < 0) {
           throw new Error('Invalid time difference');
         }
-    
         setMedicationInfo({
           name: response.medicationName,
           dosage: response.dosage,
-          time: `in next ${timeDifference} minutes`,
+          time: timeDifference.toString(),
         });
       } catch (error) {
         console.log('Error fetching next medication:', error);
@@ -170,10 +169,9 @@ export default function DashboardScreen() {
     };
   }, [userID, stepCount]);
 
-  const timeDifferenceInMinutes = Math.round((medicationInfo.time - new Date()) / 60000);
   const stepsGoal = 10000;
   const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
-
+  const timeDifferenceInMinutes = medicationInfo.time;
 
   const getTintColor = (progress) => {
     if (progress < 33) {
@@ -186,7 +184,6 @@ export default function DashboardScreen() {
   };
 
   const handleNotificationPress = () => setModalVisible(true);
-
   const renderNotification = (notification) => (
     <View key={notification.id} style={styles.notificationContainer}>
       <View style={styles.notificationContent}>
