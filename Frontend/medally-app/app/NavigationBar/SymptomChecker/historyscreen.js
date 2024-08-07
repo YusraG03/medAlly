@@ -11,7 +11,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 const api = new APIEndpoint();
-const getUserId = new getuserID(); // Make sure to use the correct method to get user ID
+const getUserId = new getuserid(); // Make sure to use the correct method to get user ID
 
 
 export function HistoryScreen() {
