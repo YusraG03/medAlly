@@ -3,8 +3,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../../_assets/colors';
-import APIEndpoint from '../../API';
-import { getUserId } from '../userStorage';
+import { router } from 'expo-router';
+import APIEndpoint from '../../API'
+import { storeUserId, getUserId, removeUserId } from '../userStorage';
 
 const API = new APIEndpoint();
 
@@ -31,9 +32,9 @@ export default function MedicalHistoryTwo() {
         conditionsInjuries: data.conditionsInjuries,
         drugAllergies: data.drugAllergies,
       };
-      const userId = await getUserId();
+      const userId = getUserId(); 
       const response = await API.addUserMedicalHistory(userMedicalHistory, userId);
-      navigation.navigate('NutritionHabits');
+      router.push('./nutrition-habits');
     }
   };
 
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: '10%',
     marginHorizontal: '5%',
-    gap: '1%'
+    marginBottom: 15
   },
   formGroup: {
     marginBottom: 15
@@ -187,12 +188,11 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    gap: 0
+    marginBottom: 20,
   },
   headertext: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6
   },
   logo: {
     width: 72,
