@@ -9,6 +9,7 @@ import colors from '../../_assets/colors';
 import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 import bellIcon from '../../_assets/bell.png';
+import { useFocusEffect } from 'expo-router';
 
 const API = new APIEndpoint();
 
@@ -49,6 +50,55 @@ export default function DashboardScreen() {
     },
   ]);
 
+  const fetchUserNextMedication = async () => {
+    const ID = await getUserId();
+    if(ID === null) return;
+    try {
+      const response = await API.getUserNextMedication(ID);
+      if(response.isDone !== undefined || response.isDone === true || response === undefined)  
+        {
+          setMedicationInfo({ name: 'No Medication', dosage: '0mg', time: "Good Job!" });
+          return;
+        }
+      const [hours, minutes] = response.time.split(':').map(Number);
+      
+      if (isNaN(hours) || isNaN(minutes)) {
+        throw new Error('Invalid time format');
+      }
+  
+      const medicationTime = new Date();
+      medicationTime.setHours(hours, minutes, 0, 0); // Set hours and minutes
+      medicationTime.setSeconds(0);
+      medicationTime.setMilliseconds(0);
+  
+      const currentTime = new Date();
+      currentTime.setSeconds(0);
+      currentTime.setMilliseconds(0);
+  
+      const timeDifference = Math.round((medicationTime - currentTime) / 60000); // Difference in minutes
+  
+      // Check if timeDifference is valid
+      if (isNaN(timeDifference) || timeDifference < 0) {
+        throw new Error('Invalid time difference');
+      }
+      setMedicationInfo({
+        name: response.medicationName,
+        dosage: response.dosage,
+        time: "in " + timeDifference.toString() + " minutes",
+      });
+    } catch (error) {
+      console.log('Error fetching next medication:', error);
+      setMedicationInfo({ name: 'Error', dosage: 'Error', time: 'Error' });
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("torma");
+      fetchUserNextMedication();
+    }, []) // Empty dependency array means this will run only on focus
+  ) 
+
   useEffect(() => {
     const initializeUserID = async () => {
       const userID = await getUserId();
@@ -86,7 +136,11 @@ export default function DashboardScreen() {
     const fetchUserNextMedication = async () => {
       try {
         const response = await API.getUserNextMedication(userID);
-    
+        if(response.isDone !== undefined || response.isDone === true || response === undefined)  
+        {
+          setMedicationInfo({ name: 'No Medication', dosage: '0mg', time: "Good Job!" });
+          return;
+        }
         const [hours, minutes] = response.time.split(':').map(Number);
         
         if (isNaN(hours) || isNaN(minutes)) {
@@ -113,7 +167,7 @@ export default function DashboardScreen() {
         setMedicationInfo({
           name: response.medicationName,
           dosage: response.dosage,
-          time: timeDifference.toString(),
+          time:"in " + timeDifference.toString() + " minutes",
         });
       } catch (error) {
         console.log('Error fetching next medication:', error);
@@ -246,7 +300,7 @@ export default function DashboardScreen() {
       <View style={styles.infoContainer}>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>{medicationInfo.name}</Text>
-          <Text style={styles.infoSubtitle}>in {timeDifferenceInMinutes} minutes</Text>
+          <Text style={styles.infoSubtitle}>{timeDifferenceInMinutes}</Text>
         </View>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>BMI</Text>
