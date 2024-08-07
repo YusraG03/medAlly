@@ -57,18 +57,17 @@ export default function App() {
       console.log(formData);
 
       const results = await API.calculateCaloriesFromImage(formData); // Adjusted to pass formData
-      alert('Picture saved! 🎉');
-      setImage(null);
-      if (results = null) {
-        console.log('killing myself tonight')
-      }
-      console.log('saved successfully');
       console.log(results);
+      alert('Picture saved! 🎉');
+      
+      setImage(null);
+      console.log('saved successfully');
+
 
       router.push({
         pathname: './results',
         params: {
-          ...results,
+          ...results.message,
           image,
         },
       });
