@@ -45,8 +45,14 @@ export default function App() {
         alert('Picture saved! 🎉');
         setImage(null);
         console.log('saved successfully');
-        API.calculateCaloriesFromImage(asset);
-        router.push('./results')
+        const results = await API.calculateCaloriesFromImage(asset);
+        console.log(results)
+        router.push({
+          pathname: './Nutrition/results',
+          params: {
+            ...results
+          }
+        });
       } catch (error) {
         console.log(error);
       }
