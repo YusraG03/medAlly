@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   timeAction: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: '2%',
+
   },
   medicationName: {
     fontSize: 20,
