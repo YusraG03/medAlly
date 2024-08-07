@@ -360,25 +360,8 @@ class firebase
     {
         try 
         {
-            var ref = null;
-            if(mealType === "breakfast")
-            {
-                ref = this.db.collection('users').doc(userID).collection('nutrition').doc('breakfast'); 
-            }
-            else if (mealType === "lunch")
-            {
-                ref = this.db.collection('users').doc(userID).collection('nutrition').doc('lunch');
-            }
-            else if (mealType === "dinner")
-            {
-                ref = this.db.collection('users').doc(userID).collection('nutrition').doc('dinner');
-            }
-            else if (mealType === "snacks")
-            {
-                ref = this.db.collection('users').doc(userID).collection('nutrition').doc('snacks');
-            }
+            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(mealType);
             await ref.set(dailyFoodIntake, { merge: true });
-            
             return "Daily food intake added successfully!";
         } 
         catch (error) 
@@ -387,11 +370,11 @@ class firebase
             return "An error occurred during adding daily food intake.";
         }
     }
-    async getUserDailyFoodIntake(userID)
+    async getUserDailyFoodIntake(mealType, userID)
     {
         try
         {
-            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc('food');
+            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc(mealType);
             const document = await ref.get();
             return document.data();
         }
