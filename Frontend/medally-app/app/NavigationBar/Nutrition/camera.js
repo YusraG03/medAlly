@@ -42,16 +42,11 @@ export default function App() {
     if (image) {
       try {
         const asset = await MediaLibrary.createAssetAsync(image);
-
-        // Convert the asset URI to a local file system URI
-        const localUri = await FileSystem.downloadAsync(
-          asset.uri,
-          FileSystem.documentDirectory + asset.filename
-        );
+        const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
 
         const formData = new FormData();
         formData.append('image', {
-          uri: localUri.uri,
+          uri: assetInfo.localUri || assetInfo.uri,
           type: 'image/jpeg',
           name: asset.filename,
         });
@@ -63,7 +58,7 @@ export default function App() {
         console.log(results);
 
         router.push({
-          pathname: './Nutrition/results',
+          pathname: './results',
           params: {
             ...results,
           },
