@@ -70,7 +70,8 @@ export default function MedicationScreen() {
   
   const loadMedications = async () => {
     try {
-      const response = await api.getAllMedication('KcLR8zOoexJp8N2Qrvz2');
+      const userID = await getUserId();
+      const response = await api.getAllMedication(userID);
       console.log(response);
       setMedications(response);
     } catch (error) {
