@@ -447,6 +447,7 @@ class firebase
             const basicInfo = document.data();
             const height = basicInfo.height / 100;
             const BMI = (basicInfo.weight / (height * height)).toFixed(1); // Apply toFixed to the result of the division
+            console.log("BMI: ", BMI);
             return parseFloat(BMI); // Ensure the returned value is a number
         } catch (error) {
             console.error('Error retrieving BMI:', error);
