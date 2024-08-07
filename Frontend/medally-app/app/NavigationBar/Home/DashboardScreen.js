@@ -193,14 +193,17 @@ export default function DashboardScreen() {
     fetchArticles();
     fetchUserBMI();
     fetchStepData();
-    Pedometer.getPermissionsAsync();
+
+ // Check if pedometer is available
     Pedometer.isAvailableAsync().then(
       result => setIsPedometerAvailable(String(result)),
       error => setIsPedometerAvailable('Could not get isPedometerAvailable: ' + error)
     );
 
+    // Subscribe to pedometer updates
     const subscription = Pedometer.watchStepCount(result => setStepCount(result.steps));
 
+    // Periodic step data update
     const interval = setInterval(() => {
       const stepsGoal = 10000;
       const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
@@ -215,8 +218,9 @@ export default function DashboardScreen() {
       API.addStepData(stepData, userID)
         .then(response => console.log('Data sent to backend:', response))
         .catch(error => console.error('Error sending data:', error));
-    }, 60000); // 60000ms = 1 minute
+    }, 30000);
 
+    // Cleanup
     return () => {
       subscription && subscription.remove();
       clearInterval(interval);
