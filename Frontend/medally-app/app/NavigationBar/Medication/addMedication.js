@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
 import APIEndpoint from '../../API';
-import getuserID from '../../account/userStorage.js'
+import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 
 //const getuser = new getuserID()
 const api= new APIEndpoint()
@@ -77,7 +77,8 @@ export default function Addmedication() {
     //const userID = getuser.getUserId; // replace with actual user ID
 
     try {
-      const response = await api.addMedication(newMedication, 'KcLR8zOoexJp8N2Qrvz2');
+      const userID = await getUserId();
+      const response = await api.addMedication(newMedication, userID);
       
       Alert.alert('Success', 'Medication added successfully');
       // Optionally clear the input fields after successful submission
@@ -91,7 +92,7 @@ export default function Addmedication() {
       setIsFromDateSelected(false);
       setIsToDateSelected(false);
       setIsTimeSelected(false);
-      router.replace();
+      router.back();
     } 
     catch (error) {
       console.error(error);

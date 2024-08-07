@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
+import { useFocusEffect } from 'expo-router';
 import APIEndpoint from '../../API';
-import getuserID from '../../account/userStorage.js';
+import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 import colors from '../../_assets/colors';
 
 const api = new APIEndpoint();
-
 // Weeklycalendar Component
 const Weeklycalendar = ({ onDatePress }) => {
   const [currentWeek, setCurrentWeek] = useState([]);
@@ -57,7 +57,8 @@ export default function MedicationScreen() {
   useEffect(() => {
     const loadMedications = async () => {
       try {
-        const response = await api.getAllMedication('KcLR8zOoexJp8N2Qrvz2');
+        const userID = await getUserId();
+        const response = await api.getAllMedication(userID);
         console.log(response);
         setMedications(response);
       } catch (error) {
@@ -66,6 +67,24 @@ export default function MedicationScreen() {
     };
     loadMedications();
   }, []);
+  
+  const loadMedications = async () => {
+    try {
+      const userID = await getUserId();
+      const response = await api.getAllMedication(userID);
+      console.log(response);
+      setMedications(response);
+    } catch (error) {
+      console.error('Failed to load medications.', error);
+    }
+  };
+  
+  useFocusEffect(
+    React.useCallback(() => {
+      loadMedications();
+    }, []) // Empty dependency array means this will run only on focus
+  )
+
 
   useEffect(() => {
     if (route.params?.newMedication) {
