@@ -13,6 +13,9 @@ import bellIcon from '../../_assets/bell.png';
 const API = new APIEndpoint();
 
 export default function DashboardScreen() {
+  const [articles, setArticles] = useState([]);
+  const [bmi, setBmi] = useState(null); // State for storing BMI
+  const [userID, setUserID] = useState(null); // State for storing userID
   const [stepCount, setStepCount] = useState(0);
   const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
   const [userGeneralInfo, setUserGeneralInfo] = useState({ height: 0, weight: 0 });
@@ -45,14 +48,12 @@ export default function DashboardScreen() {
       date: '2 Days Ago',
     },
   ]);
-  const [articles, setArticles] = useState([]);
-  const [bmi, setBmi] = useState(null); // State for storing BMI
-  const [userID, setUserID] = useState(null); // State for storing userID
+
 
   useEffect(() => {
     const initializeUserID = async () => {
-      const id = await getUserId();
-      setUserID(id);
+      const userID = await getUserId();
+      setUserID(userID);
     };
 
     initializeUserID();
