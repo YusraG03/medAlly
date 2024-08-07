@@ -6,7 +6,8 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import APIEndpoint from '../../API';
 import textStyles from '../../_assets/textStyles';
 import colors from '../../_assets/colors';
-
+import { storeUserId, getUserId, removeUserId } from '../userStorage';
+const userID = await getUserId();
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 import bellIcon from '../../_assets/bell.png';
 
@@ -62,7 +63,7 @@ export default function DashboardScreen() {
   
     const fetchUserBMI = async () => {
       try {
-        const response = await API.getUserBMI('KcLR8zOoexJp8N2Qrvz2');
+        const response = await API.getUserBMI(userID);
         setBmi(response); // Adjust according to your API response structure
       } catch (error) {
         console.log('Error fetching BMI:', error);
@@ -71,7 +72,7 @@ export default function DashboardScreen() {
     };
     const fetchUserNextMedication = async () => {
       try {
-        const response = await API.getUserNextMedication('KcLR8zOoexJp8N2Qrvz2');
+        const response = await API.getUserNextMedication(userID);
         setMedicationInfo(response); // Adjust according to your API response structure
       } catch (error) {
         console.log('Error fetching next medication:', error);
@@ -81,7 +82,7 @@ export default function DashboardScreen() {
 
     const fetchStepData = async () => {
       try {
-        const stepData = await API.getStepData('KcLR8zOoexJp8N2Qrvz2');
+        const stepData = await API.getStepData(userID);
         if(stepData !== "No step data recorded")
         {
           setStepCount(stepData.stepCount);
@@ -115,8 +116,8 @@ export default function DashboardScreen() {
         caloriesBurned: caloriesBurned,
         distanceTraveled: distanceTraveled,
       };
-      API.addStepData(stepData, 'KcLR8zOoexJp8N2Qrvz2')
-        .then(response => console.log('Data sen t to backend:', response))
+      API.addStepData(stepData, userID)
+        .then(response => console.log('Data sent to backend:', response))
         .catch(error => console.error('Error sending data:', error));
     }, 60000); // 60000ms = 1 minutes
   
