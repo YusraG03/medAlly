@@ -6,6 +6,8 @@ import * as MediaLibrary from 'expo-media-library';
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../../components/CameraButton';
 import APIEndpoint from '../../API';
+import {router} from 'expo-router';
+
 
 const API = new APIEndpoint()
 
@@ -44,6 +46,7 @@ export default function App() {
         setImage(null);
         console.log('saved successfully');
         API.calculateCaloriesFromImage(asset);
+        router.push('./results')
       } catch (error) {
         console.log(error);
       }
