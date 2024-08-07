@@ -5,6 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
 import { storeUserId, getUserId, removeUserId } from '../userStorage';
+import { router } from 'expo-router';
 
 const API = new APIEndpoint();
 

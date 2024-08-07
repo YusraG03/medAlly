@@ -198,7 +198,7 @@ export default function DashboardScreen() {
         </View>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>BMI</Text>
-          <Text style={styles.infoSubtitle}>{bmi ? $:bmi} kg/m² : 'Loading...'</Text>
+          <Text style={styles.infoSubtitle}>{bmi} kg/m²</Text>
         </View>
       </View>
 
