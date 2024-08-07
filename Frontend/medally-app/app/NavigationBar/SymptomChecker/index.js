@@ -7,7 +7,7 @@ import textStyles from '../../_assets/textStyles';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
 import { router } from 'expo-router';
-
+import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 
 // Import local images
 import aiAvatar from '../../_assets/Avatar.png'; // Path to AI avatar
@@ -34,8 +34,9 @@ export function ChatScreen({ navigation }) {
   const API = new APIEndpoint()
   const fetchAIResponse = async (userMessage) => {
     try {
+      const userID = await getUserId();
       setIsTyping(true);
-      const response = await API.chatWithGPT(userMessage, '1yqpFppDMfYgevo7isXH')
+      const response = await API.chatWithGPT(userMessage, userID)
       if(response.message && response.message.likelihood){
         console.log(response)
         // Pass the response data as params
