@@ -119,7 +119,7 @@ export default function Login() {
                 else
                 {
                   const getID = await getUserId();
-                  alert(getID)
+                  //alert(getID)
                   console.log(getID)
                   router.push('../../NavigationBar/Home');
                 }
