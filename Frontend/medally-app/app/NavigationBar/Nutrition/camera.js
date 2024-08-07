@@ -5,7 +5,9 @@ import { Camera } from 'expo-camera/legacy';
 import * as MediaLibrary from 'expo-media-library';
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../../components/CameraButton';
+import APIEndpoint from '../../API';
 
+const API = new APIEndpoint()
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -41,6 +43,7 @@ export default function App() {
         alert('Picture saved! 🎉');
         setImage(null);
         console.log('saved successfully');
+        API.calculateCaloriesFromImage(asset);
       } catch (error) {
         console.log(error);
       }
