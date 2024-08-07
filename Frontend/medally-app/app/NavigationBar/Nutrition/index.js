@@ -16,11 +16,44 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const date = 'Today';
 
-const MealPage = async() => {
-  const userID = await getUserId()
-  const foodDetails = await API.getUserDailyFoodIntake(userID)
+const MealPage = () => {
   const [expandedMeals, setExpandedMeals] = useState({});
   const [mealData, setMealData] = useState([]);
+
+  useEffect(() => {
+    const fetchFoodDetails = async () => {
+      const userID = await getUserId();
+      const foodDetails = await API.getUserDailyFoodIntake(userID);
+
+      const mealTypes = ["Breakfast", "Lunch", "Dinner"];
+      const meals = mealTypes.map((type, index) => {
+        const meal = foodDetails.find(m => m.mealType === type) || {
+          calories: 'No Data',
+          mealDesc: 'No Data',
+          carbs: 'No Data',
+          protein: 'No Data',
+          fat: 'No Data',
+        };
+
+        return {
+          id: index + 1,
+          mealIcon: type.toLowerCase(),
+          mealName: type,
+          calories: meal.calories,
+          mealDescription: meal.mealDesc,
+          nutrition: {
+            carbs: meal.carbs,
+            protein: meal.protein,
+            fat: meal.fat,
+          },
+        };
+      });
+
+      setMealData(meals);
+    };
+
+    fetchFoodDetails();
+  }, []);
 
   const toggleExpand = (id) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -29,92 +62,6 @@ const MealPage = async() => {
       [id]: !prevState[id]
     }));
   };
-
-  const dailyIntake = {
-    calories: 1391,
-    carbs: '150g',
-    protein: '60g',
-    fat: '50g'
-  };
-  const breakfastData = foodDetails.breakfast
-        ? {
-            id: 1,
-            mealIcon: 'breakfast',
-            mealName: 'Breakfast',
-            calories: foodDetails.breakfast.calories,
-            mealDescription: foodDetails.breakfast.mealDesc,
-            nutrition: {
-              carbs: foodDetails.breakfast.carbs,
-              protein: foodDetails.breakfast.protein,
-              fat: foodDetails.breakfast.fat,
-            },
-          }
-        : {
-            id: 1,
-            mealIcon: 'breakfast',
-            mealName: 'Breakfast',
-            calories: 'No Data',
-            mealDescription: 'No Data',
-            nutrition: {
-              carbs: 'No Data',
-              protein: 'No Data',
-              fat: 'No Data',
-            },
-          };
-
-      const lunchData = foodDetails.lunch
-        ? {
-            id: 2,
-            mealIcon: 'lunch',
-            mealName: 'Lunch',
-            calories: foodDetails.lunch.calories,
-            mealDescription: foodDetails.lunch.mealDesc,
-            nutrition: {
-              carbs: foodDetails.lunch.carbs,
-              protein: foodDetails.lunch.protein,
-              fat: foodDetails.lunch.fat,
-            },
-          }
-        : {
-            id: 2,
-            mealIcon: 'lunch',
-            mealName: 'Lunch',
-            calories: 'No Data',
-            mealDescription: 'No Data',
-            nutrition: {
-              carbs: 'No Data',
-              protein: 'No Data',
-              fat: 'No Data',
-            },
-          };
-
-      const dinnerData = foodDetails.dinner
-        ? {
-            id: 3,
-            mealIcon: 'dinner',
-            mealName: 'Dinner',
-            calories: foodDetails.dinner.calories,
-            mealDescription: foodDetails.dinner.mealDesc,
-            nutrition: {
-              carbs: foodDetails.dinner.carbs,
-              protein: foodDetails.dinner.protein,
-              fat: foodDetails.dinner.fat,
-            },
-          }
-        : {
-            id: 3,
-            mealIcon: 'dinner',
-            mealName: 'Dinner',
-            calories: 'No Data',
-            mealDescription: 'No Data',
-            nutrition: {
-              carbs: 'No Data',
-              protein: 'No Data',
-              fat: 'No Data',
-            },
-          };
-
-      setMealData([breakfastData, lunchData, dinnerData]);
     
 
 
