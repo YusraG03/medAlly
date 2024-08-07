@@ -222,7 +222,7 @@ class firebase
         try
         {
             const ref = this.db.collection('users').doc(userID).collection('medicalInfo').doc('medicalHistory');
-            await ref.update(userMedicalHistory);
+            await ref.update(userMedicalHistory);   
             return("Medical history modified successfully!");
         }
         catch(error)
@@ -594,6 +594,11 @@ class firebase
             });
             const ref = this.db.collection('users').doc(userID).collection('fitness').doc(date);
             const document = await ref.get();
+            console.log(document.data());
+            if(document.data() === undefined)
+            {
+                return "No step data recorded";
+            }
             return document.data();
         }
         catch(error)
