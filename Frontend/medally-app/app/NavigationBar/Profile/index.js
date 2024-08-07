@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import CheckBox from '@react-native-community/checkbox';
+import colors from '../../_assets/colors';
 
 const ProfileScreen = () => {
   const [isTermsVisible, setIsTermsVisible] = useState(false);
@@ -84,16 +85,9 @@ const ProfileScreen = () => {
                 {/* Continue the rest of the terms and conditions text */}
               </Text>
             </ScrollView>
-            <View style={styles.checkboxContainer}>
-              <CheckBox
-                value={isAgreed}
-                onValueChange={setIsAgreed}
-              />
-              <Text style={styles.checkboxLabel}>I agree to the Terms and Conditions</Text>
-            </View>
+          
             <TouchableOpacity
-              style={[styles.closeButton, { backgroundColor: isAgreed ? '#000' : '#cccccc' }]}
-              disabled={!isAgreed}
+              style={[styles.closeButton, { backgroundColor: colors.defaultblack }]}
               onPress={handleCloseTermsModal}
             >
               <Text style={styles.closeButtonText}>Close</Text>
