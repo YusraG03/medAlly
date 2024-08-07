@@ -410,11 +410,9 @@ class APIEndpoint
             console.error('Error chatting with GPT:', error);
         }
     }
-    async calculateCaloriesFromImage(file)
+    async calculateCaloriesFromImage(formData)
     {
         //kapav bsn debug ici depending on what is being sent nek apel moi lerla
-        const formData = new FormData();
-        formData.append('image', file);
         try 
         {
             const response = await fetch(`${this.url}/upload`, 
@@ -430,6 +428,18 @@ class APIEndpoint
             console.error('Error calculating calories:', error);
         }
     }
+    async calculateCaloriesFromImage(formData) {
+    try {
+        const response = await fetch(`${this.url}/upload`, {
+            method: 'POST',
+            body: formData,
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error calculating calories:', error);
+    }
+}
     async addUserDailyFoodIntake(foodIntake, userID)
     {
         try 
