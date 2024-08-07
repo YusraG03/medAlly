@@ -12,7 +12,24 @@ const ProfileScreen = () => {
   const [isTermsVisible, setIsTermsVisible] = useState(false);
   const [isMedicalRecordVisible, setIsMedicalRecordVisible] = useState(false);
   const [medicalHistory, setMedicalHistory] = useState([]);
+  const [userName, setUserName] = useState(''); // New state for user name
+  const [userEmail, setUserEmail] = useState(''); // New state for user email
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userID = await getuserID();
+        const response = await api.getUserBasicInfo(userID); // Assuming this API fetches user data
+        setUserName(response.name);
+        setUserEmail(response.email);
+      } catch (error) {
+        console.error('Failed to load user data.', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     const fetchMedicalHistory = async () => {
@@ -50,8 +67,8 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <View style={styles.profileHeader}>
         <Icon name="account-circle" size={80} color="#ccc" style={styles.profilePic} />
-        <Text style={styles.profileName}>Jane Doe</Text>
-        <Text style={styles.profileEmail}>janedoe@gmail.com</Text>
+        <Text style={styles.profileName}>{userName}</Text>
+        <Text style={styles.profileEmail}>{userEmail}</Text>
         <Button title="Edit Profile" onPress={() => router.push('./Profile/editprofile')} />
       </View>
       <View style={styles.menu}>

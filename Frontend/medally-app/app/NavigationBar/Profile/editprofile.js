@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 
+const EditProfileScreen = () => {
+  const router = useRouter();
 
-const EditProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputGroup}>
@@ -24,19 +26,19 @@ const EditProfileScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       <Text style={styles.medicalRecordTitle}>Medical Record</Text>
-      <TouchableOpacity style={styles.recordItem} onPress={() => navigation.navigate('GeneralInformation')}>
+      <TouchableOpacity style={styles.recordItem} onPress={() => router.push('../../account/sign-up/general-information')}>
         <Text style={styles.recordText}>General Information</Text>
         <Text style={styles.arrow}>›</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.recordItem} onPress={() => navigation.navigate('PhysicalHabits')}>
+      <TouchableOpacity style={styles.recordItem} onPress={() => router.push('../../account/sign-up/physical-habits')}>
         <Text style={styles.recordText}>Physical Habits</Text>
         <Text style={styles.arrow}>›</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.recordItem} onPress={() => navigation.navigate('MedicalHistoryOne')}>
+      <TouchableOpacity style={styles.recordItem} onPress={() => router.push('../../account/sign-up/medical-history-one')}>
         <Text style={styles.recordText}>Medical History</Text>
         <Text style={styles.arrow}>›</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.recordItem} onPress={() => navigation.navigate('NutritionHabits')}>
+      <TouchableOpacity style={styles.recordItem} onPress={() => router.push('../../account/sign-up/nutrition-habits')}>
         <Text style={styles.recordText}>Nutrition & Eating Habits</Text>
         <Text style={styles.arrow}>›</Text>
       </TouchableOpacity>
