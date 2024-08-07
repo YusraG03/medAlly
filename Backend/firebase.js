@@ -487,7 +487,7 @@ class firebase
         try {
             const ref = this.db.collection('users').doc(userID).collection('medications');
             const snapshot = await ref.get();
-            
+
             if (snapshot.empty) {
                 return 'No medications found.';
             }
@@ -495,7 +495,7 @@ class firebase
             const medications = [];
     
             snapshot.forEach(doc => {
-                medications.push(doc.data());
+                medications.push(doc.data());   
             });
     
             // Get the current time
@@ -514,6 +514,12 @@ class firebase
                 const bDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), bHours, bMinutes);
                 return aDateTime - bDateTime;
             });
+            if(nextMedications.length === 0)
+            {
+                return{
+                    isDone: true 
+                };
+            }
             // Return the next medication
             return nextMedications[0];
         } catch (error) {
