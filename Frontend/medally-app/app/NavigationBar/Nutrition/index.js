@@ -5,6 +5,9 @@ import textStyles from '../../_assets/textStyles';
 import { mealIcons } from '../../_assets/assets';
 import ProgressBar from '../../components/ProgressBar.js';
 import { router } from 'expo-router';
+import APIEndpoint from "../../API";
+import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
+const API = new APIEndpoint();  
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -13,8 +16,11 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const date = 'Today';
 
-const MealPage = () => {
+const MealPage = async() => {
+  const userID = await getUserId()
+  const foodDetails = await API.getUserDailyFoodIntake(userID)
   const [expandedMeals, setExpandedMeals] = useState({});
+  const [mealData, setMealData] = useState([]);
 
   const toggleExpand = (id) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -30,48 +36,88 @@ const MealPage = () => {
     protein: '60g',
     fat: '50g'
   };
+  const breakfastData = foodDetails.breakfast
+        ? {
+            id: 1,
+            mealIcon: 'breakfast',
+            mealName: 'Breakfast',
+            calories: foodDetails.breakfast.calories,
+            mealDescription: foodDetails.breakfast.mealDesc,
+            nutrition: {
+              carbs: foodDetails.breakfast.carbs,
+              protein: foodDetails.breakfast.protein,
+              fat: foodDetails.breakfast.fat,
+            },
+          }
+        : {
+            id: 1,
+            mealIcon: 'breakfast',
+            mealName: 'Breakfast',
+            calories: 'No Data',
+            mealDescription: 'No Data',
+            nutrition: {
+              carbs: 'No Data',
+              protein: 'No Data',
+              fat: 'No Data',
+            },
+          };
 
-  const mealData = [
-    {
-      id: 1,
-      mealIcon: 'breakfast',
-      mealName: 'Breakfast',
-      calories: '350 kcal',
-      mealDescription: 'Scrambled eggs with toast and avocado.',
-      nutrition: {
-        carbs: '30g',
-        protein: '20g',
-        fat: '15g',
-      },
-      analysis: 'A balanced meal to start your day with good carbs and protein.',
-    },
-    {
-      id: 2,
-      mealIcon: 'lunch',
-      mealName: 'Lunch',
-      calories: '500 kcal',
-      mealDescription: 'Grilled chicken salad with quinoa.',
-      nutrition: {
-        carbs: '40g',
-        protein: '35g',
-        fat: '20g',
-      },
-      analysis: 'A protein-rich lunch to keep you energized through the afternoon.',
-    },
-    {
-      id: 3,
-      mealIcon: 'dinner',
-      mealName: 'Dinner',
-      calories: '450 kcal',
-      mealDescription: 'Salmon with steamed vegetables and brown rice.',
-      nutrition: {
-        carbs: '50g',
-        protein: '30g',
-        fat: '25g',
-      },
-      analysis: 'A healthy dinner with omega-3 fatty acids and complex carbs.',
-    },
-  ];
+      const lunchData = foodDetails.lunch
+        ? {
+            id: 2,
+            mealIcon: 'lunch',
+            mealName: 'Lunch',
+            calories: foodDetails.lunch.calories,
+            mealDescription: foodDetails.lunch.mealDesc,
+            nutrition: {
+              carbs: foodDetails.lunch.carbs,
+              protein: foodDetails.lunch.protein,
+              fat: foodDetails.lunch.fat,
+            },
+          }
+        : {
+            id: 2,
+            mealIcon: 'lunch',
+            mealName: 'Lunch',
+            calories: 'No Data',
+            mealDescription: 'No Data',
+            nutrition: {
+              carbs: 'No Data',
+              protein: 'No Data',
+              fat: 'No Data',
+            },
+          };
+
+      const dinnerData = foodDetails.dinner
+        ? {
+            id: 3,
+            mealIcon: 'dinner',
+            mealName: 'Dinner',
+            calories: foodDetails.dinner.calories,
+            mealDescription: foodDetails.dinner.mealDesc,
+            nutrition: {
+              carbs: foodDetails.dinner.carbs,
+              protein: foodDetails.dinner.protein,
+              fat: foodDetails.dinner.fat,
+            },
+          }
+        : {
+            id: 3,
+            mealIcon: 'dinner',
+            mealName: 'Dinner',
+            calories: 'No Data',
+            mealDescription: 'No Data',
+            nutrition: {
+              carbs: 'No Data',
+              protein: 'No Data',
+              fat: 'No Data',
+            },
+          };
+
+      setMealData([breakfastData, lunchData, dinnerData]);
+    
+
+
 
   // Calculate progress for the progress bar
   const currentCalories = 1391;
