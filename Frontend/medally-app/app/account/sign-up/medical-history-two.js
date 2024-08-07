@@ -28,12 +28,12 @@ export default function MedicalHistoryTwo() {
 
   const onSubmit = async data => {
     if (isValid) {
-      const userMedicalHistory = {
+      const userInjuryDrugs = {
         conditionsInjuries: data.conditionsInjuries,
         drugAllergies: data.drugAllergies,
       };
       const userId = await getUserId(); 
-      const response = await API.addUserMedicalHistory(userMedicalHistory, userId);
+      const response = await API.addUserInjuryDrugs(userInjuryDrugs, userId);
       router.push('./nutrition-habits');
     }
   };
