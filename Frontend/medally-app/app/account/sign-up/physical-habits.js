@@ -228,25 +228,13 @@ export default function PhysicalHabits() {
           </View>
 
           <TouchableOpacity
-            onPress={handleSubmit(async (data) => {
-              if (isValid) {
-                const userMedicalHistory = {
-                  exerciseFrequency: exerciseFrequency,
-                  alcoholFrequency: alcoholFrequency,
-                  smokeFrequency: smokeFrequency,
-                  coffeeFrequency: coffeeFrequency,
-                  otherSubstances: otherSubstances,
-                  sleepProblems: sleepProblems,
-                  pregnancyStatus: pregnancyStatus,
-                };
-                const response = await API.addUserMedicalHistory(userMedicalHistory,'KcLR8zOoexJp8N2Qrvz2')
-                router.push('./medical-history-one');
-              }
-            })}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
+          onPress={handleSubmit(onSubmit)}
+          style={[styles.button, !isValid && styles.disabledButton]}
+          disabled={!isValid}
+        >
+          <Text style={[styles.buttonText, !isValid && styles.disabledButtonText]}>Submit</Text>
+        </TouchableOpacity>
+
         </View>
       </ScrollView>
     </View>
@@ -310,6 +298,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontFamily: "Inter-SemiBold",
     color: colors.errorred,
+  },
+  disabledButton: {
+    backgroundColor: "#cecece",
+    borderColor: "#cecece",
+  },
+  disabledButtonText: {
+    color: "#7d7d7d",
   },
   input: {
     height: 40,
