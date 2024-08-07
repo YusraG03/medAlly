@@ -642,6 +642,17 @@ class firebase
             return "An error occurred during retrieving first name.";
         }
     }
+    async getAllUserMedicalHistory(userID)
+    {
+        const userMedicalHistory = {
+            basicInfo: await this.getUserBasicInfo(userID),
+            medicalHistory: await this.getUserMedicalHistory(userID),
+            nutrition: await this.getUserNutrition(userID),
+            physicalHabbits: await this.getUserPhysicalHabbits(userID),
+            injuryDrugs: await this.getUserInjuryDrugs(userID)
+        };
+        return(userMedicalHistory);
+    }
 }
 
 export default firebase;
