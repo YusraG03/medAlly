@@ -6,7 +6,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import APIEndpoint from '../../API';
 import textStyles from '../../_assets/textStyles';
 import colors from '../../_assets/colors';
-import { storeUserId, getUserId, removeUserId } from '../userStorage';
+import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 import bellIcon from '../../_assets/bell.png';
 let userID = null;
