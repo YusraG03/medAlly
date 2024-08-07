@@ -179,8 +179,9 @@ app.post('/getUserInjuryDrugs', async (req, res) =>
 app.post('/chat', async(req, res) => 
 {
     const { chat } = req.body
+    const userID = req.body.userID
     const threadID = await db.getUserThreadID(req.body.userID);
-    const message = await openchat.getChatCompletion(chat,threadID);
+    const message = await openchat.getChatCompletion(chat,threadID, userID);
     res.json({ "message": message });
 });
 
@@ -245,6 +246,10 @@ app.post('/getStepData', async (req, res) => {
 });
 app.post('/getUserFirstName', async (req, res) => {
     const message = await db.getUserFirstName(req.body.userID);
+    res.json(message);
+});
+app.post('/getAllUserMedicalHistory', async (req, res) => { 
+    const message = await db.getAllUserMedicalHistory(req.body.userID);
     res.json(message);
 });
 app.listen(PORT, '0.0.0.0', () => {
