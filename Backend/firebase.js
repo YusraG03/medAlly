@@ -598,7 +598,6 @@ class firebase
             });
             const ref = this.db.collection('users').doc(userID).collection('fitness').doc(date);
             const document = await ref.get();
-            console.log(document.data());
             if(document.data() === undefined)
             {
                 return "No step data recorded";
@@ -617,7 +616,6 @@ class firebase
         {
             const ref = this.db.collection('users').doc(userID);
             const document = await ref.get();
-            console.log
             return document.data().firstName;
         }
         catch(error)
