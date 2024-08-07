@@ -651,5 +651,26 @@ class APIEndpoint
             console.error('Error getting step data:', error);
         }
     }
+    async getUserFirstName(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserFirstName`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting first name:', error);
+        }
+    }
 }
+
 export default APIEndpoint;   

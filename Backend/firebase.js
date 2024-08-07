@@ -611,6 +611,21 @@ class firebase
             return "An error occurred during retrieving step data.";
         }
     }
+    async getUserFirstName(userID)
+    {
+        try
+        {
+            const ref = this.db.collection('users').doc(userID);
+            const document = await ref.get();
+            console.log
+            return document.data().firstName;
+        }
+        catch(error)
+        {
+            console.error('Error retrieving first name:', error);
+            return "An error occurred during retrieving first name.";
+        }
+    }
 }
 
 export default firebase;
