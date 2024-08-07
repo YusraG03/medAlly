@@ -88,7 +88,7 @@ app.post('/modifyUserBasicInfo', async (req, res) =>
 {
     const message = await db.modifyUserBasicInfo(req.body.basicInfo, req.body.userID);
     res.json({"message": message});
-});
+}); 
 
 app.post('/addUserMedicalHistory', async (req, res) =>
 {
@@ -163,6 +163,18 @@ app.post('/getUserDailyFoodIntake', async (req, res) =>
 app.get('/getDailyArticles', async (req, res) =>
 {   
     const message = getArticles();
+    res.json(message);
+});
+
+app.post('/addUserInjuryDrugs', async (req, res) =>
+{
+    const message = await db.addUserInjuryDrugs(req.body.injuryDrugs, req.body.userID);
+    res.json({"message": message});
+});
+
+app.post('/getUserInjuryDrugs', async (req, res) =>
+{
+    const message = await db.getUserInjuryDrugs(req.body.userID);
     res.json(message);
 });
 
