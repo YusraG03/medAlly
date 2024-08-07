@@ -41,7 +41,7 @@ export default function DashboardScreen() {
     },
     {
       id: '4',
-      title: 'Fitness Alert',
+      title: 'Fitness Alert', 
       message: 'You did not complete all your steps today!',
       date: '2 Days Ago',
     },
@@ -62,7 +62,7 @@ export default function DashboardScreen() {
   
     const fetchUserBMI = async () => {
       try {
-        const response = await API.getUserBMI('1yqpFppDMfYgevo7isXH');
+        const response = await API.getUserBMI('KcLR8zOoexJp8N2Qrvz2');
         setBmi(response); // Adjust according to your API response structure
       } catch (error) {
         console.log('Error fetching BMI:', error);
@@ -72,7 +72,7 @@ export default function DashboardScreen() {
   
     const fetchStepData = async () => {
       try {
-        const stepData = await API.getStepData('1yqpFppDMfYgevo7isXH');
+        const stepData = await API.getStepData('KcLR8zOoexJp8N2Qrvz2');
         setStepCount(stepData.stepCount);
         // Optionally, set other state values if needed, e.g., progress, caloriesBurned, distanceTraveled
       } catch (error) {
@@ -102,8 +102,8 @@ export default function DashboardScreen() {
         caloriesBurned: caloriesBurned,
         distanceTraveled: distanceTraveled,
       };
-      API.addStepData(stepData, '1yqpFppDMfYgevo7isXH')
-        .then(response => console.log('Data sent to backend:', response))
+      API.addStepData(stepData, 'KcLR8zOoexJp8N2Qrvz2')
+        .then(response => console.log('Data sen t to backend:', response))
         .catch(error => console.error('Error sending data:', error));
     }, 300000); // 300000ms = 5 minutes
   
