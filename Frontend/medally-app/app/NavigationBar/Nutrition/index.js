@@ -115,7 +115,7 @@ const MealPage = async() => {
           };
 
       setMealData([breakfastData, lunchData, dinnerData]);
-    };
+    
 
 
 
@@ -226,7 +226,7 @@ const MealPage = async() => {
       </View>
     </ScrollView>
   );
-;
+};
 
 
 const styles = StyleSheet.create({
