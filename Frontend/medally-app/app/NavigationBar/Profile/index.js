@@ -1,13 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import MaterialIcons icons
 import colors from '../../_assets/colors';
+import APIEndpoint from '../../API';
+import getuserID from '../../account/userStorage.js';
+
+const api = new APIEndpoint();
 
 const ProfileScreen = () => {
   const [isTermsVisible, setIsTermsVisible] = useState(false);
   const [isMedicalRecordVisible, setIsMedicalRecordVisible] = useState(false);
-  const [isAgreed, setIsAgreed] = useState(false);
+  const [medicalHistory, setMedicalHistory] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchMedicalHistory = async () => {
+      try {
+        const userID = await getuserID();
+        const response = await api.getUserMedicalHistory(userID);
+        setMedicalHistory(response.medicalHistory || []); // Ensure response has `medicalHistory`
+      } catch (error) {
+        console.error('Failed to load medical history.', error);
+      }
+    };
+
+    if (isMedicalRecordVisible) {
+      fetchMedicalHistory();
+    }
+  }, [isMedicalRecordVisible]);
 
   const handleTermsPress = () => {
     setIsTermsVisible(true);
@@ -24,8 +45,6 @@ const ProfileScreen = () => {
   const handleCloseMedicalRecordModal = () => {
     setIsMedicalRecordVisible(false);
   };
-
-  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -84,7 +103,6 @@ const ProfileScreen = () => {
                 2.3 Users acknowledge that the AI's recommendations are based on the information provided by the user and existing medical records. Inaccurate or incomplete information may affect the AI's output.
               </Text>
             </ScrollView>
-          
             <TouchableOpacity
               style={[styles.closeButton, { backgroundColor: colors.defaultblack }]}
               onPress={handleCloseTermsModal}
@@ -107,8 +125,16 @@ const ProfileScreen = () => {
             <Text style={styles.modalHeader}>Medical Record</Text>
             <ScrollView style={styles.modalScrollView}>
               <Text style={styles.modalText}>
-                {/* User's medical record information will be displayed here */}
-                This is where the user's medical record information will be shown.
+                {medicalHistory.length > 0 ? (
+                  medicalHistory.map((item, index) => (
+                    <Text key={index} style={styles.modalText}>
+                      {item}
+                      {'\n'}
+                    </Text>
+                  ))
+                ) : (
+                  <Text>No medical history available.</Text>
+                )}
               </Text>
             </ScrollView>
             <TouchableOpacity
@@ -231,7 +257,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

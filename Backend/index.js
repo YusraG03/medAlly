@@ -150,12 +150,12 @@ app.get('/getDailyMedicalFact', async (req, res) =>
 });
 app.post('/addUserDailyFoodIntake', async (req, res) =>
 {
-    const message = await db.addUserDailyFoodIntake(req.body.dailyFoodIntake, req.body.userID);
+    const message = await db.addUserDailyFoodIntake(req.body.mealType, req.body.dailyFoodIntake, req.body.userID);
     res.json({"message": message});
 });
 app.post('/getUserDailyFoodIntake', async (req, res) =>
 {
-    const message = await db.getUserDailyFoodIntake(req.body.dateOfIntake, req.body.userID);
+    const message = await db.getUserDailyFoodIntake(req.body.userID);
     res.json(message);
 });
 app.get('/getDailyArticles', async (req, res) =>
