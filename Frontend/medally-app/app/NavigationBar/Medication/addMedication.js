@@ -92,7 +92,7 @@ export default function Addmedication() {
       setIsFromDateSelected(false);
       setIsToDateSelected(false);
       setIsTimeSelected(false);
-      router.replace();
+      router.back();
     } 
     catch (error) {
       console.error(error);
