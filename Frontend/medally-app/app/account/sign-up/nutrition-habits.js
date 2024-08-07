@@ -39,7 +39,7 @@ export default function NutritionHabits() {
         foodAllergies: data.foodAllergies,
         foodAvoidance: data.foodAvoidance
       };
-      const userId = getUserId(); 
+      const userId = await getUserId(); 
       const response = await API.addUserNutrition(userMedicalHistory, userId);
       router.push('./success');
     }

@@ -2,13 +2,11 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat, Bubble, Avatar, InputToolbar, Send } from 'react-native-gifted-chat';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
 import uuid from 'react-native-uuid';
-import OpenAI from 'openai';
 import Markdown from 'react-native-markdown-display';
 import textStyles from '../../_assets/textStyles';
-import { router, Link } from 'expo-router';
 import colors from '../../_assets/colors';
 import APIEndpoint from '../../API';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 
 
 // Import local images

@@ -3,13 +3,13 @@ import { Text, View, StyleSheet, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera } from 'expo-camera/legacy';
 import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system';
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../../components/CameraButton';
 import APIEndpoint from '../../API';
-import {router} from 'expo-router';
+import { router } from 'expo-router';
 
-
-const API = new APIEndpoint()
+const API = new APIEndpoint();
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -42,11 +42,27 @@ export default function App() {
     if (image) {
       try {
         const asset = await MediaLibrary.createAssetAsync(image);
+        const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
+
+        const formData = new FormData();
+        formData.append('image', {
+          uri: assetInfo.localUri || assetInfo.uri,
+          type: 'image/jpeg',
+          name: asset.filename,
+        });
+
+        const results = await API.calculateCaloriesFromImage(formData);
         alert('Picture saved! 🎉');
         setImage(null);
         console.log('saved successfully');
-        API.calculateCaloriesFromImage(asset);
-        router.push('./results')
+        console.log(results);
+
+        router.push({
+          pathname: './results',
+          params: {
+            ...results,
+          },
+        });
       } catch (error) {
         console.log(error);
       }
@@ -66,7 +82,6 @@ export default function App() {
           ref={cameraRef}
           flashMode={flash}
         >
-          
           <View
             style={{
               flexDirection: 'row',
@@ -85,7 +100,6 @@ export default function App() {
               icon="flash"
               color={flash === Camera.Constants.FlashMode.off ? 'gray' : '#fff'}
             />
-             
           </View>
         </Camera>
       ) : (
@@ -109,15 +123,13 @@ export default function App() {
             <Button title="Save" onPress={savePicture} icon="save" />
           </View>
         ) : (
-          <Button onPress={takePicture} icon2="circle"  />
+          <Button onPress={takePicture} icon2="circle" />
         )}
       </View>
-      
-    
-      
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -126,7 +138,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     padding: 1,
   },
-
   controls: {
     flex: 0.5,
   },
@@ -137,19 +148,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   text: {
     fontWeight: 'bold',
     fontSize: 16,
     color: '#E9730F',
     marginLeft: 10,
   },
-
   camera: {
     flex: 2.5,
     borderRadius: 20,
   },
-
   topControls: {
     flex: 1,
   },

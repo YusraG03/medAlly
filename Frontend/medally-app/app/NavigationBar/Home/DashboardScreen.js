@@ -13,6 +13,9 @@ import bellIcon from '../../_assets/bell.png';
 const API = new APIEndpoint();
 
 export default function DashboardScreen() {
+  const [articles, setArticles] = useState([]);
+  const [bmi, setBmi] = useState(null); // State for storing BMI
+  const [userID, setUserID] = useState(null); // State for storing userID
   const [stepCount, setStepCount] = useState(0);
   const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
   const [userGeneralInfo, setUserGeneralInfo] = useState({ height: 0, weight: 0 });
@@ -45,14 +48,14 @@ export default function DashboardScreen() {
       date: '2 Days Ago',
     },
   ]);
-  const [articles, setArticles] = useState([]);
-  const [bmi, setBmi] = useState(null); // State for storing BMI
-  const [userID, setUserID] = useState(null); // State for storing userID
+
 
   useEffect(() => {
     const initializeUserID = async () => {
-      const id = await getUserId();
-      setUserID(id);
+      const userID = await getUserId();
+      const firstName = await API.getUserFirstName(userID);
+      setUserName(firstName);
+      setUserID(userID);
     };
 
     initializeUserID();
@@ -84,15 +87,26 @@ export default function DashboardScreen() {
     const fetchUserNextMedication = async () => {
       try {
         const response = await API.getUserNextMedication(userID);
-        if (response && response.name && response.dosage && response.time) {
-          setMedicationInfo(response); // Adjust according to your API response structure
-        } else {
-          console.log('Unexpected response structure:', response);
-          setMedicationInfo({ name: 'Error', dosage: 'Error', time: new Date() });
+        const [hours, minutes] = response.time.split(':').map(Number);
+        const medicationTime = new Date();
+        medicationTime.setHours(hours, minutes, 0, 0); // Set hours and minutes
+    
+        const currentTime = new Date();
+        const timeDifference = Math.round((medicationTime - currentTime) / 60000); // Difference in minutes
+    
+        // Check if timeDifference is valid
+        if (isNaN(timeDifference) || timeDifference < 0) {
+          throw new Error('Invalid time difference');
         }
+    
+        setMedicationInfo({
+          name: response.medicationName,
+          dosage: response.dosage,
+          time: `in next ${timeDifference} minutes`,
+        }); // Adjust according to your API response structure    
       } catch (error) {
         console.log('Error fetching next medication:', error);
-        setMedicationInfo({ name: 'Error', dosage: 'Error', time: new Date() }); // Optionally set a default or error value
+        setMedicationInfo({ name: 'Error', dosage: 'Error', time: 'Error' }); // Optionally set a default or error value
       }
     };
 

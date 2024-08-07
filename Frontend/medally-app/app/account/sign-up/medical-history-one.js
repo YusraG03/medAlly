@@ -44,7 +44,7 @@ export default function MedicalHistoryOne() {
           injuries: injuries,
           surgeries: surgeries,
         };
-        const userId = getUserId(); 
+        const userId = await getUserId(); 
         const response = await API.addUserMedicalHistory(userMedicalHistory, userId);
         router.push('./medical-history-two');
       }
