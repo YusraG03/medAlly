@@ -13,13 +13,13 @@ export default function PhysicalHabits() {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const router = useRouter();
 
-  const [exerciseFrequency, setExerciseFrequency] = useState('');
-  const [alcoholFrequency, setAlcoholFrequency] = useState('');
-  const [smokeFrequency, setSmokeFrequency] = useState('');
-  const [coffeeFrequency, setCoffeeFrequency] = useState('');
+  const [exerciseFrequency, setExerciseFrequency] = useState('None (0 Times per week)');
+  const [alcoholFrequency, setAlcoholFrequency] = useState('None (0 Times per week)');
+  const [smokeFrequency, setSmokeFrequency] = useState('None (0 Times per week)');
+  const [coffeeFrequency, setCoffeeFrequency] = useState('None (0 Times per week)');
   const [otherSubstances, setOtherSubstances] = useState('');
-  const [sleepProblems, setSleepProblems] = useState('');
-  const [pregnancyStatus, setPregnancyStatus] = useState('');
+  const [sleepProblems, setSleepProblems] = useState('No');
+  const [pregnancyStatus, setPregnancyStatus] = useState('No');
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
@@ -40,6 +40,8 @@ export default function PhysicalHabits() {
 
   const onSubmit = async (data) => {
     if (isValid) {
+      console.log("Form is valid, submitting data...");
+      
       const userMedicalHistory = {
         exerciseFrequency: exerciseFrequency,
         alcoholFrequency: alcoholFrequency,
@@ -49,13 +51,28 @@ export default function PhysicalHabits() {
         sleepProblems: sleepProblems,
         pregnancyStatus: pregnancyStatus,
       };
-      const userId = await getUserId(); 
-      const response = await API.addUserPhysicalHabbits(userMedicalHistory, userId);
-      console.log("physical info")
-      console.log(userMedicalHistory)
-      router.push('./medical-history-one');
+      
+      try {
+        const userId = await getUserId(); 
+        console.log("User ID:", userId);
+        
+        if (userId) {
+          console.log(userMedicalHistory);
+          const sanitizedData = JSON.parse(JSON.stringify(userMedicalHistory));
+          const response = await API.addUserPhysicalHabbits(sanitizedData, userId);
+          console.log("API response:", response);
+          router.push('./medical-history-one');
+        } else {
+          console.error("User ID is null or undefined");
+        }
+      } catch (error) {
+        console.error("Error submitting data:", error);
+      }
+    } else {
+      console.log("Form is not valid");
     }
   };
+  
 
   return (
     <View style={styles.container}>
@@ -78,7 +95,7 @@ export default function PhysicalHabits() {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <Picker
-                  selectedValue={value}
+                  selectedValue={value ?? exerciseFrequency}
                   onValueChange={(itemValue) => {
                     setExerciseFrequency(itemValue);
                     onChange(itemValue);
@@ -101,7 +118,7 @@ export default function PhysicalHabits() {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <Picker
-                  selectedValue={value}
+                  selectedValue={value ?? alcoholFrequency}
                   onValueChange={(itemValue) => {
                     setAlcoholFrequency(itemValue);
                     onChange(itemValue);
@@ -124,7 +141,7 @@ export default function PhysicalHabits() {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <Picker
-                  selectedValue={value}
+                  selectedValue={value ?? smokeFrequency}
                   onValueChange={(itemValue) => {
                     setSmokeFrequency(itemValue);
                     onChange(itemValue);
@@ -148,7 +165,7 @@ export default function PhysicalHabits() {
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Picker
-                  selectedValue={value}
+                  selectedValue={value ?? coffeeFrequency}
                   onValueChange={(itemValue) => {
                     setCoffeeFrequency(itemValue);
                     onChange(itemValue);
@@ -179,7 +196,7 @@ export default function PhysicalHabits() {
                     setOtherSubstances(text);
                     onChange(text);
                   }}
-                  value={value}
+                  value={value ?? otherSubstances}
                 />
               )}
             />
@@ -193,7 +210,7 @@ export default function PhysicalHabits() {
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Picker
-                  selectedValue={value}
+                  selectedValue={value ?? sleepProblems}
                   onValueChange={(itemValue) => {
                     setSleepProblems(itemValue);
                     onChange(itemValue);
@@ -216,7 +233,7 @@ export default function PhysicalHabits() {
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Picker
-                  selectedValue={value}
+                  selectedValue={value ?? pregnancyStatus}
                   onValueChange={(itemValue) => {
                     setPregnancyStatus(itemValue);
                     onChange(itemValue);
@@ -243,6 +260,7 @@ export default function PhysicalHabits() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
