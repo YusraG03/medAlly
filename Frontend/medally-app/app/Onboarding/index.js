@@ -7,25 +7,25 @@ const slides = [
     key: '1',
     title: 'Get a diagnose for your symptoms',
     text: 'Welcome to MedAlly, an application that tracks your health and focuses on your wellbeing.',
-    image: require('../../_assets/a.png'),
+    image: require('../_assets/a.png'),
   },
   {
     key: '2',
     title: 'Keep track of your nutrition',
     text: 'With AI technology, simply take a picture of your meal and our app will keep track of the nutrients you take.',
-    image: require('../../_assets/Frame.png'),
+    image: require('../_assets/Frame.png'),
   },
   {
     key: '3',
     title: 'Get notified for medications',
     text: 'Welcome to MedAlly, an application that tracks your health and focuses on your wellbeing.',
-    image: require('../../_assets/ab.png'),
+    image: require('../_assets/ab.png'),
   },
   {
     key: '4',
     title: 'Safety Alert for meals',
     text: 'Welcome to MedAlly, an application that tracks your health and focuses on your wellbeing.',
-    image: require('../../_assets/ab.png'), 
+    image: require('../_assets/ab.png'), 
   },
 ];
 
