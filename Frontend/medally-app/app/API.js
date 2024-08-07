@@ -709,6 +709,28 @@ class APIEndpoint
             console.error('Error getting first name:', error);
         }
     }
+    async getUserInfo(userID) {    
+        try {
+            const response = await fetch(`${this.url}/getAllUserMedicalHistory`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+    
+            const data = await response.json();
+            return data;
+    
+        } catch (error) {
+            console.error('Error modifying physical habits:', error);
+            throw error; // Re-throw the error after logging
+        }
+    }
 }
 
 export default APIEndpoint;   
