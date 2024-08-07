@@ -76,6 +76,8 @@ export default function Addmedication() {
 
   const scheduleNotification = async () => {
     let triggerDate = new Date(time.getTime());
+
+    // Adjust triggerDate based on reminder
     if (reminder === '1 hour before') {
       triggerDate.setHours(triggerDate.getHours() - 1);
     } else if (reminder === '30 minutes before') {
@@ -83,21 +85,19 @@ export default function Addmedication() {
     } else if (reminder === '10 minutes before') {
       triggerDate.setMinutes(triggerDate.getMinutes() - 10);
     }
-    
+
+    // Convert to trigger date format
+    const trigger = {
+      date: triggerDate, // For Android, use the 'date' trigger
+    };
+
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Medication Reminder',
         body: `It's time to take your medication: ${medicationName}`,
         sound: 'default',
       },
-      trigger: {
-        year: triggerDate.getFullYear(),
-        month: triggerDate.getMonth() + 1,
-        day: triggerDate.getDate(),
-        hour: triggerDate.getHours(),
-        minute: triggerDate.getMinutes(),
-        second: 0,
-      },
+      trigger,
     });
   };
 
