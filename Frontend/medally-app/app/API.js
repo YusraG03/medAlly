@@ -488,11 +488,7 @@ class APIEndpoint
             console.error('Error storing food intake:', error);
         }
     }
-<<<<<<< HEAD
-    async getUserDailyFoodIntake(mealType, userID)
-=======
     async getUserDailyFoodIntake(userID, mealType)
->>>>>>> 3c4496168aeb9a7a1bba67426474f1f19babbe8f
     {
         try 
         {
