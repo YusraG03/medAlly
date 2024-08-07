@@ -87,12 +87,15 @@ export default function DashboardScreen() {
     const fetchUserNextMedication = async () => {
       try {
         const response = await API.getUserNextMedication(userID);
-        if (response && response.name && response.dosage && response.time) {
-          setMedicationInfo(response); // Adjust according to your API response structure
-        } else {
-          console.log('Unexpected response structure:', response);
-          setMedicationInfo({ name: 'Error', dosage: 'Error', time: new Date() });
-        }
+        const medicationTime = new Date(response.time);
+        const currentTime = new Date();
+        const timeDifference = Math.round((medicationTime - currentTime) / 60000); // Difference in minutes
+
+        setMedicationInfo({
+          name: response.medicationName,
+          dosage: response.dosage,
+          time : timeDifference,
+        }); // Adjust according to your API response structure    
       } catch (error) {
         console.log('Error fetching next medication:', error);
         setMedicationInfo({ name: 'Error', dosage: 'Error', time: new Date() }); // Optionally set a default or error value
