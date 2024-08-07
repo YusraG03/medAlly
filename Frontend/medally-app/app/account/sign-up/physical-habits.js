@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { ScrollView, StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -9,7 +9,7 @@ import APIEndpoint from '../../API';
 const API = new APIEndpoint();
 
 export default function PhysicalHabits() {
-  const { control, handleSubmit, formState: { errors, isValid } } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm();
   const router = useRouter();
 
   const [exerciseFrequency, setExerciseFrequency] = useState('');
@@ -19,11 +19,39 @@ export default function PhysicalHabits() {
   const [otherSubstances, setOtherSubstances] = useState('');
   const [sleepProblems, setSleepProblems] = useState('');
   const [pregnancyStatus, setPregnancyStatus] = useState('');
+  const [isValid, setIsValid] = useState(false);
 
- /**  const onSubmit = data => {
-    console.log(data);
-    router.push('./medical-history-one');
-  };**/
+  useEffect(() => {
+    validateForm();
+  }, [exerciseFrequency, alcoholFrequency, smokeFrequency, coffeeFrequency, otherSubstances, sleepProblems, pregnancyStatus]);
+
+  const validateForm = () => {
+    let valid = true;
+
+    if (!exerciseFrequency || !alcoholFrequency || !smokeFrequency || !coffeeFrequency || !sleepProblems || !pregnancyStatus) {
+      valid = false;
+    }
+
+    // Add more specific validations if needed
+
+    setIsValid(valid);
+  };
+
+  const onSubmit = async (data) => {
+    if (isValid) {
+      const userMedicalHistory = {
+        exerciseFrequency: exerciseFrequency,
+        alcoholFrequency: alcoholFrequency,
+        smokeFrequency: smokeFrequency,
+        coffeeFrequency: coffeeFrequency,
+        otherSubstances: otherSubstances,
+        sleepProblems: sleepProblems,
+        pregnancyStatus: pregnancyStatus,
+      };
+      const response = await API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
+      router.push('./medical-history-one');
+    }
+  };
 
   return (
     <View style={styles.container}>
