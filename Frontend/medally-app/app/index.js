@@ -61,12 +61,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    signup:{
-
-    },
-    login:{
-
-    },
     color: colors.defaultwhite,
     backgroundColor: colors.defaultblack,
     font: textStyles.containerActionText,
@@ -76,11 +70,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     fontSize: 18,
-    marginTop: '5%',
+    marginTop: '5%'
   },
   main:{
     bottom: -200,
-    alignItems : 'center'
+    alignItems : 'center',
+    zIndex : 1
   },
   header: {
     flexDirection: 'column',
