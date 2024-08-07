@@ -448,7 +448,7 @@ class APIEndpoint
             console.error('Error storing food intake:', error);
         }
     }
-    async getUserDailyFoodIntake(userID)
+    async getUserDailyFoodIntake(userID, mealType)
     {
         try 
         {
@@ -458,7 +458,7 @@ class APIEndpoint
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userID }),
+                body: JSON.stringify({ mealType, userID }),
             });
             const data = await response.json();
             return(data);
