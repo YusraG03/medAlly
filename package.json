@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@react-native-community/datetimepicker": "^8.2.0",
-    "expo-file-system": "^17.0.1"
+    "expo-file-system": "^17.0.1",
+    "react-native-google-fit": "^0.21.0"
   }
 }
