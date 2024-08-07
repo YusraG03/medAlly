@@ -356,12 +356,29 @@ class firebase
             return "An error occurred during retrieving chat consultations.";
         }
     }
-    async addUserDailyFoodIntake(dailyFoodIntake, userID) 
+    async addUserDailyFoodIntake(mealType, dailyFoodIntake, userID) 
     {
         try 
         {
-            const ref = this.db.collection('users').doc(userID).collection('nutrition').doc('food'); 
-            await ref.set(dailyFoodIntake);
+            var ref = null;
+            if(mealType === "breakfast")
+            {
+                ref = this.db.collection('users').doc(userID).collection('nutrition').doc('breakfast'); 
+            }
+            else if (mealType === "lunch")
+            {
+                ref = this.db.collection('users').doc(userID).collection('nutrition').doc('lunch');
+            }
+            else if (mealType === "dinner")
+            {
+                ref = this.db.collection('users').doc(userID).collection('nutrition').doc('dinner');
+            }
+            else if (mealType === "snacks")
+            {
+                ref = this.db.collection('users').doc(userID).collection('nutrition').doc('snacks');
+            }
+            await ref.set(dailyFoodIntake, { merge: true });
+            
             return "Daily food intake added successfully!";
         } 
         catch (error) 
