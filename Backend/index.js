@@ -179,8 +179,9 @@ app.post('/getUserInjuryDrugs', async (req, res) =>
 app.post('/chat', async(req, res) => 
 {
     const { chat } = req.body
+    const userID = req.body.userID
     const threadID = await db.getUserThreadID(req.body.userID);
-    const message = await openchat.getChatCompletion(chat,threadID);
+    const message = await openchat.getChatCompletion(chat,threadID, userID);
     res.json({ "message": message });
 });
 
