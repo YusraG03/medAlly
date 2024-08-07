@@ -4,6 +4,8 @@ import colors from '../../_assets/colors';
 import textStyles from '../../_assets/textStyles';
 import { useLocalSearchParams } from 'expo-router';
 import APIEndpoint from '../../API';
+import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export function ResultScreen() {
   const params = useLocalSearchParams();
@@ -31,7 +33,8 @@ export function ResultScreen() {
         ...data,
         treatments: formattedTreatments
       };
-      const response = await API.addUserDiagnosis(payload, 'KcLR8zOoexJp8N2Qrvz2');
+      const userID = await getUserId();
+      const response = await API.addUserDiagnosis(payload, userID);
 
       // Log the response to check if the object was successfully pushed
       console.log('Payload to API:', payload);
