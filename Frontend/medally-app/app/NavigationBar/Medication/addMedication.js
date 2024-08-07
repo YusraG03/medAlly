@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, FlatList, Pressable, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
-import { Link, useRouter } from 'expo-router';
+import { Link, router } from 'expo-router';
 import APIEndpoint from '../../API';
 import getuserID from '../../account/userStorage.js'
 
 //const getuser = new getuserID()
-const api= new APIEndpoint()
+const api = new APIEndpoint()
 
 export default function Addmedication() {
   const navigation = useNavigation();
-  const router = useRouter();
+  //const router = useRouter();
   const api = new APIEndpoint(); // Instantiate the APIEndpoint class
 
   const [medicationName, setName] = useState('');
@@ -80,7 +80,7 @@ export default function Addmedication() {
       const response = await api.addMedication(newMedication, 'KcLR8zOoexJp8N2Qrvz2');
       
       Alert.alert('Success', 'Medication added successfully');
-      // Optionally clear the input fields after successful submission
+      
       setName('');
       setDosage('');
       setFromDate(new Date());
@@ -91,7 +91,7 @@ export default function Addmedication() {
       setIsFromDateSelected(false);
       setIsToDateSelected(false);
       setIsTimeSelected(false);
-      router.replace();
+      router.back();
     } 
     catch (error) {
       console.error(error);
