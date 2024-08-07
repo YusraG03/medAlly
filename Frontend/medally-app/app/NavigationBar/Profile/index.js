@@ -19,7 +19,7 @@ const ProfileScreen = () => {
       try {
         const userID = await getuserID();
         const response = await api.getUserMedicalHistory(userID);
-        setMedicalHistory(response.medicalHistory || []); // Ensure response has `medicalHistory`
+        setMedicalHistory(response.medicalHistory || []);
       } catch (error) {
         console.error('Failed to load medical history.', error);
       }
@@ -49,7 +49,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
-        <Icon name="account-circle" size={80} color="#ccc" style={styles.profilePic} /> {/* Use MaterialIcons icon */}
+        <Icon name="account-circle" size={80} color="#ccc" style={styles.profilePic} />
         <Text style={styles.profileName}>Jane Doe</Text>
         <Text style={styles.profileEmail}>janedoe@gmail.com</Text>
         <Button title="Edit Profile" onPress={() => router.push('./Profile/editprofile')} />
@@ -124,18 +124,16 @@ const ProfileScreen = () => {
           <View style={styles.modalContent}>
             <Text style={styles.modalHeader}>Medical Record</Text>
             <ScrollView style={styles.modalScrollView}>
-              <Text style={styles.modalText}>
-                {medicalHistory.length > 0 ? (
-                  medicalHistory.map((item, index) => (
-                    <Text key={index} style={styles.modalText}>
-                      {item}
-                      {'\n'}
-                    </Text>
-                  ))
-                ) : (
-                  <Text>No medical history available.</Text>
-                )}
-              </Text>
+              {medicalHistory.length > 0 ? (
+                medicalHistory.map((item, index) => (
+                  <Text key={index} style={styles.modalText}>
+                    {item}
+                    {'\n'}
+                  </Text>
+                ))
+              ) : (
+                <Text>No medical history available.</Text>
+              )}
             </ScrollView>
             <TouchableOpacity
               style={styles.closeButton}
