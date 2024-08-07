@@ -51,6 +51,7 @@ export default function PhysicalHabits() {
       };
       const userId = await getUserId(); 
       const response = await API.addUserPhysicalHabbits(userMedicalHistory, userId);
+      console.log("physical info")
       console.log(userMedicalHistory)
       router.push('./medical-history-one');
     }
@@ -82,7 +83,7 @@ export default function PhysicalHabits() {
                     setExerciseFrequency(itemValue);
                     onChange(itemValue);
                   }}
-                  style={styles.input}
+                  style={styles.input.dropdown}
                 >
                   <Picker.Item label="None (0 Times per week)" value="None (0 Times per week)" />
                   <Picker.Item label="Slightly Active (1-2 Times per week)" value="Slightly Active (1-2 Times per week)" />
@@ -105,7 +106,7 @@ export default function PhysicalHabits() {
                     setAlcoholFrequency(itemValue);
                     onChange(itemValue);
                   }}
-                  style={styles.input}
+                  style={styles.input.dropdown}
                 >
                   <Picker.Item label="None (0 Times per week)" value="None (0 Times per week)" />
                   <Picker.Item label="Sometimes (1-2 Times per week)" value="Sometimes (1-2 Times per week)" />
@@ -128,7 +129,7 @@ export default function PhysicalHabits() {
                     setSmokeFrequency(itemValue);
                     onChange(itemValue);
                   }}
-                  style={styles.input}
+                  style={styles.input.dropdown}
                 >
                   <Picker.Item label="None (0 Times per week)" value="None (0 Times per week)" />
                   <Picker.Item label="Sometimes (1-2 Times per week)" value="Sometimes (1-2 Times per week)" />
@@ -152,7 +153,7 @@ export default function PhysicalHabits() {
                     setCoffeeFrequency(itemValue);
                     onChange(itemValue);
                   }}
-                  style={styles.input}
+                  style={styles.input.dropdown}
                 >
                   <Picker.Item label="None (0 Times per week)" value="None (0 Times per week)" />
                   <Picker.Item label="Sometimes (1-2 Times per week)" value="Sometimes (1-2 Times per week)" />
@@ -197,7 +198,7 @@ export default function PhysicalHabits() {
                     setSleepProblems(itemValue);
                     onChange(itemValue);
                   }}
-                  style={styles.input}
+                  style={styles.input.dropdown}
                 >
                   <Picker.Item label="Yes" value="Yes" />
                   <Picker.Item label="No" value="No" />
@@ -220,7 +221,7 @@ export default function PhysicalHabits() {
                     setPregnancyStatus(itemValue);
                     onChange(itemValue);
                   }}
-                  style={styles.input}
+                  style={styles.input.dropdown}
                 >
                   <Picker.Item label="Yes" value="Yes" />
                   <Picker.Item label="No" value="No" />
@@ -318,6 +319,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 15,
     marginBottom: 10,
+    dropdown:{
+      height: 'auto'
+    }
   },
   button: {
     borderRadius: 6,

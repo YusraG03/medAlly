@@ -46,6 +46,7 @@ export default function MedicalHistoryOne() {
         };
         const userId = await getUserId(); 
         const response = await API.addUserMedicalHistory(userMedicalHistory, userId);
+        console.log(response);
         router.push('./medical-history-two');
       }
     };
@@ -68,7 +69,7 @@ export default function MedicalHistoryOne() {
           <Picker
             selectedValue={bloodPressure}
             onValueChange={(itemValue) => setBloodPressure(itemValue)}
-            style={styles.input}
+            style={styles.input.dropdown}
           >
             <Picker.Item label="Select" value="" />
             <Picker.Item label="None" value="None" />
@@ -82,7 +83,7 @@ export default function MedicalHistoryOne() {
           <Picker
             selectedValue={cardiovascular}
             onValueChange={(itemValue) => setCardiovascular(itemValue)}
-            style={styles.input}
+            style={styles.input.dropdown}
           >
             <Picker.Item label="Select" value="" />
             <Picker.Item label="None" value="None" />
@@ -97,7 +98,7 @@ export default function MedicalHistoryOne() {
           <Picker
             selectedValue={cholesterol}
             onValueChange={(itemValue) => setCholesterol(itemValue)}
-            style={styles.input}
+            style={styles.input.dropdown}
           >
             <Picker.Item label="Select" value="" />
             <Picker.Item label="Yes" value="Yes" />
@@ -110,7 +111,7 @@ export default function MedicalHistoryOne() {
           <Picker
             selectedValue={diabetes}
             onValueChange={(itemValue) => setDiabetes(itemValue)}
-            style={styles.input}
+            style={styles.input.dropdown}
           >
             <Picker.Item label="Select" value="" />
             <Picker.Item label="Yes" value="Yes" />
@@ -151,8 +152,84 @@ export default function MedicalHistoryOne() {
 }
 
 const styles = StyleSheet.create({
-  // ... (keep existing styles)
+  container: {
+    paddingVertical: 30,
+    backgroundColor: colors.defaultwhite,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  screenTitle: {
+    alignSelf: "stretch",
+    fontSize: 24,
+    letterSpacing: -0.7,
+    lineHeight: 24,
+    fontWeight: "800",
+    fontFamily: "Inter-ExtraBold",
+    color: "#121419",
+    textAlign: "center",
+  },
+  contentText: {
+    alignSelf: "stretch",
+    fontSize: 14,
+    letterSpacing: -0.6,
+    lineHeight: 16,
+    fontFamily: "Inter-Regular",
+    color: "#4f4f4f",
+    textAlign: "center",
+  },
+  formHeader: {
+    alignSelf: "stretch",
+    fontSize: 14,
+    letterSpacing: -0.1,
+    lineHeight: 20,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: "#121419",
+    textAlign: "left",
+  },
+  form: {
+    flexDirection: 'column',
+    marginTop: '10%',
+    marginHorizontal: '5%',
+  },
+  formItem: {
+    full:{
+  width: '100%'
+    }
 
+  },
+  errorText: {
+    fontSize: 12,
+    letterSpacing: 0,
+    lineHeight: 12,
+    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
+    color: colors.errorred,
+  },
+  disabledButton: {
+    backgroundColor: "#cecece",
+    borderColor: "#cecece",
+  },
+  disabledButtonText: {
+    color: "#7d7d7d",
+  },
+  input: {
+    height: 40,
+    borderColor: '#dbdbdb',
+    fontSize: 16,
+    letterSpacing: -0.2,
+    lineHeight: 17,
+    fontFamily: "Inter-Regular",
+    color: "#7d7d7d",
+    textAlign: "left",
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingLeft: 15,
+    marginBottom: 10,
+    dropdown:{
+      height: 'auto'
+    }
+  },
   button: {
     borderRadius: 6,
     backgroundColor: "#121419",
@@ -167,32 +244,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
-  disabledButton: {
-    borderRadius: 6,
-    borderWidth: 0,
-    backgroundColor: "#cecece",
-    flex: 1,
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 20
-  },
   buttonText: {
     fontSize: 18,
     letterSpacing: 0,
     lineHeight: 18,
     fontWeight: "600",
     fontFamily: "Inter-SemiBold",
-    color: colors.defaultwhite
+    color: "#f7f7f7",
   },
-  disabledButtonText: {
-    fontSize: 18,
-    letterSpacing: 0,
-    lineHeight: 18,
-    fontWeight: "600",
-    fontFamily: "Inter-SemiBold",
-    color: colors.defaultblack
+  header: {
+    alignItems: 'center',
+  },
+  headertext: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+  },
+  logo: {
+    width: 72,
+    height: 50,
+    resizeMode: 'contain',
+    marginBottom: 20,
   },
 });
