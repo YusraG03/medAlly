@@ -40,34 +40,35 @@ export default function App() {
 
   const savePicture = async () => {
     if (image) {
-      try {
-        const asset = await MediaLibrary.createAssetAsync(image);
-        const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
+        try {
+            const asset = await MediaLibrary.createAssetAsync(image);
+            const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
 
-        const formData = new FormData();
-        formData.append('image', {
-          uri: assetInfo.localUri || assetInfo.uri,
-          type: 'image/jpeg',
-          name: asset.filename,
-        });
+            const formData = new FormData();
+            formData.append('image', {
+                uri: assetInfo.localUri || assetInfo.uri,
+                type: 'image/jpeg',
+                name: asset.filename,
+            });
+            console.log(formData)
 
-        const results = await API.calculateCaloriesFromImage(formData);
-        alert('Picture saved! 🎉');
-        setImage(null);
-        console.log('saved successfully');
-        console.log(results);
+            const results = await API.calculateCaloriesFromImage(formData); // Adjusted to pass formData
+            alert('Picture saved! 🎉');
+            setImage(null);
+            console.log('saved successfully');
+            console.log(results);
 
-        router.push({
-          pathname: './results',
-          params: {
-            ...results,
-          },
-        });
-      } catch (error) {
-        console.log(error);
-      }
+            router.push({
+                pathname: './results',
+                params: {
+                    ...results,
+                },
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
-  };
+};
 
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
