@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -9,7 +9,28 @@ import { storeUserId, getUserId, removeUserId } from '../userStorage';
 const API = new APIEndpoint();
 
 export default function NutritionHabits() {
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, setValue, formState: { errors } } = useForm();
+  const [isValid, setIsValid] = useState(false);
+  
+  // Initial setting of values
+  const [dietaryPreference, setDietaryPreference] = useState('');
+  const [foodAllergies, setFoodAllergies] = useState('');
+  const [foodAvoidance, setFoodAvoidance] = useState('');
+
+  useEffect(() => {
+    validateForm();
+  }, [dietaryPreference, foodAllergies, foodAvoidance]);
+
+  const validateForm = () => {
+    let valid = true;
+
+    if (!dietaryPreference || !foodAllergies || !foodAvoidance) {
+      valid = false;
+    }
+
+    setIsValid(valid);
+  };
+
   const onSubmit = async data => {
     if (isValid) {
       const userMedicalHistory = {
@@ -17,8 +38,9 @@ export default function NutritionHabits() {
         foodAllergies: data.foodAllergies,
         foodAvoidance: data.foodAvoidance
       };
-      const response = await API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
-      //navigation.navigate('NutritionHabits'); geter KOT TO ENAN PU ALER DEPI ICI
+      const userId = getUserId(); 
+      const response = await API.addUserNutrition(userMedicalHistory, userId);
+      router.push('./success');
     }
   };
 
@@ -44,7 +66,10 @@ export default function NutritionHabits() {
             render={({ field: { onChange, value } }) => (
               <Picker
                 selectedValue={value}
-                onValueChange={onChange}
+                onValueChange={(itemValue) => {
+                  setDietaryPreference(itemValue);
+                  onChange(itemValue);
+                }}
                 style={styles.input}
               >
                 <Picker.Item label="Non Veg" value="Non Veg" />
@@ -66,7 +91,10 @@ export default function NutritionHabits() {
                 style={styles.input}
                 placeholder="Type.."
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={(text) => {
+                  setFoodAllergies(text);
+                  onChange(text);
+                }}
                 value={value}
               />
             )}
@@ -83,15 +111,22 @@ export default function NutritionHabits() {
                 style={styles.input}
                 placeholder="Type.."
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={(text) => {
+                  setFoodAvoidance(text);
+                  onChange(text);
+                }}
                 value={value}
               />
             )}
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonText}>Submit</Text>
+        <TouchableOpacity 
+          style={[styles.button, !isValid && styles.disabledButton]} 
+          onPress={handleSubmit(onSubmit)} 
+          disabled={!isValid}
+        >
+          <Text style={[styles.buttonText, !isValid && styles.disabledButtonText]}>Submit</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -137,15 +172,16 @@ const styles = StyleSheet.create({
   form: {
     flexDirection: 'column',
     marginTop: '10%',
-    marginHorizontal: '5%',
-    gap: '5%'
+    marginHorizontal: '5%'
   },
   formItem: {
     full: {
-      width: '100%'
+      width: '100%',
+      marginBottom: 15,
     },
     half: {
-      width: '49%'
+      width: '49%',
+      marginBottom: 15,
     }
   },
   errorText: {
@@ -184,6 +220,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20
   },
+  disabledButton: {
+    backgroundColor: "#cecece",
+    borderColor: "#cecece",
+  },
+  disabledButtonText: {
+    color: "#7d7d7d",
+  },
   buttonText: {
     fontSize: 18,
     letterSpacing: 0,
@@ -194,12 +237,12 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    gap: 0
+    marginBottom: 20,
   },
   headertext: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6
+    marginBottom: 6,
   },
   logo: {
     width: 72,

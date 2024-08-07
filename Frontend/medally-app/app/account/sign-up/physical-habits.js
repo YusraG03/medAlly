@@ -49,7 +49,7 @@ export default function PhysicalHabits() {
         sleepProblems: sleepProblems,
         pregnancyStatus: pregnancyStatus,
       };
-      const response = await API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2')
+      const response = await API.addUserMedicalHistory(userMedicalHistory, 'KcLR8zOoexJp8N2Qrvz2');
       router.push('./medical-history-one');
     }
   };
@@ -229,13 +229,12 @@ export default function PhysicalHabits() {
           </View>
 
           <TouchableOpacity
-          onPress={handleSubmit(onSubmit)}
-          style={[styles.button, !isValid && styles.disabledButton]}
-          disabled={!isValid}
-        >
-          <Text style={[styles.buttonText, !isValid && styles.disabledButtonText]}>Submit</Text>
-        </TouchableOpacity>
-
+            onPress={handleSubmit(onSubmit)}
+            style={[styles.button, !isValid && styles.disabledButton]}
+            disabled={!isValid}
+          >
+            <Text style={[styles.buttonText, !isValid && styles.disabledButtonText]}>Submit</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -282,15 +281,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: '10%',
     marginHorizontal: '5%',
-    gap: '1%',
   },
   formItem: {
-    full: {
-      width: '100%',
-    },
-    half: {
-      width: '49%',
-    },
+    full:{
+  width: '100%'
+    }
+
   },
   errorText: {
     fontSize: 12,
@@ -345,12 +341,11 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    gap: 0,
   },
   headertext: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    marginBottom: 6,
   },
   logo: {
     width: 72,
