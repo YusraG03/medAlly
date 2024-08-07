@@ -490,11 +490,11 @@ class firebase
         try {
             const ref = this.db.collection('users').doc(userID).collection('medications');
             const snapshot = await ref.get();
-        
+            
             if (snapshot.empty) {
                 return 'No medications found.';
             }
-        
+    
             const medications = [];
     
             snapshot.forEach(doc => {
@@ -503,16 +503,20 @@ class firebase
     
             // Get the current time
             const now = new Date();
-    
-            // Filter and sort medications by time
+
             const nextMedications = medications
-                .filter(med => new Date(med.time) > now)
-                .sort((a, b) => new Date(a.time) - new Date(b.time));
-    
-            if (nextMedications.length === 0) {
-                return 'No upcoming medications found.';
-            }
-    
+            .filter(med => {
+                const [hours, minutes] = med.time.split(':').map(Number);
+                const medDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+                return medDateTime > now;
+            })
+            .sort((a, b) => {
+                const [aHours, aMinutes] = a.time.split(':').map(Number);
+                const [bHours, bMinutes] = b.time.split(':').map(Number);
+                const aDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), aHours, aMinutes);
+                const bDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), bHours, bMinutes);
+                return aDateTime - bDateTime;
+            });
             // Return the next medication
             return nextMedications[0];
         } catch (error) {
