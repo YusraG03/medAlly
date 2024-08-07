@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     borderColor: "#cecece",
   },
   disabledButtonText: {
-    color: "#7d7d7d",
+    color: colors.defaultblack
   },
   errorText: {
     color: 'red',
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: colors.white,
+    color: colors.defaultwhite,
     fontWeight: 'bold',
   },
 });

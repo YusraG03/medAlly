@@ -5,17 +5,21 @@ import { Camera } from 'expo-camera/legacy';
 import * as MediaLibrary from 'expo-media-library';
 import Button from '../../components/CameraButton';
 import APIEndpoint from '../../API';
-import { router } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+
 
 const API = new APIEndpoint();
 
-export default function App() {
+export default function CameraPage() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.on);
   const [focus, setFocus] = useState(null);
   const cameraRef = useRef(null);
+  
+  const router = useRouter();
+  const { mealName } = useLocalSearchParams();
 
   useEffect(() => {
     (async () => {
@@ -24,7 +28,7 @@ export default function App() {
       setHasCameraPermission(cameraStatus.status === 'granted');
     })();
   }, []);
-
+console.log(mealName)
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
@@ -62,12 +66,12 @@ export default function App() {
         setImage(null);
         console.log('saved successfully');
 
-
         router.push({
           pathname: './results',
           params: {
             ...results.message,
             image,
+            mealName,
           },
         });
       } catch (error) {
@@ -149,6 +153,7 @@ export default function App() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

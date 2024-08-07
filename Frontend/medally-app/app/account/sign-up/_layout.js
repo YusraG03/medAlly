@@ -9,6 +9,7 @@ export default function Layout() {
       <Stack.Screen name="medical-history-one" options={{ title: 'Medical (1/2)' }} />
       <Stack.Screen name="medical-history-two" options={{ title: 'Medical (2/2)' }} />
       <Stack.Screen name="nutrition-habits" options={{ title: 'Nutrition Habits' }} />
+      <Stack.Screen name="onboarding" options={{ title: 'Onboarding' }} />
     </Stack>
   );
 }
