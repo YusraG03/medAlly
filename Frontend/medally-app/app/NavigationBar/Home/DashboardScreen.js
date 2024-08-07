@@ -9,11 +9,7 @@ import colors from '../../_assets/colors';
 import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 import bellIcon from '../../_assets/bell.png';
-let userID = null;
-const syncID = async () =>{
-  userID = await getUserId();
-}
-syncID();
+
 const API = new APIEndpoint();
 
 export default function DashboardScreen() {
@@ -44,15 +40,27 @@ export default function DashboardScreen() {
     },
     {
       id: '4',
-      title: 'Fitness Alert', 
+      title: 'Fitness Alert',
       message: 'You did not complete all your steps today!',
       date: '2 Days Ago',
     },
   ]);
   const [articles, setArticles] = useState([]);
   const [bmi, setBmi] = useState(null); // State for storing BMI
+  const [userID, setUserID] = useState(null); // State for storing userID
 
   useEffect(() => {
+    const initializeUserID = async () => {
+      const id = await getUserId();
+      setUserID(id);
+    };
+
+    initializeUserID();
+  }, []);
+
+  useEffect(() => {
+    if (!userID) return; // Ensure userID is set before making API calls
+
     const fetchArticles = async () => {
       try {
         const fetchedArticles = await API.getArticles();
@@ -62,7 +70,7 @@ export default function DashboardScreen() {
         setArticles([]);
       }
     };
-  
+
     const fetchUserBMI = async () => {
       try {
         const response = await API.getUserBMI(userID);
@@ -72,41 +80,47 @@ export default function DashboardScreen() {
         setBmi('Error'); // Optionally set a default or error value
       }
     };
+
     const fetchUserNextMedication = async () => {
       try {
         const response = await API.getUserNextMedication(userID);
-        setMedicationInfo(response); // Adjust according to your API response structure
+        if (response && response.name && response.dosage && response.time) {
+          setMedicationInfo(response); // Adjust according to your API response structure
+        } else {
+          console.log('Unexpected response structure:', response);
+          setMedicationInfo({ name: 'Error', dosage: 'Error', time: new Date() });
+        }
       } catch (error) {
         console.log('Error fetching next medication:', error);
         setMedicationInfo({ name: 'Error', dosage: 'Error', time: new Date() }); // Optionally set a default or error value
       }
-    }
+    };
 
     const fetchStepData = async () => {
       try {
         const stepData = await API.getStepData(userID);
-        if(stepData !== "No step data recorded")
-        {
+        if (stepData && stepData.stepCount !== undefined) {
           setStepCount(stepData.stepCount);
+        } else {
+          console.log('Unexpected step data structure:', stepData);
         }
-        // Optionally, set other state values if needed, e.g., progress, caloriesBurned, distanceTraveled
       } catch (error) {
         console.error('Error fetching step data:', error);
       }
     };
-    
+
     fetchUserNextMedication();
     fetchArticles();
     fetchUserBMI();
     fetchStepData();
-    Pedometer.getPermissionsAsync()
+    Pedometer.getPermissionsAsync();
     Pedometer.isAvailableAsync().then(
       result => setIsPedometerAvailable(String(result)),
       error => setIsPedometerAvailable('Could not get isPedometerAvailable: ' + error)
     );
-  
+
     const subscription = Pedometer.watchStepCount(result => setStepCount(result.steps));
-  
+
     const interval = setInterval(() => {
       const stepsGoal = 10000;
       const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
@@ -121,17 +135,18 @@ export default function DashboardScreen() {
       API.addStepData(stepData, userID)
         .then(response => console.log('Data sent to backend:', response))
         .catch(error => console.error('Error sending data:', error));
-    }, 60000); // 60000ms = 1 minutes
-  
+    }, 60000); // 60000ms = 1 minute
+
     return () => {
       subscription && subscription.remove();
       clearInterval(interval);
     };
-  }, [stepCount]);
+  }, [userID, stepCount]);
 
   const timeDifferenceInMinutes = Math.round((medicationInfo.time - new Date()) / 60000);
   const stepsGoal = 10000;
   const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
+
 
   const getTintColor = (progress) => {
     if (progress < 33) {
