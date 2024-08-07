@@ -1,103 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Added useEffect import
 import { Text, StyleSheet, View, Image, ScrollView, TouchableOpacity, LayoutAnimation, UIManager, Platform } from 'react-native';
 import colors from '../../_assets/colors.js';
 import textStyles from '../../_assets/textStyles.js';
+import APIEndpoint from '../../API';
+import { storeUserId, getUserId, removeUserId } from '../userStorage';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const data = [
-  {
-    id: 1,
-    diseaseName: "Common Cold",
-    timeStamp: "21 July 2024, 8:35pm",
-    description: "According to your recent lack of vitamin C in your nutrition, a common cold is a highly accurate guess. Symptoms such as body aches, blocked nose, sneezing, and a general discomfort in the nasal area can also happen.",
-    treatments: [
-      {
-        title: "Pain Relievers",
-        description: "Reduce fever, headaches, and body aches. Common options are ibuprofen and acetaminophen."
-      },
-      {
-        title: "Hydration",
-        description: "Drink plenty of fluids such as water, herbal tea, and broth to stay hydrated and help thin mucus."
-      },
-      {
-        title: "Vitamin C",
-        description: "May slightly reduce the duration and severity of colds. Found in citrus fruits and supplements."
-      },
-      {
-        title: "Avoid Close Contact",
-        description: "Stay away from individuals who are sick to prevent catching the virus yourself or infecting others."
-      }
-    ]
-  },
-  {
-    id: 2,
-    diseaseName: "Flu",
-    timeStamp: "15 July 2024, 7:20pm",
-    description: "Flu symptoms can include fever, chills, muscle aches, cough, congestion, runny nose, headaches, and fatigue.",
-    treatments: [
-      {
-        title: "Antiviral Drugs",
-        description: "These medications can lessen symptoms and shorten the time you are sick by 1 or 2 days."
-      },
-      {
-        title: "Rest",
-        description: "Get plenty of sleep and rest to help your body fight the infection."
-      },
-      {
-        title: "Hydration",
-        description: "Drink plenty of fluids like water, broth, and electrolyte solutions to stay hydrated."
-      }
-    ]
-  },
-  {
-    id: 3,
-    diseaseName: "Stomach Flu",
-    timeStamp: "10 July 2024, 6:45pm",
-    description: "Stomach flu (gastroenteritis) involves inflammation of the stomach and intestines, causing diarrhea, vomiting, stomach cramps, and nausea.",
-    treatments: [
-      {
-        title: "Oral Rehydration Solutions",
-        description: "Replenish lost fluids and electrolytes to prevent dehydration."
-      },
-      {
-        title: "Rest",
-        description: "Get plenty of rest to help your body recover."
-      },
-      {
-        title: "Avoid Solid Foods",
-        description: "Stick to clear fluids until vomiting subsides, then gradually reintroduce bland foods."
-      }
-    ]
-  },
-  {
-    id: 4,
-    diseaseName: "Migraine",
-    timeStamp: "18 July 2024, 9:00pm",
-    description: "Migraines are severe headaches often accompanied by nausea, vomiting, and sensitivity to light and sound.",
-    treatments: [
-      {
-        title: "Pain Relievers",
-        description: "Over-the-counter medications like ibuprofen or aspirin can relieve migraine pain."
-      },
-      {
-        title: "Rest in a Dark Room",
-        description: "Find a quiet, dark room to reduce migraine symptoms."
-      },
-      {
-        title: "Hydration",
-        description: "Drink water to stay hydrated and help reduce migraine frequency."
-      }
-    ]
-  }
-];
+const api = new APIEndpoint();
+const getUserId = new getuserID(); // Make sure to use the correct method to get user ID
 
 
 export function HistoryScreen() {
   const [expandedCards, setExpandedCards] = useState({});
+  const [userID, setUserID] = useState(null); // State to hold the userID
+  const [articles, setArticles] = useState([]); // State to hold articles
 
   const toggleExpand = (id) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -107,50 +27,75 @@ export function HistoryScreen() {
     }));
   };
 
+  useEffect(() => {
+    const initializeUserID = async () => {
+      const id = await getUserId(); 
+      setUserID(id);
+    };
+
+    initializeUserID();
+  }, []);
+
+  useEffect(() => {
+    if (!userID) return; 
+
+    const getUserDiagnosis = async () => {
+      try {
+        const getDiagnosis = await api.getUserDiagnosis(); 
+        getDiagnosis(getDiagnosis || []);
+      } catch (error) {
+        console.error('Error getting diagnosis:', error);
+        getUserDiagnosis([]); 
+      }
+    };
+
+    getUserDiagnosis(); // Call the function to fetch user diagnosis
+  }, [userID]);
+
   return (
     <View style={styles.container}>
       <Text style={textStyles.screenTitle}>Disease History</Text>
-      <ScrollView style = {styles.cards}>
-      {data.map((item) => (
-        <View key={item.id} style={styles.Card}>
-          <TouchableOpacity onPress={() => toggleExpand(item.id)} style={[styles.upperInfo, styles.upperInfoFlexBox]}>
-            <View style={styles.diseaseTime}>
-              <Text style={styles.diseaseName}>{item.diseaseName}</Text>
-              <Text style={styles.timeStamp}>{item.timeStamp}</Text>
-            </View>
-            <Image
-              style={styles.chevronDownIcon}
-              resizeMode="cover"
-              source={expandedCards[item.id] ? require('../../_assets/chevron-up.png') : require('../../_assets/chevron-down.png')}
-            />
-          </TouchableOpacity>
-          
-          {expandedCards[item.id] && (
-            <View style={styles.expandedInformation}>
-              <View style={styles.section}>
-                <Text style={textStyles.smallParagraphTitle}>Description</Text>
-                <Text style={[styles.descriptionText, styles.treatmentTitleTypo]}>
-                  {item.description}
-                </Text>
+      <ScrollView style={styles.cards}>
+        {data.map((item) => (
+          <View key={item.id} style={styles.Card}>
+            <TouchableOpacity onPress={() => toggleExpand(item.id)} style={[styles.upperInfo, styles.upperInfoFlexBox]}>
+              <View style={styles.diseaseTime}>
+                <Text style={styles.diseaseName}>{item.diseaseName}</Text>
+                <Text style={styles.timeStamp}>{item.timeStamp}</Text>
               </View>
-              
-              <View style={styles.section}>
-                <Text style={textStyles.smallParagraphTitle}>Treatments</Text>
-                <ScrollView horizontal={true} style={styles.treatmentCarousel} showsHorizontalScrollIndicator={false}>
-                  {item.treatments.map((treatment, index) => (
-                    <View key={index} style={styles.treatmentCard}>
-                      <Text style={[styles.treatmentTitle, styles.treatmentTitleTypo]}>{treatment.title}</Text>
-                      <Text style={[styles.treatmentDesc, styles.treatmentsTypo]}>
-                        {treatment.description}
-                      </Text>
-                    </View>
-                  ))}
-                </ScrollView>
+              <Image
+                style={styles.chevronDownIcon}
+                resizeMode="cover"
+                source={expandedCards[item.id] ? require('../../_assets/chevron-up.png') : require('../../_assets/chevron-down.png')}
+              />
+            </TouchableOpacity>
+            
+            {expandedCards[item.id] && (
+              <View style={styles.expandedInformation}>
+                <View style={styles.section}>
+                  <Text style={textStyles.smallParagraphTitle}>Description</Text>
+                  <Text style={[styles.descriptionText, styles.treatmentTitleTypo]}>
+                    {item.description}
+                  </Text>
+                </View>
+                
+                <View style={styles.section}>
+                  <Text style={textStyles.smallParagraphTitle}>Treatments</Text>
+                  <ScrollView horizontal={true} style={styles.treatmentCarousel} showsHorizontalScrollIndicator={false}>
+                    {item.treatments.map((treatment, index) => (
+                      <View key={index} style={styles.treatmentCard}>
+                        <Text style={[styles.treatmentTitle, styles.treatmentTitleTypo]}>{treatment.title}</Text>
+                        <Text style={[styles.treatmentDesc, styles.treatmentsTypo]}>
+                          {treatment.description}
+                        </Text>
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
               </View>
-            </View>
-          )}
-        </View>
-      ))}
+            )}
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
@@ -309,6 +254,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
 
 export default HistoryScreen;
