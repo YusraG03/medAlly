@@ -535,7 +535,7 @@ class firebase
                     isDone: true 
                 };
             }
-            // Return the next medication
+            // Return the next medication /
             return nextMedications[0];
         } catch (error) {
             console.error('Error getting next medication:', error);
