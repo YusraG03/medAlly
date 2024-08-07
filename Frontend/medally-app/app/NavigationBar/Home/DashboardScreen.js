@@ -53,6 +53,8 @@ export default function DashboardScreen() {
   useEffect(() => {
     const initializeUserID = async () => {
       const userID = await getUserId();
+      const firstName = await API.getUserFirstName(userID);
+      setUserName(firstName);
       setUserID(userID);
     };
 
