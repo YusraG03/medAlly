@@ -45,14 +45,12 @@ export default function App() {
       const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
 
       // Ensure the file extension is .jpg
-      const fileName = asset.filename.toLowerCase().endsWith('.jpg')
-        ? asset.filename
-        : asset.filename.replace(/\.JPG$/, '.jpg');
+      const fileName = asset.filename.replace(/\.[^/.]+$/, ".jpg");
 
       const formData = new FormData();
       formData.append('image', {
         uri: assetInfo.localUri || assetInfo.uri,
-        type: 'image/jpeg',
+        type: 'image/jpg',
         name: fileName,
       });
 
@@ -61,6 +59,9 @@ export default function App() {
       const results = await API.calculateCaloriesFromImage(formData); // Adjusted to pass formData
       alert('Picture saved! 🎉');
       setImage(null);
+      if (results = null) {
+        console.log('killing myself tonight')
+      }
       console.log('saved successfully');
       console.log(results);
 

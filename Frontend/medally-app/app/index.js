@@ -36,15 +36,18 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <View style = {styles.main}>
       <Image 
       source={require('./_assets/logo.png')} style={styles.logo}/>
       <View style={styles.header}>
         <Text style={textStyles.screenTitle}>Medally</Text>
         <Text style={textStyles.contentText}>A health app by GMC</Text>
       </View>
-      <Link style={styles.button} href="./NavigationBar">Enter</Link>
       <Link style={styles.button} href="./account/sign-up">Sign Up</Link>
       <Link style={styles.button} href="./account/login/">Log In</Link>
+      </View>
+      <Image 
+      source={require('./_assets/main_page_splash.png')} style={styles.splash} resizeMode="contain"/>
       <StatusBar style="auto" />
     </View>
   );
@@ -74,6 +77,9 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
     gap: 6,    
+  },
+  splash:{
+    width : '100%'
   },
   logo: {
     width: 100, // Adjust as needed
