@@ -128,9 +128,7 @@ app.post('/modifyUserNutrition', async (req, res) =>
 
 app.post('/addUserPhysicalHabits', async (req, res) =>
 {
-    const message = await db.addUserPhysicalHabbits(req.body.physicalHabbits, req.body.userID);
-    console.log("Physical Habits");
-    console.log(req.body);
+    const message = await db.addUserPhysicalHabbits(req.body.physicalHabits, req.body.userID);
     res.json({"message": message});
 });
 
