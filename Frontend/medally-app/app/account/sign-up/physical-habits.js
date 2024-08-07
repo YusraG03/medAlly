@@ -51,6 +51,7 @@ export default function PhysicalHabits() {
       };
       const userId = await getUserId(); 
       const response = await API.addUserPhysicalHabbits(userMedicalHistory, userId);
+      console.log(userMedicalHistory)
       router.push('./medical-history-one');
     }
   };

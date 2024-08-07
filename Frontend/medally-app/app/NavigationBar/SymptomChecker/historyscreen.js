@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, Image, ScrollView, TouchableOpacity, LayoutAnim
 import colors from '../../_assets/colors.js';
 import textStyles from '../../_assets/textStyles.js';
 import APIEndpoint from '../../API';
-import { storeUserId, getUserId, removeUserId } from '../userStorage';
+import { storeUserId, getUserId, removeUserId } from '../../account/userStorage.js';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -11,7 +11,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 const api = new APIEndpoint();
-const getUserId = new getuserid(); // Make sure to use the correct method to get user ID
+
 
 
 export function HistoryScreen() {
