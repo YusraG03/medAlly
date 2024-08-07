@@ -7,7 +7,6 @@ import APIEndpoint from '../../API';
 import textStyles from '../../_assets/textStyles';
 import colors from '../../_assets/colors';
 import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // For local storage
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 import bellIcon from '../../_assets/bell.png';
 import { useFocusEffect } from 'expo-router';
@@ -98,7 +97,7 @@ export default function DashboardScreen() {
       console.log("torma");
       fetchUserNextMedication();
     }, []) // Empty dependency array means this will run only on focus
-  );
+  ) 
 
   useEffect(() => {
     const initializeUserID = async () => {
@@ -175,6 +174,7 @@ export default function DashboardScreen() {
         setMedicationInfo({ name: 'Error', dosage: 'Error', time: 'Error' });
       }
     };
+    
 
     const fetchStepData = async () => {
       try {
@@ -189,22 +189,17 @@ export default function DashboardScreen() {
       }
     };
 
-    // Fetch data from API
     fetchUserNextMedication();
     fetchArticles();
     fetchUserBMI();
     fetchStepData();
-
-    // Initialize pedometer
     Pedometer.getPermissionsAsync();
     Pedometer.isAvailableAsync().then(
       result => setIsPedometerAvailable(String(result)),
       error => setIsPedometerAvailable('Could not get isPedometerAvailable: ' + error)
     );
 
-    const subscription = Pedometer.watchStepCount(result => {
-      setStepCount(prevStepCount => prevStepCount + result.steps);
-    });
+    const subscription = Pedometer.watchStepCount(result => setStepCount(result.steps));
 
     const interval = setInterval(() => {
       const stepsGoal = 10000;
@@ -217,11 +212,6 @@ export default function DashboardScreen() {
         caloriesBurned: caloriesBurned,
         distanceTraveled: distanceTraveled,
       };
-
-      // Store step count locally
-      AsyncStorage.setItem('stepCount', JSON.stringify(stepCount));
-
-      // Send step count to the server
       API.addStepData(stepData, userID)
         .then(response => console.log('Data sent to backend:', response))
         .catch(error => console.error('Error sending data:', error));
@@ -235,103 +225,122 @@ export default function DashboardScreen() {
 
   const stepsGoal = 10000;
   const progress = ((stepCount / stepsGoal) * 100).toFixed(1);
-  const caloriesBurned = (stepCount * 0.04).toFixed(2);
-  const distanceTraveled = (stepCount * 0.762 / 1000).toFixed(2); // Convert steps to kilometers
+  const timeDifferenceInMinutes = medicationInfo.time;
+
+  const getTintColor = (progress) => {
+    if (progress < 33) {
+      return '#ff0000'; // Red
+    } else if (progress < 66) {
+      return '#ffff00'; // Yellow
+    } else {
+      return '#00ff00'; // Green
+    }
+  };
+
+  const handleNotificationPress = () => setModalVisible(true);
+  const renderNotification = (notification) => (
+    <View key={notification.id} style={styles.notificationContainer}>
+      <View style={styles.notificationContent}>
+        <Text style={styles.notificationTitle}>{notification.title}</Text>
+        <Text style={styles.notificationMessage}>{notification.message}</Text>
+      </View>
+      <Text style={styles.notificationDate}>{notification.date}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.headerContainer}>
-          <Image source={manIcon} style={styles.profileImage} />
-          <Text style={textStyles.greeting}>Hello, {userName}</Text>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Image source={bellIcon} style={styles.bellIcon} />
-          </TouchableOpacity>
+      <View style={styles.header}>
+        <View style = {styles.titlePost}>
+        <Text style={textStyles.screenTitle}>Welcome, {userName}!</Text>
+        <Text style={textStyles.contentText}>How do you feel today?</Text>
         </View>
+        <TouchableOpacity style={styles.notificationIcon} onPress={handleNotificationPress}>
+          <Image source={bellIcon} style={styles.bellIcon} />
+        </TouchableOpacity>
+      </View>
 
-        <View style={styles.summaryContainer}>
-          <Text style={textStyles.summaryText}>Today's Summary</Text>
-          <View style={styles.progressContainer}>
-            <AnimatedCircularProgress
-              size={200}
-              width={15}
-              fill={progress}
-              tintColor={colors.primary}
-              backgroundColor={colors.background}
-            >
-              {fill => (
-                <View style={styles.circularProgressTextContainer}>
-                  <Text style={textStyles.circularProgressText}>{stepCount} / {stepsGoal} Steps</Text>
-                </View>
-              )}
-            </AnimatedCircularProgress>
-          </View>
-
-          <View style={styles.statsContainer}>
-            <View style={styles.statBox}>
-              <Text style={textStyles.statValue}>{caloriesBurned}</Text>
-              <Text style={textStyles.statLabel}>Calories Burned</Text>
+      <View style={styles.stepsContainer}>
+        <AnimatedCircularProgress
+          size={220}
+          width={18}
+          fill={parseFloat(progress)}
+          tintColor= "#FF0E82"
+          onAnimationComplete={() => console.log('onAnimationComplete')}
+          backgroundColor= {colors.defaultblack}
+          rotation={-135}
+          arcSweepAngle = {270}
+          lineCap="square"
+        >
+          {() => (
+            <View style={styles.progressTextContainer}>
+              <Image source={manIcon} style={styles.manIcon} resizeMode="contain" />
+              <Text style={styles.stepCount}>{stepCount}</Text>
+              <Text style={textStyles.contentText}>/10000 steps</Text>
             </View>
-            <View style={styles.statBox}>
-              <Text style={textStyles.statValue}>{distanceTraveled}</Text>
-              <Text style={textStyles.statLabel}>Km Traveled</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.bmiContainer}>
-          <Text style={textStyles.bmiText}>Your BMI: {bmi !== null ? bmi : 'Loading...'}</Text>
-        </View>
-
-        <View style={styles.medicationContainer}>
-          <Text style={textStyles.medicationTitle}>Next Medication</Text>
-          <Text style={textStyles.medicationName}>{medicationInfo.name}</Text>
-          <Text style={textStyles.medicationDosage}>{medicationInfo.dosage}</Text>
-          <Text style={textStyles.medicationTime}>{medicationInfo.time}</Text>
-        </View>
-
-        <View style={styles.articlesContainer}>
-          <Text style={textStyles.articlesTitle}>Recommended Articles</Text>
-          {articles.length > 0 ? (
-            articles.map(article => (
-              <TouchableOpacity
-                key={article.id}
-                style={styles.article}
-                onPress={() => Linking.openURL(article.link)}
-              >
-                <Text style={textStyles.articleTitle}>{article.title}</Text>
-                <Text style={textStyles.articleAuthor}>by {article.author}</Text>
-              </TouchableOpacity>
-            ))
-          ) : (
-            <Text style={textStyles.noArticlesText}>No articles available.</Text>
           )}
+        </AnimatedCircularProgress>
+      </View>
+      <View style={styles.metricsContainer}>
+        <View style={styles.metricBox}>
+          <Text style={textStyles.paragraphTitle}>Calories</Text>
+          <Text style={textStyles.contentText}>{(stepCount * 0.04).toFixed(2)} Kcal</Text>
         </View>
-      </ScrollView>
+        <View style={styles.verticalBar} />
+        <View style={styles.metricBox}>
+          <Text style={textStyles.paragraphTitle}>Distance</Text>
+          <Text style={textStyles.contentText}>{(stepCount * 0.762 / 1000).toFixed(2)} km</Text>
+        </View>
+        <View style={styles.verticalBar} />
+        <View style={styles.metricBox}>
+          <Text style={textStyles.paragraphTitle}>Progress</Text>
+          <Text style={textStyles.contentText}>{progress}%</Text>
+        </View>
+      </View>
+      <View style={styles.infoContainer}>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>{medicationInfo.name}</Text>
+          <Text style={styles.infoSubtitle}>{timeDifferenceInMinutes}</Text>
+        </View>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>BMI</Text>
+          <Text style={styles.infoSubtitle}>{bmi} kg/m²</Text>
+        </View>
+      </View>
 
+      {/* Articles Section */}
+      <View style={styles.articleSection}>
+        <Text style={textStyles.paragraphTitle}>Articles</Text>
+        <ScrollView style={styles.articleList}>
+          {articles.map(article => (
+            <View key={article.id} style={styles.articleContainer}>
+              <Text style={textStyles.paragraphTitle}>{article.title}</Text>
+              <Text style={textStyles.contentText}>{article.description}</Text>
+              {article.url ? (
+                <TouchableOpacity onPress={() => Linking.openURL(article.url)}>
+                  <Text style={styles.articleLink}>Read More</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* Notification Modal */}
       <Modal
-        animationType="slide"
         transparent={true}
         visible={modalVisible}
+        animationType="slide"
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
+        <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={textStyles.modalTitle}>Notifications</Text>
-            <ScrollView style={styles.notificationsContainer}>
-              {notifications.map(notification => (
-                <View key={notification.id} style={styles.notification}>
-                  <Text style={textStyles.notificationTitle}>{notification.title}</Text>
-                  <Text style={textStyles.notificationMessage}>{notification.message}</Text>
-                  <Text style={textStyles.notificationDate}>{notification.date}</Text>
-                </View>
-              ))}
+            <Text style={styles.modalHeader}>Notifications</Text>
+            <ScrollView style={styles.modalScrollView}>
+              {notifications.map(notification => renderNotification(notification))}
             </ScrollView>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text style={textStyles.closeButtonText}>Close</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+              <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -339,7 +348,6 @@ export default function DashboardScreen() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
