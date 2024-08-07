@@ -320,6 +320,46 @@ class APIEndpoint
             console.error('Error storing physical habits:', error);
         }
     }
+    async addUserInjuryDrugs(injuryDrugs, userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/addUserInjuryDrugs`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ injuryDrugs, userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error storing injury drugs:', error);
+        }
+    }
+    async getUserInjuryDrugs(userID)
+    {
+        try 
+        {
+            const response = await fetch(`${this.url}/getUserInjuryDrugs`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userID }),
+            });
+            const data = await response.json();
+            return(data);
+        } 
+        catch (error) 
+        {
+            console.error('Error getting injury drugs:', error);
+        }
+    }
     async getUserPhysicalHabbits(userID)
     {
         try 
