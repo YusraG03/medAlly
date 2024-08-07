@@ -111,9 +111,6 @@ export default function Login() {
                 }
                 const response = await API.loginUser(userCreds);
                 await storeUserId(response.message.userID);
-                const getID = await getUserId();
-                //alert(getID)
-                console.log(getID)
                 console.log(response);
                 if(response.message.message == "Wrong Credentials!")
                 {
