@@ -9,6 +9,7 @@ import colors from '../../_assets/colors';
 import { storeUserId, getUserId, removeUserId } from '../../account/userStorage';
 import manIcon from '../../_assets/man.png'; // Path to the man icon image
 import bellIcon from '../../_assets/bell.png';
+
 import { useFocusEffect } from 'expo-router';
 
 const API = new APIEndpoint();
@@ -55,11 +56,17 @@ export default function DashboardScreen() {
     if(ID === null) return;
     try {
       const response = await API.getUserNextMedication(ID);
-      if(response.isDone !== undefined || response.isDone === true || response === undefined)  
+      console.log("response : ", response);
+      if(response.isDone !== undefined || response.isDone === true || response === undefined || response == "No medications found.")   
         {
           setMedicationInfo({ name: 'No Medication', dosage: '0mg', time: "Good Job!" });
           return;
         }
+      
+      if(!response.time)
+      {
+        return;
+      }
       const [hours, minutes] = response.time.split(':').map(Number);
       
       if (isNaN(hours) || isNaN(minutes)) {
@@ -89,12 +96,15 @@ export default function DashboardScreen() {
     } catch (error) {
       console.log('Error fetching next medication:', error);
       setMedicationInfo({ name: 'Error', dosage: 'Error', time: 'Error' });
+      if(response === "No medications found.")
+      {
+        setMedicationInfo({ name: 'No Medication', dosage: '0mg', time: "Good Job!" });
+      }
     }
   };
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("torma");
       fetchUserNextMedication();
     }, []) // Empty dependency array means this will run only on focus
   ) 
@@ -193,6 +203,7 @@ export default function DashboardScreen() {
     fetchArticles();
     fetchUserBMI();
     fetchStepData();
+    
     Pedometer.getPermissionsAsync();
     Pedometer.isAvailableAsync().then(
       result => setIsPedometerAvailable(String(result)),
