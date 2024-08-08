@@ -15,7 +15,7 @@ class onetime{
         this.message = await this.openai.beta.threads.messages.create(
             this.thread.id,
             {
-                role: "system",
+                role: "assistant",
                 content: userInfo 
             }
         );
