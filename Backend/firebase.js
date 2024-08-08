@@ -42,7 +42,7 @@ class firebase
             // Initialize ref after email check
             const ref = this.db.collection('users').doc();
             await ref.set(userCreds);
-            
+
             const userID = ref.id;
 
             const nutref = this.db.collection('users').doc(userID).collection('nutrition').doc("placeholder");
@@ -51,8 +51,8 @@ class firebase
             const medref = this.db.collection('users').doc(userID).collection('medications').doc("placeholder");
             await medref.set(medicationDetails);
             
-            await nutref.delete();
-            await medref.delete();
+            // await nutref.delete();
+            // await medref.delete();
 
             return {
                 message: "Account created successfully!",
