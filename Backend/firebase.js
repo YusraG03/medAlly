@@ -42,6 +42,9 @@ class firebase
             // Initialize ref after email check
             const ref = this.db.collection('users').doc();
             await ref.set(userCreds);
+
+            const nutritionRef = ref.collection('nutrition').doc('placeholder');
+            await nutritionRef.set({ initialized: true });
             
             return {
                 message: "Account created successfully!",
