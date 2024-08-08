@@ -42,6 +42,8 @@ class firebase
             // Initialize ref after email check
             const ref = this.db.collection('users').doc();
             await ref.set(userCreds);
+            
+            const userID = ref.id;
 
             const nutref = this.db.collection('users').doc(userID).collection('nutrition').doc("placeholder");
             await nutref.set(dailyFoodIntake, { merge: true });
@@ -51,7 +53,7 @@ class firebase
             
             await nutref.delete();
             await medref.delete();
-            
+
             return {
                 message: "Account created successfully!",
                 userID: ref.id
