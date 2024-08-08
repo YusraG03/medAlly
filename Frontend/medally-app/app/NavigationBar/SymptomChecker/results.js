@@ -104,14 +104,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.defaultwhite,
     padding: 16,
     marginTop: '2%',
-    gap: '3%',
   },
   content: {
     flexDirection: 'column',
   },
   section: {
     flexDirection: 'column',
-    gap: 2,
     marginBottom: '5%',
   },
   diseaseName: {

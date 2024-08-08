@@ -12,11 +12,13 @@ class onetime{
     async getOneTime(userThreadID, userInfo) { //call this function within the created object with the user's message and their thread_id (use: "thread_DlQO7yZt4PvJOmMbz8D5zLhj" for testing)
         this.assistant = await this.openai.beta.assistants.retrieve("asst_vhKUyzAvbJVVETPj1J5tVoai");
         this.thread = await this.openai.beta.threads.retrieve(userThreadID);
+        const userInfoString = JSON.stringify(userInfo);
+        console.log("Converted userInfoString:", userInfoString);
         this.message = await this.openai.beta.threads.messages.create(
             this.thread.id,
             {
                 role: "assistant",
-                content: userInfo 
+                content: userInfoString 
             }
         );
        
