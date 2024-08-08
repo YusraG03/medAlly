@@ -95,11 +95,7 @@ export default function DashboardScreen() {
       });
     } catch (error) {
       console.log('Error fetching next medication:', error);
-      setMedicationInfo({ name: 'Error', dosage: 'Error', time: 'Error' });
-      if(response === "No medications found.")
-      {
-        setMedicationInfo({ name: 'No Medication', dosage: '0mg', time: "Good Job!" });
-      }
+      setMedicationInfo({ name: 'No Medication', dosage: '0mg', time: "Good Job!" });
     }
   };
 
@@ -181,7 +177,7 @@ export default function DashboardScreen() {
         });
       } catch (error) {
         console.log('Error fetching next medication:', error);
-        setMedicationInfo({ name: 'Error', dosage: 'Error', time: 'Error' });
+        setMedicationInfo({ name: 'No Medication', dosage: '0mg', time: "Good Job!" });
       }
     };
     

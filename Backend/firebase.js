@@ -43,8 +43,14 @@ class firebase
             const ref = this.db.collection('users').doc();
             await ref.set(userCreds);
 
-            const nutritionRef = ref.collection('nutrition').doc('placeholder');
-            await nutritionRef.set({ initialized: true });
+            const nutref = this.db.collection('users').doc(userID).collection('nutrition').doc("placeholder");
+            await nutref.set(dailyFoodIntake, { merge: true });
+
+            const medref = this.db.collection('users').doc(userID).collection('medications').doc("placeholder");
+            await medref.set(medicationDetails);
+            
+            await nutref.delete();
+            await medref.delete();
             
             return {
                 message: "Account created successfully!",
