@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     fontWeight: "600",
     fontFamily: "Inter-SemiBold",
-    color: "#f7f7f7",
+    color: colors.defaultwhite,
   },
   header: {
     alignItems: 'center',
@@ -193,6 +193,9 @@ const styles = StyleSheet.create({
   headertext: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  disabledButtonText:{
+    color: colors.defaultwhite
   },
   logo: {
     width: 72,

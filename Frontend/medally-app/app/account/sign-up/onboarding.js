@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, FlatList, TouchableOpacity, Animated } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { router } from 'expo-router';
 
 const slides = [
   {
@@ -33,7 +33,6 @@ const Onboarding = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef(null);
-  const navigation = useNavigation();
 
   const renderItem = ({ item }) => (
     <View style={styles.slide}>
@@ -58,7 +57,7 @@ const Onboarding = () => {
       });
       setCurrentIndex(nextIndex); // Update index after scrolling
     } else {
-      navigation.navigate('../../NavigationBar');
+      router.navigate('../../NavigationBar');
     }
   };
 
