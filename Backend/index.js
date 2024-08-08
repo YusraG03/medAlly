@@ -9,7 +9,9 @@ import getThread from './generateThreadID.js';
 import multer from 'multer';
 import caloriecalc from './caloriecalc.js';
 import cors from 'cors';
+import onetime from './userinfo.js'
 //prod
+const onet = new onetime();
 const openchat = new openaichat();
 const newThread = new getThread();
 const app = express();
@@ -250,6 +252,8 @@ app.post('/getUserFirstName', async (req, res) => {
 });
 app.post('/getAllUserMedicalHistory', async (req, res) => { 
     const message = await db.getAllUserMedicalHistory(req.body.userID);
+    const threadID = await db.getUserThreadID(req.body.userID);
+    onet.getOneTime(threadID, message)
     res.json(message);
 });
 app.listen(PORT, '0.0.0.0', () => {
