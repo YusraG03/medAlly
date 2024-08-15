@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Image, Pressable, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera } from 'expo-camera/legacy';
 import * as MediaLibrary from 'expo-media-library';
 import Button from '../../components/CameraButton';
 import APIEndpoint from '../../API';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-
 
 const API = new APIEndpoint();
 
@@ -16,8 +15,9 @@ export default function CameraPage() {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.on);
   const [focus, setFocus] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const cameraRef = useRef(null);
-  
+
   const router = useRouter();
   const { mealName } = useLocalSearchParams();
 
@@ -28,12 +28,11 @@ export default function CameraPage() {
       setHasCameraPermission(cameraStatus.status === 'granted');
     })();
   }, []);
-console.log(mealName)
+
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
         const data = await cameraRef.current.takePictureAsync();
-        console.log(data);
         setImage(data.uri);
       } catch (error) {
         console.log(error);
@@ -44,6 +43,7 @@ console.log(mealName)
   const savePicture = async () => {
     if (image) {
       try {
+        setIsLoading(true);  // Start loading indicator
         const asset = await MediaLibrary.createAssetAsync(image);
         const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
 
@@ -57,14 +57,8 @@ console.log(mealName)
           name: fileName,
         });
 
-        console.log(formData);
-
         const results = await API.calculateCaloriesFromImage(formData); // Adjusted to pass formData
-        console.log(results);
-        alert('Picture saved! 🎉');
-        
-        setImage(null);
-        console.log('saved successfully');
+        setIsLoading(false);  // Stop loading indicator
 
         router.push({
           pathname: './results',
@@ -75,6 +69,7 @@ console.log(mealName)
           },
         });
       } catch (error) {
+        setIsLoading(false);  // Stop loading indicator in case of error
         console.log(error);
       }
     }
@@ -93,8 +88,6 @@ console.log(mealName)
             // Capture the touch position and simulate focus adjustment
             const { nativeEvent } = e;
             const { locationX, locationY } = nativeEvent;
-            console.log('Focus on:', locationX, locationY);
-            // Set focus state if needed or handle focus logic here
             setFocus({ x: locationX, y: locationY });
           }}
         >
@@ -130,6 +123,13 @@ console.log(mealName)
         <Image source={{ uri: image }} style={styles.camera} />
       )}
 
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#fff" />
+          <Text style={styles.loadingText}>Processing image...</Text>
+        </View>
+      )}
+
       <View style={styles.controls}>
         {image ? (
           <View
@@ -154,7 +154,6 @@ console.log(mealName)
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -173,16 +172,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  nutritionDistribution:{
+  nutritionDistribution: {
     marginTop: 15,
-    flexDirection : 'row',
-    justifyContent : 'space-around',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
     width: '70%'
   },
-  nutritionStat:{
-    alignItems : 'center',
-    marginHorizontal: 10, // Replaced gap with marginHorizontal
+  nutritionStat: {
+    alignItems: 'center',
+    marginHorizontal: 10,
   },
   calories: {
     color: '#7d7d7d',
@@ -207,4 +206,18 @@ const styles = StyleSheet.create({
   topControls: {
     flex: 1,
   },
+  loadingContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#fff',
+    marginTop: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
+

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
+import { StyleSheet, Button, View, ScrollView, Text, Image } from 'react-native';
 import colors from '../../_assets/colors';
 import textStyles from '../../_assets/textStyles';
 import { useRoute } from '@react-navigation/native';
 import APIEndpoint from "../../API";
 import { getUserId } from '../../account/userStorage';
+import { router } from 'expo-router';
 
 const ResultScreen = () => {
   const [userID, setUserID] = useState(null);
@@ -93,6 +94,7 @@ const ResultScreen = () => {
         <Text style={textStyles.smallParagraphTitle}>Analysis</Text>
         <Text style={styles.contentText}>{analysis}</Text>
       </View>
+      <Button title="Confirm" onPress={() => router.replace('./Nutrition')} />
     </ScrollView>
   );
 };
