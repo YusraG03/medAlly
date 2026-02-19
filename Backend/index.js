@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express, { json } from 'express';
 import path from 'path';
 import fs from 'fs';
@@ -199,11 +201,23 @@ app.post('/getUserInjuryDrugs', async (req, res) =>
 
 app.post('/chat', async(req, res) => 
 {
+    console.log('Received /chat request:', req.body);
     const { chat } = req.body
     const userID = req.body.userID
     const threadID = await db.getUserThreadID(req.body.userID);
-    const message = await openchat.getChatCompletion(chat,threadID, userID);
-    res.json({ "message": message });
+    try {
+        const message = await openchat.getChatCompletion(chat, threadID, userID);
+        console.log('OpenAI response:', message);
+        if (!message || !message.response) {
+            console.log('No response from OpenAI:', message);
+            res.json({ message: { response: 'AI could not process your request.', error: 'No response from OpenAI.' } });
+        } else {
+            res.json({ message });
+        }
+    } catch (error) {
+        console.error('Error in /chat endpoint:', error);
+        res.json({ message: { response: 'AI could not process your request.', error: error.message || 'Unknown error.' } });
+    }
 });
 
 app.post('/upload', upload.single('image'), async (req, res) => {

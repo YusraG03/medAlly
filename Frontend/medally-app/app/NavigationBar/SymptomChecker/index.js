@@ -36,21 +36,27 @@ export function ChatScreen({ navigation }) {
     try {
       const userID = await getUserId();
       setIsTyping(true);
-      const response = await API.chatWithGPT(userMessage, userID)
-      if(response.message && response.message.likelihood){
-        console.log(response)
-        // Pass the response data as params
+      const response = await API.chatWithGPT(userMessage, userID);
+      // Use response.response for AI message, and check for likelihood in response.response if needed
+      if (response && response.message && response.message.response && response.message.likelihood) {
         router.push({
           pathname: './SymptomChecker/results',
           params: {
-            ...response.message,
-            treatments: JSON.stringify(response.message.treatments)
+            ...response.message.response,
+            treatments: JSON.stringify(response.message.response.treatments)
           }
         });
-      }
-      else{
-        const aiMessage = response.message;
-        console.log(response)
+      } else {
+        let aiMessage = 'Sorry, I could not process your request.';
+        if (response && response.message && response.message.response) {
+          if (typeof response.message.response === 'string') {
+            aiMessage = response.message.response;
+          } else if (response.message.error) {
+            aiMessage = `Error: ${response.message.error}`;
+          } else if (response.message.message) {
+            aiMessage = response.message.message;
+          }
+        }
         const newMessage = {
           _id: uuid.v4(),
           text: aiMessage,
@@ -59,9 +65,9 @@ export function ChatScreen({ navigation }) {
             name: 'AI Assistant',
             avatar: aiAvatar,
           }
+        };
+        setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMessage]));
       }
-      setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMessage]));
-      };
     } catch (error) {
       console.error('Error fetching AI response:', error);
     } finally {
@@ -78,7 +84,10 @@ export function ChatScreen({ navigation }) {
   const CustomMessageText = (props) => {
     const { currentMessage } = props;
     const textColor = currentMessage.user._id === 1 ? colors.secondaryText : colors.highlightText;
-
+    let safeText = currentMessage.text;
+    if (typeof safeText !== 'string') {
+      safeText = JSON.stringify(safeText);
+    }
     return (
       <Markdown
         style={{
@@ -92,7 +101,7 @@ export function ChatScreen({ navigation }) {
           },
         }}
       >
-        {currentMessage.text}
+        {safeText}
       </Markdown>
     );
   };
