@@ -198,20 +198,24 @@ export default function SignUp() {
 
         {/* Submit button */}
         <Pressable 
-          style={[styles.button, !isValid && styles.disabledButton]} 
+          style={[styles.button, !isValid && styles.disabledButton]}
           onPress={async () => {
-            const userCreds =
-            {
+            const userCreds = {
               firstName: firstName,
               lastName: lastName,
               email: email,
               password: password
-            }
+            };
             const response = await API.registerUser(userCreds);
-            await storeUserId(response.message.userID)
-            router.push('./general-information')
-          }
-          }
+            // Handle error or missing userID
+            if (!response || response.error || !response.userID) {
+              let errorMsg = response && response.error ? response.error : 'Registration failed. Please try again.';
+              alert(errorMsg);
+              return;
+            }
+            await storeUserId(response.userID);
+            router.push('./general-information');
+          }}
           disabled={!isValid}
         >
           <Text style={isValid ? styles.buttonText : styles.disabledButtonText}>Next</Text>

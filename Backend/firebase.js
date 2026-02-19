@@ -11,15 +11,22 @@ class firebase
 {
     constructor()
     {
+        const { FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY } = process.env;
+        if (!FIREBASE_PROJECT_ID || !FIREBASE_CLIENT_EMAIL || !FIREBASE_PRIVATE_KEY) {
+            console.warn('WARNING: Firebase Admin credentials are not set in environment variables. Backend Firebase features will be disabled.');
+            this.db = null;
+            return;
+        }
+
         admin.initializeApp({
-            credential:admin.credential.cert({
-                projectId:process.env.FIREBASE_PROJECT_ID,
-                clientEmail:process.env.FIREBASE_CLIENT_EMAIL,
-                privateKey:process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/, '\n')
+            credential: admin.credential.cert({
+                projectId: FIREBASE_PROJECT_ID,
+                clientEmail: FIREBASE_CLIENT_EMAIL,
+                privateKey: FIREBASE_PRIVATE_KEY.replace(/\\n/, '\n')
             }),
-            databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.asia-southeast1.firebaseio.com`
+            databaseURL: `https://${FIREBASE_PROJECT_ID}.asia-southeast1.firebaseio.com`
         });
-        
+
         this.db = admin.firestore();
     }
     async testConnection(){
@@ -45,12 +52,16 @@ class firebase
 
             const userID = ref.id;
 
+            // Define empty placeholder objects to avoid ReferenceError
+            const dailyFoodIntake = {};
+            const medicationDetails = {};
+
             const nutref = this.db.collection('users').doc(userID).collection('nutrition').doc("placeholder");
             await nutref.set(dailyFoodIntake, { merge: true });
 
             const medref = this.db.collection('users').doc(userID).collection('medications').doc("placeholder");
             await medref.set(medicationDetails);
-            
+
             // await nutref.delete();
             // await medref.delete();
 

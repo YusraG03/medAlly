@@ -1,9 +1,11 @@
 // APIEndpoint.js
+import API_URL from '../config';
+
 class APIEndpoint 
 {   
     constructor()
     {
-        this.url = "http://localhost:3000";
+        this.url = API_URL;
         //this.url = "http://medally.ddns.net:3000";
     }
     async testConnection() 
@@ -12,19 +14,16 @@ class APIEndpoint
         {
             const response = await fetch(this.url);
             const data = await response.text();
-            return('data');
+            return data;
         } 
         catch (error) 
         {
             console.error('Error connecting to API:', error);
         }
     }   
-    async registerUser(userCreds) 
-    {
-        try 
-        {
-            const response = await fetch(`${this.url}/register`, 
-            {
+    async registerUser(userCreds) {
+        try {
+            const response = await fetch(`${this.url}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,11 +31,14 @@ class APIEndpoint
                 body: JSON.stringify({ userCreds }),
             });
             const data = await response.json();
-            return(data);
-        } 
-        catch (error) 
-        {
+            if (!response.ok || !data || data.error) {
+                // Return error message for frontend to handle
+                return { error: data && data.error ? data.error : 'Registration failed.' };
+            }
+            return data;
+        } catch (error) {
             console.error('Error registering user:', error);
+            return { error: 'Network or server error.' };
         }
     }
     async loginUser(userCreds) 
@@ -60,10 +62,8 @@ class APIEndpoint
     }
     async addMedication(medication, userID)
     {
-        try 
-        {
-            const response = await fetch(`${this.url}/addMedication`, 
-            {
+        try {
+            const response = await fetch(`${this.url}/addMedication`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,11 +71,13 @@ class APIEndpoint
                 body: JSON.stringify({ medication, userID }),
             });
             const data = await response.json();
-            return(data);
-        } 
-        catch (error) 
-        {
+            if (!response.ok || !data || data.error) {
+                return { error: data && data.error ? data.error : 'Failed to add medication.' };
+            }
+            return data;
+        } catch (error) {
             console.error('Error storing medication:', error);
+            return { error: 'Network or server error.' };
         }
     }
     async modifyMedication(medication, userID)
@@ -420,11 +422,10 @@ class APIEndpoint
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
-          return('API response data:', data); // Log the data to understand its structure
-    
-          // Assuming the JSON structure is { articles: [...] }
-          const articles = data || []; // Adjust this line based on your actual JSON structure
-          return Array.isArray(articles) ? articles : []; // Ensure it's an array
+          // Prefer explicit `articles` field, fall back to returned data or empty array
+          if (data && Array.isArray(data.articles)) return data.articles;
+          if (Array.isArray(data)) return data;
+          return [];
         } catch (error) {
           console.error('API fetch error:', error);
           return []; // Return an empty array if there's an error

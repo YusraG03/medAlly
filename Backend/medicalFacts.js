@@ -1,12 +1,15 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import articles from './articles.json' assert { type: 'json' };
 import seedrandom from 'seedrandom';
 
 // Resolve __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Load articles.json using fs to avoid JSON import assertion issues
+const articlesRaw = fs.readFileSync(path.join(__dirname, 'articles.json'), 'utf8');
+const articles = JSON.parse(articlesRaw);
 
 // Define the file location
 const FILELOCATION = path.join(__dirname, 'medicalFacts.txt');

@@ -114,15 +114,18 @@ export default function Addmedication() {
 
     try {
       const userID = await getUserId();
-      await api.addMedication(newMedication, userID);
+      const response = await api.addMedication(newMedication, userID);
+      if (!response || response.error) {
+        let errorMsg = response && response.error ? response.error : 'Failed to add medication.';
+        Alert.alert('Error', errorMsg);
+        return;
+      }
 
       Alert.alert('Success', 'Medication added successfully');
-      
       // Schedule notification if reminder is set
       if (reminder !== 'None') {
         await scheduleNotification();
       }
-
       // Optionally clear the input fields after successful submission
       setName('');
       setDosage('');

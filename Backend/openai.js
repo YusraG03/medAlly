@@ -6,10 +6,20 @@ dotenv.config();
 
 class openaichat{
     constructor(apiKey) {
-        this.openai = new OpenAI({ apiKey: process.env.openaikey})
+        const key = process.env.openaikey || process.env.OPENAI_API_KEY;
+        if (!key) {
+            console.warn('WARNING: OpenAI API key not set. OpenAI features will be disabled.');
+            this.openai = null;
+        } else {
+            this.openai = new OpenAI({ apiKey: key });
+        }
     }
     
     async getChatCompletion(chat, userThreadID) { //call this function within the created object with the user's message and their thread_id (use: "thread_DlQO7yZt4PvJOmMbz8D5zLhj" for testing)
+        if (!this.openai) {
+            console.warn('OpenAI client not initialized. getChatCompletion will not run.');
+            return null;
+        }
         this.assistant = await this.openai.beta.assistants.retrieve("asst_vhKUyzAvbJVVETPj1J5tVoai");
         this.thread = await this.openai.beta.threads.retrieve(userThreadID);
         this.message = await this.openai.beta.threads.messages.create(

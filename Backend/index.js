@@ -29,31 +29,50 @@ const upload = multer({
     //limits: { fileSize: 1000000 }, // Limit file size to 1MB
 });
 
+// Ensure uploads folder exists
+const UPLOADS_DIR = path.join(process.cwd(), 'uploads');
+if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+}
+
 app.use(bodyParser.json());
 
-app.use(cors({
-    origin: 'http://localhost:8081' // Replace with your frontend URL
-  }));
+app.use(cors());
+
 
 app.get('/', (req, res) => 
 {
+    if (!db || !db.db) {
+        return res.status(503).send('Backend Firebase not configured.');
+    }
     db.testConnection();
     res.send('If you are reading this, then it works!');
 });
 
 app.post('/login', async (req, res) =>
 {
+    if (!db || !db.db) return res.status(503).json({ error: 'Backend Firebase not configured' });
     const message = await db.signIn(req.body.userCreds);
     res.json({"message": message});
 });
 
-app.post('/register', async (req, res) => 
-{
-    var jsonObject = (req.body.userCreds);
-    const threadID = await newThread.getThreadID();
-    jsonObject["threadID"] = threadID;
-    const message = await db.signUp(jsonObject);
-    res.json({"message": message});
+app.post('/register', async (req, res) => {
+    var jsonObject = req.body.userCreds;
+    if (!db || !db.db) return res.status(503).json({ error: 'Backend Firebase not configured' });
+    let threadID = null;
+    try {
+        threadID = await newThread.getThreadID();
+    } catch (e) {
+        threadID = null;
+    }
+    if (threadID) jsonObject["threadID"] = threadID;
+    const result = await db.signUp(jsonObject);
+    if (typeof result === 'string') {
+        // Error or duplicate email
+        return res.status(400).json({ error: result });
+    }
+    // Success: return userID and message
+    res.json({ userID: result.userID, message: result.message });
 });
 
 app.post('/addMedication', async (req, res) =>

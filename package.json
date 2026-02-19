@@ -1,7 +1,11 @@
 {
   "dependencies": {
     "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-firebase/app": "^23.8.6",
+    "@react-native-firebase/auth": "^23.8.6",
+    "@react-native-firebase/firestore": "^23.8.6",
     "expo-file-system": "^17.0.1",
+    "firebase": "^12.9.0",
     "react-native-google-fit": "^0.21.0"
   }
 }

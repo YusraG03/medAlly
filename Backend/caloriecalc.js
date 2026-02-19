@@ -6,9 +6,19 @@ dotenv.config()
 
 class caloriecalc{
     constructor(){
-        this.openai = new OpenAI({ apiKey: process.env.openaikey });
+        const key = process.env.openaikey || process.env.OPENAI_API_KEY;
+        if (!key) {
+            console.warn('WARNING: OpenAI API key not set. OpenAI features will be disabled.');
+            this.openai = null;
+        } else {
+            this.openai = new OpenAI({ apiKey: key });
+        }
     }
     async getCalorie(imagePath){ //if need question just ask me
+        if (!this.openai) {
+            console.warn('OpenAI client not initialized. getCalorie will not run.');
+            return null;
+        }
         this.assistant = await this.openai.beta.assistants.retrieve("asst_I3bTUlZj5EKfWqv0gW44dOtH");
         this.thread = await this.openai.beta.threads.create();
         this.file = this.openai.files.create({
